@@ -1,0 +1,37 @@
+\documentclass[12pt,a4paper,draft]{book}
+% \documentclass[12pt,a4paper]{book}
+\usepackage{thesis-style}
+\usepackage{thesis-book}
+
+
+
+\begin{document}
+  \input{frontispiece}
+  \maketitle
+  
+  % \input{chapters/abstract}
+  % \cleardoublepage
+  \tableofcontents
+
+  % \part{Intro}
+  % \chapter{ML \& Physics}
+  % \input{chapters/math}
+  \input{chapters/context}
+
+  % \part{Results}
+  \input{chapters/squared-activation-initial-conditions}
+  % \chapter{Spherical Constraint}
+  % \chapter{Stochasticity of the evolution}
+
+  % \part{Conclusion}
+  % \chapter{Summary and future developments}
+
+
+  \appendix
+  % \input{chapters/derivation-quadratic-ODE}
+
+  \nocite{*}
+  \printbibliography
+
+
+\end{document}

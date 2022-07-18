@@ -1,0 +1,561 @@
+\chapter{Quadratic activation and initial conditions}
+In this chapter we introduce the first part of the original work of this thesis.
+We further develop the framework introduced in previous chapters;
+we will set an unusual activation function, but one that will allow us to derive
+tractable equations for our purposes.
+
+After that, we exhibit the code used for the simulation of the learning, and the differential
+equation solution. 
+
+Finally, we discuss the problem of initial condition. Choosing the proper starting
+point is one of the most challenging part of this work. We briefily report our first
+attempts and toy models to address the problem, leaving instead for the next chapter
+the final choice.
+
+\section{Quadratic activation function}
+In last chapter we introduced the generic framework for studing soft committee machines.
+We derived some generic differential equations, which, however, involve calculating an expectation value.
+If the purpose is an analytical study of the process, it is necessary to find an explicit expression
+for those valies of expectation, otherwise the study is arduous.
+
+In previous literature\cite{saad1995line,goldt2019dynamics,veiga2022phase}, the standard choiche in this case is
+\[\sigma{(x)} = \erf{\left(\frac{x}{\sqrt{2}}\right)},\]
+where \(\erf\) is the \emph{error function}. This choice is particularly convinient
+because \(\erf\) is a regular and bound function, and its derivative is the gaussian.
+The resulting expected values are computable; this is not clearly true for other 
+common choices such as \emph{sigmoid} or \(\tanh\).
+
+%todo: As an example, we report here what is Equation~\eqref{eq:genericODEforM} for this activation function.
+Nevertheless, the expression obtained by computing the expected values in Equations~\eqref{eq:genericODE} involves
+some inverse trigonometric functions, square roots and some other non-simple expressions. For reference, see
+the Appendix~C of Veiga's paper\cite{veiga2022phase}, where the full expression are reported.
+Our ultimate goal is to derive analytical estimates of the learning times of the committee machines;
+to do this we need the differential equations to be relatively simple and studiable with analytical techniques,
+which unfortunately is not true with the canonical choice of \(\sigma\).
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\textwidth]{example-image-duck}
+  \caption{ different choice of activation function.}
+\end{figure}
+
+Thus, the problem is now choosing a new activation function that would allow for more tractable equations.
+The most natural choice is one with polynomial \(\sigma\). The simplest polynomial would be \(\sigma(x) = x\),
+but it's well-known that using linear activation fuction in hidden layers leads to just a linear function,
+so there is no point to use neural networks at all\cite{szandala2021review}. 
+Given all these considerations, the choice we did is \[\act{(x)} = x^2.\]
+We need to point out a few things at this point.
+First of all, the quadratic function, as well as all the other polynomial functions,
+does not satisfies the Hypothesis~1 of Theorem~\ref{thm:process_to_ode_goldt}.
+This seems to break the convergence of the differential equations solution to the
+stochastic process of the training.
+%todo: motiva perché comunque ce ne freghiamo!
+%todo: l'imaginazione della pagina fa schifo, metti un immagine riempimento delle diverse funzioni di attivazione
+
+Secondly, the usage of a even function as activation introduces an unusual symmetry in 
+the functions. Both the student \(\hat{f}\) and the teacher \(f\) are even functions,
+thus the sign of all the weights of a single neuron can be changed, without changing 
+the output. In the macroscopic variables framework this results in loss of significance
+of the sign of non diagonal elements of \(\Q\) and \(\P\), and of all entries of \(\M\).
+It follows that all these signs in the fianl state are determined by the choice of initial
+conditions, and small variation of those can lead to opposite solutions. This effect 
+will mildly affect our analysis; we will point out this again when needed.
+
+Finally, we notice that all the expected value we need to compute are just multivariate
+polynomials of gaussian variables. The final result is particularly nice,
+because it is a polynomial in the covariance matrix entrances. The full derivation
+is reported in Appendix~\ref{app:derivation-quadratic-ode}.
+We report below the final expression of the equations.
+\begin{subequations} \label{eq:quadraticODEs}\begin{align}
+    \label{eq:quadraticODE_M}
+    \dod{\M}{t} &= \frac{2 \gamma}{p}\left[
+        \left(\frac{\Tr{\P}}k - \frac{\Tr{\Q}}p\right)\M +
+        2\left(\frac{\M\P}{k} - \frac{\Q\M}{p}\right)
+    \right] \\
+    %
+    \label{eq:quadraticODE_Q}
+    \begin{split}
+        \dod{\Q}{t} &= \frac{4 \gamma}{p}\left[
+            \left(\frac{\Tr{\P}}k - \frac{\Tr{\Q}}p\right)\Q +
+            2\left(\frac{\M\M^\top}{k} - \frac{\Q^2}{p}\right)
+        \right] +\\
+        &\quad+\frac{4 \gamma^2}{p^2} \Biggr\{
+            \frac1{k^2}\left[\left(\Tr{\P}^2+2\Tr{\P^2}\right)\Q +
+                            4\Tr{\P}\M\M^\top + 8\M\P\M^\top
+                    \right] - \\
+            &\qquad\quad\quad
+            -\frac2{kp}\Biggl[\left(\Tr{\P}\Tr{\Q}+2\Tr{\M\M^\top}\right)\Q +
+                            2\Tr{\Q}\M\M^\top\\
+                            &\qquad\qquad\qquad\quad+ 2\Tr{\P}\Q^2+ 
+                            4\left(\M\M^\top\Q + \Q\M\M^\top\right)
+                        \Biggl] + \\
+            &\qquad\quad\quad
+            +\frac1{p^2}\left[\left(\Tr{\Q}^2+2\Tr{\Q^2}\right)\Q +
+                            4\Tr{\Q}\Q^2 + 8\Q^3
+                        \right] + \Delta \Q\Biggr\}
+    \end{split}
+\end{align}\end{subequations}
+The expressions are just long, but not complicated to handle and to be analized.
+% Moreover, these are their compact matrix form
+
+To conclude our specialization to quadratic activation, also the value of population risk can be expressed
+as function of the values of \(\Q, \M \text{ and } \P\). Computing the expected value in Equation~\eqref{eq:risk_lambda_expval},
+we get
+\begin{equation} \label{eq:risk_quadratic}
+  \risk%{(\Q,\M,\P)}
+      = \frac12\left[
+          \frac{\Tr{\P}^2+2\Tr{\P^2}}{k^2}
+          -2\frac{\Tr{\P}\Tr{\Q}+2\Tr{\M\M^\top}}{pk}
+          +\frac{\Tr{\Q}^2+2\Tr{\Q^2}}{p^2}
+      \right]
+\end{equation}
+
+The equation derived will be the staring point for all the further analysis.
+We are using an unusual choice of activation function, but, as presented later,
+we will be still able to recover known results in literature, and derive some original
+ones.
+
+
+
+
+
+\section{Numerical Experiments setting}
+In this section we describe how we conducted the numerical experiments for verifing 
+our result. We discuss some common problems that need to be addressed in every kind of simulation,
+while the issues specific to an individual task will be discussed in the appropriate section.
+
+All the code witten for this work is cointained in this Python package;
+it can be downloaded an the experiments can be reproduced.
+% todo: link al python package.
+
+\subsection{Simulation of the training}
+As we already said, the training of a committee machine looked at through the order parameters
+reduces to a discrete stochastic process of the matrix \(\vec{\Omega}\). Thus, one possibility
+to simulate the online learning is using Equations~\eqref{eq:update_rule_M}~and~\eqref{eq:update_rule_Q}:
+at each step the local fields can be sampled using the previous overlapping matrix, then
+used to compute the update step. Although this is perfectly allowed, we preferred
+to simulate the process directly on the weights, using Equation~\eqref{eq:update_rule_weights}
+and sampling each time a new \(\vec{x}\).
+
+Besides being much closer to what is done in practice, using weights gives us much more control over
+the committee machine, especially over the initial conditions. 
+As we will see better in the next section, the choice of initial conditions is far from trivial,
+and imposing them directly on macroscopic variables could lead to unrealistic situations in practice.
+
+Since we wanted to be as close as possible to how a neural network is trained,
+we decided to use an external package to handle gradient descent: \texttt{PyTorch}\cite{pytorch2019}.
+This ensures that no bias is introduced by our work, since everything in the simulation,
+from step update to gradient computation, is handled by the external library.
+Moreover, the code is much more general and can easilly adapted to different activation
+functions, for instance\footnote{
+    In the first stage of the project, we condected some test using \(\erf\) activation and compared
+    our result to \cite{veiga2022phase}, to be sure that the code is correct.
+}.
+
+\subsubsection{Measure of the Population risk}
+The quantity we are interested in is the \emph{population risk}, so we have to find
+a way to monitor it through the learning. In a real neural network training there is 
+no access to the population risk, but only the empirical version can be computed.
+We can imagine to do the same in our framework, sampling a set \(\{\vec{x}_1,\dots,\vec{x_N}\}\) 
+and using it to estimate the risk
+\[\risk = \frac{1}{2N}\sum_{n=1}^N\left(\hat{f}(\vec{x}_n)-f(\vec{x}_n)\right)^2.\]
+Of course the thing to do is sample a new set of \(\vec{x}\)s each time we need an estimation
+of the risk, but this strategy turned out to be computationally too expensive to be
+implemented with a sufficient amount of samples to have a good estimation.
+
+A second possible strategy is to use the same set \(\{\vec{x}_1,\dots,\vec{x_N}\}\) 
+throughout the learning. This solution is introducing a bias, because the resulting risk
+will always have the same type of error, since the samples used are the identical.
+
+Although the choice is good for some experiments, it turned out to be not accurate enough
+for all the analysis we needed. Therefore we introduced a third way to compute the population 
+risk, by first calculating the order parameters, and then applying the Equation~\eqref{eq:risk_quadratic}.
+In this way we get an exact expression of the risk;
+we are aware that thiscomes out of the pattern of wanting to emulate a real training of a neural network as much as possible,
+but nevertheless this choice does not impact the gradient descent in any way since
+the risk is used just for monitoring.
+Finally, let us remember that our goal is to provide an analytical estimate of the committee machine's learning time,
+so it is much more important to have accurate numerical results with which to make comparisons,
+rather than to be consistent with a real situation.
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=1.\textwidth]{example-image-duck}
+    \caption{samples estimation}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=1.\textwidth]{example-image-duck}
+    \caption{formula estimation}
+  \end{subfigure}
+
+  \caption{
+    difference between two different strategy for estimating the risk in committee machine simulation.
+    The two pictures are showing the same simulations and are zoomed on the very first part of the learning.
+  }
+  \label{fig:sampling_formula_risk}
+\end{figure}
+
+In Figure~\ref{fig:sampling_formula_risk} we show the difference between the last two strategies.
+It's clear that the second one preferable because the noise is reduced to 0, and the only difference
+that appear in trajectories are caused by the stochasticity of the process.
+
+\subsubsection{Finite size effect}
+The key point of our analysis is the high dimensional limit; the derivation of 
+deterministic differential equations is based on the limit \(d\to+\infty\).
+
+When simulating a committee machine, we obviously can't use an infinite inpute layer dimension.
+This introduce some finite size effects. The simulations may not match exactly with the 
+differential equations solution, but the difference becomes smaller and smaller by 
+increasing the size used. 
+
+This hypotetical problem has been a constant throughout this project,
+although most of the time it has turned out not to be the cause of the discrepancies.
+Many times we investigated the finite size effect, looking for a discrepancy scaling as
+power law (\(\propto d^\alpha\) for some \(\alpha\)), but we have not found any situation where
+it was really affecting our results. Usually, \(d=10000\) was enough for our analysis; 
+in the rest of this paper we will not discuss this effect again assuming that
+it is not relevant to what we are talking about, except where explicitly written.
+
+In Figure~\ref{fig:finite_size_example} we present an example of finite size effect;
+% todo: breve commento quando effettivamente metterai la figura.
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.7\textwidth]{example-image-duck}
+
+    \caption{
+      example of finite size effect. 
+    }
+    \label{fig:finite_size_example}
+  \end{center}
+\end{figure}
+
+\subsection{Numerical solution of the differential equation}
+The second ingredient needed for numerical experiment of this work is a way to
+solve the differential equations we derived in previous sections. Of course,
+an explicit analytical solution is not feasible, given the complexity of the expressions;
+we must therefore proceed with numerical integration techniques of differential equations. 
+
+The most basic method for integrating a first order differential equation is known
+as \emph{Euler Method}, and it consistent in discretizing the time in finite steps,
+and compute the new value of the solution using the value at previous step.
+In our context this becomes (let \(\delta t\) the time step)
+\[
+  \dod{\M{\left(t\right)}}{t} = \vec{\Psi}{\left(\vec{\Omega}\right)}
+  \quad\xrightarrow{\text{Euler integration}}\quad
+  \begin{cases}
+    t^{(n)} = n \cdot \delta t \\
+    \M^{(0)} = \M(0) \\
+    \M^{(n)} = \vec{M}^{(n-1)} + \delta t\cdot\vec{\Psi}{\left(\vec{\Omega}^{(n-1)}\right)}
+  \end{cases}\,.
+\]
+A completely analogous equation can be written for \(\Q\).
+
+Of course, numerical integration introduces an error.
+Since EM is a \emph{first-order method},
+the error committed during the single step is proportional \(\delta t^2\).
+Considering that the number of step needed to reach a given time is inversely proportional
+to the step size, the total error committed by this method of integration
+is proportional to \(\delta t\).
+
+For numerical experiments to be reliable, the error introduced by numerical integration
+must be smaller (ideally negligible) than that due to switching from the stochastic process
+to differential equations. Using the result of Theorem~\ref{thm:process_to_ode_goldt},
+we get that the step size must satisfy
+\[
+  \delta t = \smallo{\frac{1}{\sqrt{d}}}\quad \text{ when }d\to+\infty.
+\]
+The usual choice for our numerical experiments is \(\delta t = \frac1d\);
+this should ensure the neglibility condition respect the error of the Theorem.
+
+\subsection{Example of a numerical experiment}
+% todo: fai tutta questa sezione
+% Nella mia testa metto un esperimento numerico a caso, giusto per far vedere come analizzeró
+% i sucessivi esperimenti. Tipo metto il classico digramma del risk, faccio vedere 
+% che piú o meno c'é un matching tra ODE e sim, faccio notare che la scala è logaritmica,
+% ecc...
+
+\section{Initial conditions}
+In this Section we present some condiderations on the initialization of the student
+and the teacher committee machines. As one may expect, the choice of the staring point 
+can deeply affect the evolution of the training.
+Moreover, we must always keep in mind that our ultimate goal is to give
+an analytical estimate of the time required to learn the committee machine.
+This forces us both to make a choice that produces analytically tractable equations
+and to make a choice that is not too far removed from a real situation,
+otherwise the results would not be useful, despite being correct.
+
+We initially present what was our first attempt to arrive at initial conditions suitable for our study.
+Although it was not a fruitful choice,
+we can still regard it as a toy-model that serves as an introduction to the study of differential equations.
+Next we also report some other attempts, until we arrive at the final choice that we then used throughout our analysis.
+
+\subsection{Symmetric initial condition}
+Let's start by observing that form Equation~\eqref{eq:quadraticODE_M} it follows
+that \(\M=0\) is a fixed point. This means that if we set copletely non-overlapping
+weights between student and teacher, then there is no learning at all, at least 
+from the point of view of differential equations.
+We would like to study the case where the teacher weights and the student's initial condition are uncorrelated,
+and small perturbations around that. We introduce a framework where a parameter will
+regulate the overlap, and the goal is doing perturbation around the fixed point.
+
+The weights associated with an hidden node are vectors in \(\Real^d\), both for teacher and student.
+Let \(\{\w^*_r\}_{r=1,\dots,k}\) the sets of weights of the teacher,
+and \(V_T \coloneqq \Span\left[\{\w^*_r\}_{r=1,\dots,k}\right]\) the subspace generated by them.
+We also assume these weights to be orthogonal. The initial weights for the student are chosen as
+\[
+    \w_j^0 = \frac{\varepsilon}{k} \sum_{r=1}^k \w^*_r + (1-\varepsilon) \w_j^S \quad
+    \forall j\in [p],
+\]
+where the \(\w_j^S\) are orthogonal vectors of \(V_S \coloneqq (V_T)^\bot\),
+the subspace of \(\Real^d\) orthogonal to the subspace of the teacher weights. 
+The value of \(\varepsilon\) can vary between 0 and 1,
+and it regulates the overlapping between student and teacher at the start.
+
+We are using the following orthonormality conditions
+\[
+  \w^*_r \cdot \w^*_t = \rho_0d\delta_{rt}
+  \qquad\text{and}\qquad
+  \w_j^S\cdot\w_l^S=q_0d\delta_{jl},
+\]
+so the \emph{weights matrices} (\(\w_j \equiv [\W]_j\)) have orthogonal rows too.
+
+Using all these assumptions, the computation of the order parameters leads to
+\begin{align*}
+  \left[\P\right]_{rt} &= \rho_0\delta_{rt}\\
+  \left[\M^0\right]_{jr} &= \frac1d \w_j^0 \cdot \w^*_r = \frac{\rho_0\varepsilon}{k} \\
+  \left[\Q^0\right]_{jl} &= \frac1d \w_j^0 \cdot \w^0_l = \frac1d
+    \left(\frac{\varepsilon}{k} \sum_{r=1}^k \w^*_r + (1-\varepsilon) \w_j^S\right)\cdot
+    \left(\frac{\varepsilon}{k} \sum_{t=1}^k \w^*_t + (1-\varepsilon) \w_l^S\right)\\
+      &= \rho_0\frac{\varepsilon^2}{k} + q_0(1-\varepsilon)^2 \delta_{jl}
+\end{align*}
+An important feature of these initial conditions is that the order parameters are 
+independent from \(d\), so the same differential equation solution can be used To
+describe committee machines of different sizes.
+Since what is really important is the rate between \(\rho_0\) and \(q_0\),
+from now we will stick to the case \(\rho_0 = 1\).
+
+\subsubsection{Fixed point with no overlap}
+This case correspond to null correlation, with \(\varepsilon=0\).
+The initial conditions are 
+\[\P = \I_k, \quad \M = 0 \quad \text{and}\quad \Q = q_0 \I_p.\]
+As already pointed out, there is no evolution of \(\M\)
+\[\M{(t)} = 0\quad \forall t\ge0,\]
+and, through Equation~\eqref{eq:quadraticODE_Q},
+this makes \(\Q\) always proportional to the identity matrix \(\Q{(t)} = q{(t)} \I_k\).
+The important conclusion is that \(q(t)\) is the only variable that fully describe the evolution.
+The equation Equation~\eqref{eq:quadraticODE_Q} becomes an explicit equation for \(q{(t)}\):
+% ho rimosso tutti gli step perché non servono a niente. se proprio mettili in appendice
+\begin{equation}\label{eq:eps0ODEforq}\begin{split}
+    \dod{q{(t)}}{t} = \frac{4\gamma}{p}q{(t)}\Biggr\{\underbrace{
+        1 - \left(1+\frac2p\right) q{(t)}}_{\eqqcolon L{(q{(t)};p)}}
+    +\frac{\gamma}{p} \Biggr[\underbrace{
+        \left(1+\frac2k+\Delta\right) - \Biggl(2 + \frac4p \Biggl)q{(t)} +
+        \left(1+\frac6p+\frac{8}{p^2}\right)q^2{(t)}}_{\eqqcolon N{(q{(t)};p,k,\Delta)}}
+    \Biggr]\Biggr\}.
+\end{split}\end{equation}
+We have introduced the two functions \(L\) and \(N\) in order to make the notation
+lighter in the following part.
+
+Since \(q(t)\) is descriptive of the whole process, we can write the population risk as its function
+\[
+  \risk{(t)} = \frac12\left[\left(1+\frac2k\right)-2q{(t)}+\left(1+\frac2p\right)q^2{(t)}\right].
+\]
+What it's really important about the last equation is that leads us to
+\[
+    \dod{\risk{(t)}}{t} = \left[\left(1+\frac2p\right)q{(t)}-1\right] \dod{q{(t)}}{t} = L{(q{(t)};p)} \dod{q{(t)}}{t},
+\]
+so stationary points of \(\od{q{(t)}}{t}\) are also stationary points of the risk itself, but the stability may be different.
+
+Before continuing we show that \(L\) is always positive, regardless the value of \(q\).
+The function is a polynomial of the second degree,
+so we have to show just that the (reduced) discriminant is less than 0
+\[\begin{split}
+  \left[-\left(1 + \frac2p \right)\right]^2 - \left(1+\frac6p+\frac{8}{p^2}\right)\left(1+\frac2k+\Delta\right) &<
+  \left(1 + \frac2p \right)^2 - \left(1+\frac6p+\frac{8}{p^2}\right) \\
+  &= 1 + \frac4p + \frac{4}{p^2} - 1-\frac6p-\frac{8}{p^2} 
+  %=-(\frac2p+\frac{4}{p^2})
+  <0.
+\end{split}\]
+
+We can now focus on the stationary and fixed points of the risk,
+since our ultimate goal is have a description of its asymptotic behaviour.
+The first obvious fixed point is \(q=0\), but we are dealing only with positive values of \(q\),
+so it's not interesting\footnote{
+  We can show that if \(q{(0)}\) is positive, then we will never reach \(q=0\)
+  by noticing that the time derivative of \(q\) is positive 
+  in a right-neighborhood of \(q=0\).
+}.
+The second easy fixed point is the root of \(L{(q{(t)};p)}\):
+\[q_{rm} \coloneqq \frac{1}{1+\frac2p} = \frac{p}{p+2}.\]
+This corresponds to the minimum of the function \(\risk{(q)}\),
+so it is not a real stationary point since the dynamic is governed by \(q\)
+and this is not a fixed point for the \(q\) differential equation.
+
+What really matters are the fixed points both for \(q\) and \(\risk\). 
+Those are the roots of the equation obtained by imposing the left-hand-side 
+of Equation~\eqref{eq:eps0ODEforq} equal to 0\footnote{
+  We are assuming that solutions exist.
+  If it not the case than the problem is not interesting at all,
+  since the risk will diverge independently from the value of \(q_0\).
+}
+\begin{equation}\begin{split}
+  \displaystyle
+  q_f^{1,2} &\coloneqq 
+    \frac{p+2\gamma \mp
+                \sqrt{\left[p+2\gamma\right]^2-
+                      4\gamma p\frac{p+4}{p+2}
+                        \left[1+\frac{\gamma}{p}\left(1+\frac2k+\Delta\right)\right]}}
+                  {2\gamma\left(p+4\right)}p,
+\end{split}\end{equation}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/epsilon0-stable-points.png}
+    % \includegraphics[width=0.8\textwidth]{{example-image-duck}}
+    \caption{
+      plot of the right-hand-side of Equation~\eqref{eq:eps0ODEforq}.
+      The blue line is only the \(L\) contribution, while green parabola is including also \(N\).
+    }
+    \label{fig:epsilon0stablepoints}
+\end{figure}
+To conclude our analysis, let us make a few considerations that will give us a clear picture
+of how evolution works in this simple situation.
+\begin{enumerate}
+  \item \(q_f^1 < q_f^2\), by their definition;
+  \item due to the fact that \(N{(q{(t)};p,k,\Delta)}\) is a positive function,
+        the root of \(L{(q{(t)};p)}\) is always smaller than the full left-hand-side
+        root in Equation~\eqref{eq:eps0ODEforq} (see also Figure~\ref{fig:epsilon0stablepoints} for a picture),
+        so it holds\[q_{rm}<q_f^1 < q_f^2;\]
+  \item As we already said, \(\risk{(q)}\) is a quadratic function and \(q_{rm}\) is the value of \(q\) that realize the minimum. Using previous step we can conclude
+  \[\risk{(q_{rm})}<\risk{(q_f^1)} < \risk{(q_f^2)};\]
+  \item We can show that \(q_f^1\) is a \emph{stable} point, while \(q_f^2\) is unstable (see Figure~\ref{fig:epsilon0stablepoints}).
+  We can now infer the asymptotic behaviour of the solution of the differential equation from the initial condition:
+        \begin{itemize}
+            \item \(0<q_0<q_f^2\): \(q{(t)}\to q_f^1\);
+            \item \(q_0=q_f^2\): \(q{(t)}= q_f^2 \quad \forall t\);
+            \item \(q_0>q_f^2\): \(q{(t)}\to +\infty\);
+        \end{itemize}
+        The interesting part comes from this initial value of \(q_0\):
+        \[q_{rm}\le q_0<q_f^1 \quad \implies \quad \text{\(\risk{(t)}\) is a \textbf{strictly increasing} function}\]
+        \[0\le q_0<q_{rm}     \quad \implies \quad \text{\(\risk{(t)}\) is a \textbf{non-monotonic} function}\]
+  \item Let's look at the limit of small \(\gamma\):
+        \[\lim_{\gamma\to0}q_f^1 = q_{rm} \quad\text{ and }\quad \lim_{\gamma\to0}q_f^2 = +\infty.\]
+        This is in accordance with the common intuition that a smaller learning rate leads to better learning
+        (even if talking about learning when there is no overlapping it's a little bit stretchy):
+        we can go closer to the minimum and the interval where there is convergence is larger.
+\end{enumerate}
+
+We finally verified all our result from the study of differential equations with numerical experiments.
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/example-eps0.pdf}
+    \caption{global picture}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/example-eps0-zoomed.pdf}
+    \caption{zoom}
+  \end{subfigure}
+  % Generated with: notebook epslion0
+  \caption{
+    example of a comparsion between differential equations and simulations, with \(k=4\) and \(p=8\).
+    The simulation and the analytic solutions matches only in the first part.
+    In Figure~(b) we zoom in the region of the analytical prediction. We can see
+    that the ODE solution converges to \(q_f^1\) and to to the theoreical risk minimum at \(q_{rm}\).
+  }
+  \label{fig:example-eps0}
+\end{figure}
+In Figure~\ref{fig:example-eps0} we show an example of comparsion between differential equations and simulations.
+The first thing that stands out is that the simulations actually learn the teacher.
+This happens because the learning is a stochastic process, and the noise introduce
+by the randomness of the SGD breaks the symmetry forced by the initial conditions.
+On the other hand, the differential equations are deterministic, and their structure
+is able to mantain the initial symmetry; the analytic solution gets stuck in the 
+\emph{second plateau}. The only dynamics the ODE are able to catch in this case is 
+the \emph{norm learning}: the weights of the student are changing their norm to adapt 
+to the teacher, but their directions instead is not varying.
+
+In the end, this section studied som initial conditions that do not bring out any kind of interesting learning.
+In any case, the study of this simple toy model was useful to better understand the behavior of the dynamics a this strange activation function.
+Finally, these particular initial conditions will be taken up in Chapter ....
+% todo: metti il ref al capitolo finale.
+
+\subsubsection{Overlapped intial condition}
+We now generalize the study to the case \(\varepsilon\neq0\).
+The initial conditions can be written as
+\[\begin{split}
+    \P &= \I_k,\\
+    \M{(0)} &= \frac{\varepsilon}{k}\J_{p,k},\\
+    \Q{(0)} &= \frac{\varepsilon^2}{k}\J_{p} + q_0(1-\varepsilon)^2\I_{p}.\\
+\end{split}\]
+We now show that \(\M\) and \(\Q\) stay in the same form through evolution, so we can write
+\[\begin{split}
+    \M{(t)} &= m{(t)} \J_{p,k} \\
+    \Q{(t)} &= s{(t)} \J_{p} + q{(t)}\I_{p} \\
+\end{split}\]
+and the problem is completely described by a system of three coupled differential equations.
+In order to prove this, it's sufficient the following identities
+\[
+    \I_d^n=\I_d, \quad \J_{d,f}^n = f^{n-1}\J_{d,f}, \quad \J_{d,f}\I_f = \J_{d,f}, \quad\text{and}\quad
+    \J_{d,f} \J_{g,f}^\top = f \J_{d,g}.
+\]
+They are a proof that the set \(\{\I,\J\}\) is closed under the operations that appear in differential equations.
+
+The full derivation for the differential equations of \(m{(t)}\), \(q{(t)}\) and \(s{(t)}\) is 
+omitted, since it's not particularly interesting. 
+% todo: se hai voglia mettilo in un appendice
+
+We avoided doing a careful study like the one in the previous section for the system of differential equations.
+These intial condition are not sufficently general for a complete study of the learning process:
+they still contain a simmetry that is preserved by the ODEs, but broken from the 
+stochasticity in the simulation. 
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/example-small-eps.pdf}
+    \caption{global picture}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/example-small-eps-zoomed.pdf}
+    \caption{zoom}
+  \end{subfigure}
+  % Generated with: notebook small-epsilon
+  \caption{
+    example of a comparsion between differential equations and simulations, with \(k=4\), \(p=8\) ans \(\varepsilon=0.01\).
+    The simulation and the analytic solutions matches only in the first part.
+    In Figure~(b) we zoom in the region of the analytical prediction.
+    As in the previous case the differential equations solution get stuck in a simmetry,
+    while the simulation learns completely. The ``drop from the plateau'' happens before 
+    that the ODEs solution reachs its final value. 
+  }
+  \label{fig:example-small-eps}
+\end{figure}
+
+In Figure~\ref{fig:example-small-eps} we show an example of comparisons between simulation
+and differential equation solution. The ODEs are now able to catch 2 different phase of 
+the learning: the norm learning and the \emph{linear learning}. In the analytical dynamic
+they are clearly separated: in the first part perfectly replicates what we saw in the previous section;
+in the second part linear learning occurs, that is, each hidden neuron learns the same thing,
+and the student's committee machine behaves as if \(p=1\).
+This is evident from the fact that \(\M\) is proportional to \(\J\):
+each hidden neuron is a copy of the others, they all learn the same thing.
+In Figure~\ref{fig:pictorial-symmetric-learning} we present a schematic view of the different phase of the learning,
+using symmetric initial conditions.
+\begin{figure}
+  \centering
+  \includegraphics[width=.7\textwidth]{figures/symmetric-ic-expected-plateaus.jpg}
+  
+  \caption{
+    pictorial representation of the different phase of learning for symmetric initial conditions.
+  }
+  \label{fig:pictorial-symmetric-learning}
+\end{figure}
+
+As already mentioned, simulations break this symmetry, and they do so before linear learning.
+To be able to see the second plateau even in simulations would require using a much larger value of \(d\),
+but this is not computationally feasible. 
+
+We have empirically observed that in typical situations the various stages of learning are not really distinct and occur simultaneously,
+so we decided to abandon symmetric intial conditions from here on in order to look for others that would suit us better.
+
+
+\subsection{Random Initial condition}

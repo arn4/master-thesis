@@ -1,0 +1,413 @@
+\chapter{High dimensional limit of committee machines}
+In this Chapter we introduce the core object of the entire work: \emph{soft committee machines}.
+We also define the dynamics that we are going to study, and rephrase the training in terms
+of more convinient variables. Using some well-known results in literature, we derive the 
+\emph{ordinary differential equations} describing the process, that will be the starting point 
+for all further analysis in the work.
+
+To conclude, we present some result obtained in the same setting, as an example of 
+outcome using this setting. %todo: check se lo faccio davvero poi!
+
+\section{The setting}
+The setting we are going to present was first introduced by Saad \& Solla \cite{saad1995line}
+back in 1995,
+and it is often named after them.
+In the recent years, this framework has been used as starting point in many different papers
+\cite{aubin2018committee, goldt2019dynamics,veiga2022phase}.
+
+We are going to do the same in this work; we present the exact same setting of the seminal paper \cite{saad1995line}, while the differences
+will apper in next chapthers. We will also briefly expose some more recent results \cite{goldt2019dynamics},
+that put some mathematical rigour in the derivation of the differential equations.
+
+\subsection{Online Gradient Descent on Soft Committee Machines}
+Let's consider a two-layer neural network, with the input layer of dimension \(d\),
+an hidden layer of arbitrary dimension and the output layer constituted by just 1 node.
+In addition, the weight between the hidden layer and the output layer are all fixed 
+to the same costant; the activation function \(\act(\cdot)\) is applied only in hidden layer nodes.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\textwidth]{example-image-duck}
+  \caption{ schematic view of a committee machine.}
+\end{figure}
+This is known in Statistical Physics literature as \emph{soft
+committee machine}. The name comes from a pictorial representaion where every hidden neuron can be seen 
+as a member of a committee that indipendently takes a ``decision'' based on the input;
+the final answer of the machine is then obtained by combining the output of the committee
+members in a single value. Moreover, the attribute \emph{soft} comes from the fact
+that the all the members (a.k.a hidden neurons) have the same weight.
+
+We aim to study the training of such model under some strong assumptions that will
+allow us to derive some analytical properties of the entire process.
+In particular, we assume the existence of a \emph{teacher} capable to give the output
+value at any given input. The teacher is a soft committee machine too, and it is defined 
+by a function \(f\colon \Real^d\to\Real\), where \(d\) is the dimension
+of the input; the dimension of the teacher's hidden layer is \(k\),
+while the matrix of weights \(\W^* \in \Real^{k\times d}\).
+The function takes the form
+\[
+  f{(\vec{x})} = \frac{1}{k}\sum_{r=1}^{k} \act{\left(\frac{\vec{w}^*_r \cdot \vec{x}}{\sqrt{d}}\right)}
+  \quad\text{where}\quad \vec{w}^*_r \coloneqq [\W^*]_r \in \Real^d. 
+\]
+We emphasize that the choice of weights for the second layer was made so that
+the output is the average of the values of the hidden neurons. This choice allows
+us to compare the output of networks with different hidden layer sizes.
+We maintain this convention for all soft committee machines considered in this work.
+
+The machine that are we going to train using the \emph{teacher} output is called \emph{student}.
+This particular choices is called \emph{teacher-student setting}, and is often used
+as toy-model to study properties of some more complicated problems. It is clear that 
+this is not a faithful representation of a real situation, since it is hardly credible 
+that the samples are generated from a model analogous to the one we want to study. Still,
+we use this assumption because, as we show later, it allows us to write convinient
+variables to monitor and study the learning.
+The student function of course has a similar structure to the theacher.
+The only differences are the size of the hidden layer, which is \(p\),
+and the weights, which will be  \(\W \in \Real^{d\times p}\). In addition, the weights are not constant
+throughout the learning process; we use the apex \(\nu\) to indicate the weights after \(\nu\) steps of learning.
+The function of the student is
+\[
+  \hat{f}^\nu{(\vec{x})} = \frac{1}{p}\sum_{j=1}^{p} \act{\left(\frac{\vec{w}^\nu_j \cdot \vec{x}}{\sqrt{d}}\right)}
+  \quad\text{where}\quad \vec{w}^\nu_j \coloneqq [\W^\nu]_j \in \Real^d. 
+\]
+
+We make one more assumption in our study: the distribution of the input sample is
+normal and indipendent on each component. This hypothesis is crucial in order to
+obtain equations that can be treated analytically.
+Using formulas, the samples \(\left(\vec{x}^\nu, y^\nu\right) \in \Real^{d\times1}\) 
+used to train the student are chosen as
+\[
+  \vec{x}^\nu \sim \gauss{(0,\I_d)} \quad\text{ and }\quad 
+  y^\nu = f{(\vec{x}^\nu) + \sqrt{\Delta}\xi^\nu}\quad\text{with } \xi^\nu \sim \gauss{(0,1)}.
+\]
+The value of \(\Delta\ge0\) regulates the noise we are adding to the teacher signal.
+The presence of a noise is intended to emulate the fact that in real situation the 
+data is note perfect, but they are subject to disturbances of different kinds.
+In general, the presence of noise makes the task harder.
+
+The most known and used methods for the neural networks are the many different 
+versions of the \emph{gradient descent}. Usually in supervised learning situations,
+there is a finite dataset where every sample is used in many different learning
+steps (possibly all). This reflects the fact that the amount of information accessible
+to train the network is finite, and it is unrealistic to assume otherwise.
+We are going to use instead what is called the \emph{online gradient descent}
+(also known as \emph{one-pass gradient descent}); at each learning step one new sample
+is generated from the the assumed distribution, used only once and then discarded.
+Clearly this is not a thing that would happen in a real situation, but, in order 
+to write deterministic equations that describe the process, we need the indipedence
+of different learning steps.
+
+Given all the consideration we did and fixing the \emph{learning rate} at \(\gamma>0\),
+the update rule of the student weights is
+\begin{equation} \label{eq:update_rule_weights}
+  \w^{\nu+1}_j = \w^{\nu}_j - \gamma \nabla_{\w_j}\left(\frac{1}{2}\left(y^\nu-\hat{f}^{\nu-1}{\left(\vec{x}^\nu\right)}\right)^2\right).
+\end{equation}
+We know that, in order to get the better learning possible, the learning rate should
+be choosen so that it decreases as the training progresses, but
+we stress out again that we are trying to set up an experimental setting and not 
+to solve a real world problem. We will come back on this in next chapters.
+
+The Equation \eqref{eq:update_rule_weights} is called \emph{update rule for the weights},
+and it essentialy define a discrete stochastic process. %todo: maybe expand this
+
+The last thing we have to specify for the gradient descent is the loss function \(\loss\).
+The choice we did is the \emph{mean squared error}
+\[
+  \loss{\left(y^\nu,\hat{f}^{\nu-1}{\left(\vec{x}^\nu\right)}\right)} = \frac{1}{2}\left(y^\nu-\hat{f}^{\nu-1}{\left(\vec{x}^\nu\right)}\right)^2.
+\]
+The final goal of the training is to minimize the \emph{theoretical risk}
+(or \emph{population error}), defined as
+\begin{equation} \label{eq:theoretical_risk_definition}
+  \risk^{\nu} = \E_{\vec{x}\sim\gauss{(0,\I_d)}}{
+  \left[\loss{\left(f{\left(\vec{x}\right)},\hat{f}^\nu{\left(\vec{x}\right)}\right)}\right]}=
+  \frac{1}{2}\E_{\vec{x}\sim\gauss{(0,\I_d)}}{\left[\left(f{\left(\vec{x}\right)}-\hat{f}^{\nu}{\left(\vec{x}\right)}\right)^2\right]}.
+\end{equation}
+We have access to this quantity just because we are working in the teacher-student setting.
+In real word, one can only monitor the learning using the \emph{empirical risk}, an estimation
+of the theoretical one given by the known samples.
+This is nothing more than another feature of our artificial setup,
+which simply allows us to have complete control of the training.
+We emphasize the fact that theoretical risk is not used for the learning step
+(it is never the argument of the gradient), but only for monitoring.
+
+
+
+
+
+\subsection{Local Fields and Macroscopic variables}
+Looking at the Equation \eqref{eq:theoretical_risk_definition} it's easy to realize
+that the risk depends only on the value of the weights, both of the student and of the
+teacher. In particular, the weights fully describe the status of a committee machine.
+Along the lines of what is done in statistical physics, we would like to define \emph{macroscopic variables}
+that do not contain all the information about how the neural network is constructed,
+but still be descriptive of its state. In particular, we are interested in expressing
+the risk only in function of these variables.
+
+We start the derivation of the macroscopic varibles by defining the \emph{local fields}
+\[
+  \vec{\lf}^{\nu} = \frac{\W^{\nu}\vec{x}}{\sqrt{{d}}} \quad\text{and}\quad
+  \vec{\lf}^{*\nu} = \frac{\W^{*}\vec{x}}{\sqrt{{d}}},
+\]
+where the apices \({\nu+1}\) on \(\vec{x}\) are omitted since they don't matter,
+as shown hereafter. These are just the values of the hidden layers, before applying 
+the activation function. They are interesting because the all setting can be rephrased
+in terms of the local fields, forgetting the existence of \(\vec{x}^\nu\).
+The functions \(f\), \(\hat{f}\) and \(\risk\) depend only on the local fields and not explicitly
+on \(\vec{x}^\nu\), therefore it's sufficient to sample and track local fields in order to monitor the learning.
+As we already said many times, this is possible just because we are in the artificial
+teacher-student setting, and the final goal is not the learning itself, but an analytical
+understanding of it.
+
+The \(\vec{\lf}\)s are linear combinations of normal random variables, so they are
+normal too. We can then extract some sufficient statics to characterize them.\\
+Let's start from the mean, which is particularly straightforward since the \(\vec{x}\)s
+are all 0-mean
+\[
+  \E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[\lf_j^\nu\right]} = \E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[\lf_r^{*\nu}\right]} = 0
+  \qquad \forall j\in[p], r\in[k].
+\]
+It follows that the only quantity neede to characterize the local fields is 
+the covariance matrix. 
+Let's start between the student-strudent covariance
+\[\begin{split}
+  \E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[\lf_j^\nu\lf_l^\nu\right]} &= 
+  \E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[\frac1d w_{ja}x_a w_{lb}x_b\right]} =
+  \frac1dw_{ja}w_{lb}\E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[x_ax_b\right]}\\ &= 
+  \frac1dw_{ja}w_{lb} \delta_{ab} = \frac1dw_{ja}w_{la} = \frac{\left[\W^\nu\W^{\nu\top}\right]_{jl}}{d},\\
+\end{split}\]
+The other terms are completelly analogous
+\[
+  \E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[\lf_j^\nu\lf_r^{*}\right]} = \frac{\left[\W^\nu\W^{*\top}\right]_{jr}}{d}
+  \quad\text{and}\quad
+  \E_{{\vec{x}\sim\gauss{(0,\I_d)}}}{\left[\lf_r^*\lf_t^{*}\right]} = \frac{\left[\W^*\W^{*\top}\right]_{rt}}{d}.
+\]
+
+The covariance matrices of local fields are called are a perfect candidate to be
+the macroscopic variables we are looking for. Therefore, we give a an explicit 
+definition of what are known as the \emph{order parameters}
+\begin{equation} \label{eq:order_parameters_definiton}
+  \Q^\nu \coloneqq \frac{\W^\nu \W^{\nu\top}}{d}, \qquad
+  \M^\nu \coloneqq \frac{\W^\nu \W^{*\top}}{d} \quad\text{and}\quad
+  \P \coloneqq \frac{\W^* \W^{*\top}}{d}.
+\end{equation}
+Let us look more closely at these newly defined matrices. \(\Q\) is a square symmetric
+matrix of dimension \(p\times p\), where each entry is the overlap between the two
+weights of the student. Likewise, \(\P\) is square symmetric, but of dimension \(k\times k\);
+it's the auto-overlap of the teacher. Moreover, \(\P\) does not change throughout
+the process since the teacher weights are not update. Instead, \(\M\) is a \(p\times k\)
+matrix, where each entry is the overlap between a neuron of the teacher and a neuron
+of the student. Lastly, \(M\) has more rows than column, the student perfectly 
+learns the teacher when has just one non-zero entry per column, each one on a different row.
+
+All covariances can be assembled into a single matrix
+\[
+  \vec{\Omega}^\nu \coloneqq \left(\begin{array}{cc}
+    \Q^\nu & \M^\nu \\
+    % \hline
+    \M^{\nu\top} & \P
+  \end{array}\right).
+\]
+The matrix \(\vec{\Omega}\in\Real^{(p+k)\times(p+k)}\) is called \emph{overlap matrix} and it fully
+describes the learning since can be used as covariance matrix for sampling the local fields.
+In fact, the local fields at step \(\nu+1\) of the learning can be written as random variables with distribution
+\[\vec{\lf}^{\nu+1},\vec{\lf}^{*\nu+1} \sim \gauss{(0,\vec{\Omega}^\nu)}.\]
+
+To conclude this Subsection, we redefine the teacher and the student function
+in terms of just the local fields
+\[
+  f{(\vec{\lf^*})} = \frac{1}{k}\sum_{r=1}^{k} \act{\left(\lf^*_r\right)}\quad\text{and}\quad
+  \hat{f}{(\vec{\lf^{\nu}})} = \frac{1}{p}\sum_{j=1}^{p} \act{\left(\lf_j\right)}.
+\]
+These two lead also to an experssion of theoretical risk in terms of overlap matrix only, 
+by taking an expected value on local fields
+\begin{equation}\label{eq:riskfunctionalOmega}
+  \risk{(\vec{\Omega})} = \frac12\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega})}}}
+                              {\left[\left(f{(\vec{\lf}^*)} - f{(\vec{\lf})}\right)^2\right]}
+  \quad\text{and}\quad\risk^\nu \equiv \risk{\left(\vec{\Omega}^\nu\right)}.
+\end{equation}
+We have explicitly expressed the quantity of our interest in terms of the macroscopic 
+variables only; the next step is to eliminate the need for weights to describe the learning process.
+
+
+
+
+
+\subsection{Update rule for overlap matrix} \label{subsec:updateruleforoverlap}
+In the previous subsection, we introduced the order parameters and we showed that 
+they are sufficient to describe the status of the learning. We would now like
+to write the evolution as a function of only the order parameters,
+so we can treat them as the only dynamic quantity of the system.
+The goal is therefore to have an update rule for \(\vec{\Omega}\).
+First of all, we introduce the \emph{displacement}
+\[
+  \dsp^\nu \coloneqq f{(\vec{\lf}^*)} - \hat{f}{(\vec{\lf})} + \sqrt{\Delta} \xi^\nu,
+\]
+as a quantity that just lightens the notation.
+Given this definition, the loss function evaluated at \((\vec{x}^\nu,y^\nu)\)
+can be simply written as
+\[\loss{\left(y^\nu,\hat{f}^{\nu-1}{\left(\vec{x}^\nu\right)}\right)} = \frac{\left(\dsp^\nu\right)^2}{2}.\]
+Consequently, the expression of the population risk can be written with this notation As
+\begin{equation}\label{eq:risk_lambda_expval}
+  \risk{(\vec{\Omega})} = \frac12\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega})}}}
+                              {\left[\left(\dsp^\nu\right)^2\right]}.
+\end{equation}
+
+Second step is to explicitly compute the gradient of the loos respect to the weights
+\[
+  \nabla_{\w_j}\left(\frac{\left(\dsp^\nu\right)^2}{2}\right) =
+    -\dsp^\nu \nabla_{\w_j}\left(\hat{f}{\left(\vec{\lf_j}\right)}\right) =
+    -\dsp^\nu \frac{\act'{\left(\vec{\lf}^\nu_j\right)}}{p}\frac{\vec{x}^\nu}{\sqrt{d}} =
+    -\frac{1}{p}\dsp^\nu_j \frac{\vec{x}^\nu}{\sqrt{d}},
+\]
+where in the last step we used another notation shorthand
+\[
+  \dsp^\nu_j \coloneqq \act'{(\lambda_j^\nu)} \dsp^\nu.
+\]
+We stress out the fact that all the \(\dsp\) and \(\dsp^\nu\) are in the end function of only
+the local fields.
+
+Indeed, it follows from Equation \eqref{eq:update_rule_weights} that the update rule
+for the weights still depends on the sample \(\vec{x}^\nu\)
+\[
+  \w^{\nu+1}_j = \w^{\nu}_j + \frac{\gamma}{p} \dsp^\nu_j \frac{\vec{x}^\nu}{\sqrt{d}}.
+\]
+
+We can now use this to derive the update rules for the order parameters.
+Let's start from \(\M\)
+\begin{equation} \label{eq:update_rule_M}
+  \left[\M^{\nu+1}\right]_{jr} = \frac{\w^{\nu+1}_j \w^{*\top}_r}{d}
+    = \frac{\w^{\nu}_j \w^{*\top}_r}{d} + \frac{\gamma}{dp} \dsp^\nu_j \frac{\vec{x}^\nu}{\sqrt{d}}\w^{*\top}_r
+    = \left[\M^{\nu}\right]_{jr} + \frac{\gamma}{dp} \dsp^\nu_j \lf_r^*,
+\end{equation}
+that is not explicitly dependent in \(\vec{x}\) or \(\vec{w}\). The computation
+for the \(\Q\) update rule is a little bit more complex
+\begin{equation}\label{eq:update_rule_Q}\begin{split}
+  \left[\Q^{\nu+1}\right]_{jl} &= \frac{\w^{\nu+1}_j \w^{\nu+1\top}_l}{d}
+    = \frac{\w^{\nu}_j \w^{\nu\top}_l}{d} + \frac{\gamma}{pd} \dsp^\nu_j \frac{\vec{x}^\nu}{\sqrt{d}}\w_l^\nu
+      + \frac{\gamma}{pd} \dsp^\nu_l \frac{\vec{x}^\nu}{\sqrt{d}}\w_j^\nu 
+      + \frac{\gamma^2}{p^2d} \dsp^\nu_j\dsp^\nu_l \frac{\left(\vec{x}^\nu\right)^2}{d}\\
+    &= \left[\Q^{\nu}\right]_{jl} + \frac{\gamma}{pd}\left(\dsp^\nu_j \lf_l^\nu + \dsp^\nu_l \lf_j^\nu\right)
+    + \frac{\gamma^2}{p^2d} \dsp^\nu_j\dsp^\nu_l \frac{\left(\vec{x}^\nu\right)^2}{d}.
+\end{split}\end{equation}
+We notice that the update rule still depends explicitly on \(\vec{x}^\nu\).
+Apperantly, this dependence prevents us from being able to write an update rule
+that depends only on order parameters and local fields, but, as we show now, the 
+high dimensional is of help.
+In fact, the factor \(\frac{\left(\vec{x}^\nu\right)^2}{d}\) goes to 1 and 
+fluctuations can be negleted, in the limit of large \(d\)\footnote{
+  \(\left(\vec{x}^\nu\right)^2\) is distributed as a Chi-square with \(d\) degrees
+  of freedom, so for large \(d\) we have 
+  \(\frac{\left(\vec{x}^\nu\right)^2}{d} \sim \gauss{\left(1,\frac1d\right)}\).
+
+  Although it is a passage often found in the literature,
+  this statement is not obvious and especially not rigorous.
+  For simplicity's sake, we report as it is.
+  In the next section we will give a formal justification on how to go from update rule
+  to differential equations; the theorem we present also includes this hitherto unclear step.
+}. Consequently, as of now we will no longer write this term, assuming it has been replaced by 1.
+
+In conclusion, the learning can be described a \emph{discrete stochastich process}
+on the overlap matrix
+\[\left\{\vec{\Omega}^\nu \in \Real^{(p+k)\times(p+k)}|\nu\in\Natural\right\},\]
+and the risk it's just a function of \(\vec{\Omega}\), as shown in Equation~\eqref{eq:riskfunctionalOmega}.
+We succeded in tranforming our artificial enviroment built to study the learning of a neural network,
+in a simpler stochastic process of some macroscopic variables, that do not fully characterize
+the network, but still give enought information for further analysis.
+
+
+
+
+
+\subsection{High dimensional limit}
+In this subsection we proceed in expressing the most important result of Saad\&Solla\cite{saad1995line}:
+the derivation of \emph{ordinary differential equations} whose solution can be used
+to approximate the stochastic process of the order parameters. 
+
+We first presnt aderivation \emph{à la physicist}, that gives a great intuation of is going on,
+but it lacks of mathematical rigour. After that, we briefly present some recent results that
+formalize the idea.
+We stick in the Saad-Solla regime, where there is no dependence on \(d\) of \(p\) and \(\gamma\).
+
+The thing to point out is how to pass from a discrete process, to a time-continuous equation.
+In other words, we need a mapping from the step number \(\nu\) to a time \(t\) such that
+the discretization becomes becomes finer and finer the closer we approach the limit of other dimension.
+The update rules for the macroscopic variables can be manipulated to obtain
+\begin{align}
+  \frac{\left[\M^{\nu+1}\right]_{jr} - \left[\M^{\nu}\right]_{jr}}{\frac1d} &= \frac{\gamma}{p} \dsp^\nu_j \lf_r^*\\
+  \frac{\left[\Q^{\nu+1}\right]_{jl} - \left[\Q^{\nu}\right]_{jl}}{\frac1d} &=
+    \frac{\gamma}{p}\left(\dsp^\nu_j \lf_l^\nu + \dsp^\nu_l \lf_j^\nu\right) + \frac{\gamma^2}{p^2} \dsp^\nu_j\dsp^\nu_l.
+\end{align}
+If we force the left-hand side to become a derivative in the limit, the natural choice at this point is the time scaling is
+\[t=\frac{\nu}{d} \quad\text{and}\quad \delta{t} =\frac1d.\]
+We now have to take the limit for \(d\to\infty\) (or analogously \(\delta t \to 0\))
+As already said, the LHSs of the equations above turn into a countinuos time derivative.
+The tricky part is the right-hand side: the increase of dimension can be seen as 
+an increase of i.i.d. random variables on which average on. This picture is somehow true
+because the \(\vec{x}\) only appeares throught local fields, where is first scalar-multiplied
+by a weights vector, and then divided by a scaling \(\sqrt{d}\). 
+% \todo{Questa parte é spiegata con i piedi!}
+We can then invoke a heuristic version of the central limit theorem,
+and state that the random variables appearing at the RHS converge in the limit
+to their expectation value. All these claims turn out to be true, so we can finally write
+\begin{subequations}\label{eq:genericODE}\begin{align}
+  \label{eq:genericODEforM}
+  \dod{\left[\M{\left(t\right)}\right]_{jr}}{t} &=\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega}{(t)})}}}{\left[\frac{\gamma}{p} \dsp_j \lf_r^*\right]} \eqqcolon \Psi_{jr}{\left(\vec{\Omega}\right)}\\
+  \label{eq:genericODEforQ}
+  \dod{\left[\Q{\left(t\right)}\right]_{jl}}{t} &=\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega}{(t)})}}}{\left[\frac{\gamma}{p}\left(\dsp_j \lf_l + \dsp_l \lf_j\right) + \frac{\gamma^2}{p^2} \dsp_j\dsp_l\right]} \eqqcolon \Phi_{jl}{\left(\vec{\Omega}\right)},
+\end{align}\end{subequations}
+where we have also defined the two matrix function \(\vec{\Psi}\colon\Real^{(p+k)\times(p+k)} \to\Real^{p\times k}\) and 
+\(\vec{\Phi}\colon\Real^{(p+k)\times(p+k)} \to\Real^{p\times p}\).
+They are well-defined because the local fields are 0-mean gaussian, so any statics
+can only depends on their covariance matrices.
+
+In short, the discrete stochastic process has turned into a continuous deterministic evolution.
+For some choices of the activation function, the expectations can be computed analytically and
+the so derived system of ordinary differential equations can be studied in order
+to understand the learning process.
+
+\subsubsection{Formal derivation}
+In this part we briefly present an important result by Goldt et al.\cite{goldt2019dynamics}
+that achieves to give some mathematical rigour to the derivation of the differential
+equations. It also provides a bound on the maximum expected error between the process
+and the equations' solution. We are not going to report the full proof, but just 
+present the main theorem, explaining clearly all the hypotheses and regimes in which
+it is applicable.
+
+The original Theorem is valid for any kind of committee machine, but we only present
+an adaptation to the \emph{soft} case, to be consistent with the notation
+we introduced in the previous sections.
+\begin{theorem}\label{thm:process_to_ode_goldt}
+  Let's suppose that
+  \begin{enumerate}
+    \item The function \(\sigma\) is bounded and its derivatives up to the second order exist and are bounded, too;
+    \item The initial macroscopic state \(\vec{\Omega^0}\) is deterministic and bounded by a constant;
+    \item The constants \(\Delta, p, k\) and \(\gamma\) are all finite.
+  \end{enumerate}
+  Let \(T>0\), then the overlap matrix satisfies 
+  \begin{equation}
+    \max_{0\le\nu\le Td} \E\left[
+      \left\|\vec{\Omega}^\nu - \tilde{\vec{\Omega}}\left(\frac{\nu}{d}\right)\right\|
+    \right]
+    \le
+    \frac{C{(T)}}{\sqrt{d}},
+  \end{equation}
+  where \(\tilde{\vec{\Omega}}\) it's the unique solution of the Equations \eqref{eq:genericODE},
+  with the initial condition \(\tilde{\vec{\Omega}}{(0)} = \vec{\Omega}^0\). 
+\end{theorem}
+The important part is that the costant \(C{(T)}\) does not depend on \(T\), thus 
+the theorem prove a convergence of the ODEs solution to the stochastic process.
+The proof can be found in the original paper\cite{goldt2019dynamics};
+it is strongly based on some tecniques introduced by Wang in some previous works
+\cite{wang2017scaling,wang2019solvable}.
+
+Thanks to the Theorem, we have a formal proof that the well-known Equations~\eqref{eq:genericODE}
+can be used to analize the learning of a committee machine. From this point,
+we assume the \emph{differential equations} to be descriptive of our system,
+and we will use them to derive different kinds of results.
+
+%todo: forse bisognerebbe dire altro, ma per ora mi va bene cosí.
+
+
+
+\section{Example: Phase Diagram of Soft Committee Machine}
+In this section we are going to present the results obtained by Veiga et al.\cite{veiga2022phase},
+as an example of application of all the tools introduced in the previous Section.

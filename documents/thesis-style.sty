@@ -1,0 +1,96 @@
+% Generic
+\RequirePackage[english]{babel}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{caption, subcaption}
+
+% Math packages
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+\RequirePackage{dsfont}
+\RequirePackage{commath}
+
+% Fonts
+% \RequirePackage{libertine}
+\RequirePackage[libertine,smallerops]{newtxmath}
+
+% Bibliography
+\RequirePackage[backend=bibtex,style=alphabetic]{biblatex}
+\addbibresource{bibliography.bib}
+
+% Math
+\theoremstyle{plain}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{Definition}{Definition}
+\newtheorem{Example}{Example}
+
+\renewcommand{\vec}[1]{\bm{#1}}
+
+%% Shortcuts
+% Natural Numbers
+\def\Natural{\mathbb{N}}
+% Real Numbers
+\def\Real{\mathbb{R}}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Prob}{\mathbb{P}}
+\DeclareMathOperator{\TrOperator}{Tr}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\erf}{erf}
+
+% Identity matrix
+\def\I{\bm{I}}
+% all one matrix
+\def\J{\bm{J}}
+% Antidiagonal Identity
+\def\K{\bm{K}}
+% 1-Block diagonal
+\def\G{\bm{G}}
+% 1-block opposite diagonal
+\def\H{\bm{H}}
+
+% Gaussian distribution
+\def\gauss{\mathcal{N}}
+
+% Risk
+\def\risk{{\mathcal{R}}}
+% Loss function
+\def\loss{\mathcal{L}}
+% Weight vector
+\def\w{\bm{w}}
+% Weight matrix
+\def\W{\bm{W}}
+% Activation function
+\def\act{\sigma}
+% Local Field
+\def\lf{\lambda}
+% Displacement
+\def\dsp{\mathcal{E}}
+
+% Student-student overlap matrix
+\def\Q{\bm{Q}}
+% Student-teacher overlap matrix
+\def\M{\bm{M}}
+% Teacher-teacher overlap matrix
+\def\P{\bm{P}}
+% Order parameters matrix
+\def\Om{\bm{\Omega}}
+
+% Shorthand for the expectation over the local fields
+\def\Explf{\E_{ \bm{\lf},\bm{\lf}^* \sim \gauss(\bm{\lf},\bm{\lf}^* |\bm{0},\Om)}}
+% Shorthand for the expectation over the local fields
+\def\Explfns{\E_{ \bm{\lf},\bm{\lf}^* \sim \gauss(\bm{\lf},\bm{\lf}^* |\bm{0},\Om), \xi \sim \gauss{(0,1)}}}
+
+\newcommand{\Tr}[1]{\TrOperator{\left[#1\right]}}
+\newcommand{\BigO}[1]{O{\left(#1\right)}}
+\newcommand{\smallo}[1]{o{\left(#1\right)}}
