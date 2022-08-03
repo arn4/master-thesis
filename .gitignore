@@ -1,7 +1,3 @@
-## Custom part
-
-
-
 ## Generated part (with some minor modifications)
 # Created by https://www.toptal.com/developers/gitignore/api/latex,python,macos,jupyternotebooks,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=latex,python,macos,jupyternotebooks,visualstudiocode
@@ -531,3 +527,8 @@ cython_debug/
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/latex,python,macos,jupyternotebooks,visualstudiocode
+
+# Custom part
+!documents/figures/*.pdf
+!documents/figures/*.png
+!documents/figures/*.jpg

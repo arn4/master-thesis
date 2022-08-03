@@ -114,9 +114,64 @@ We are using an unusual choice of activation function, but, as presented later,
 we will be still able to recover known results in literature, and derive some original
 ones.
 
+\subsection{Special case: Phase Retrivial}\label{subsec:phase_retrivial}
+In this subsection we briefily present the \emph{phase retrivial} model,
+since it is a special case of our framework and consequently we will use it often in the further work.
 
+Suppose we want to learn a model defined by 
+a single vector \(\vec{w}^* \in \Real^d\) and the function represented by this model is 
+\[
+  f\colon \Real^d \to \Real^+ \qquad f{(\vec{x})} = \left(\frac{\vec{w}^*\cdot\vec{x}}{\sqrt{d}}\right)^2.
+\]
+In our setting, phase retrivial corresponds to the case \(k=1\). The task is noturioisly
+harder than the counterpart without the square, since there is no access to the sign of 
+the scalar product\footnote{
+  The name \emph{phase retrivial} comes from the complex version of this problem (\(f\colon \Complex^d \to \Real^+\)),
+  since the hard part of the task is to determine the phases of the vector \(\vec{w}\in\Complex^d\).
+}.
 
+The classic definition of phase retrivial can be thought of as a teacher-student setting, where we want to learn
+a single vector \(\vec{w}\). Similar to before, the student function 
+\[
+  \hat{f}\colon \Real^d \to \Real^+ \qquad \hat{f}{(\vec{x})} = \left(\frac{\vec{w}\cdot\vec{x}}{\sqrt{d}}\right)^2.
+\]
+corresponds to the fixing \(p=1\) in our setting. 
 
+Many different algoritms can be used to solve this task, such as 
+\emph{full-batch SGD}\cite{mignacco2021stochasticity},
+\emph{spectral methods}\cite{mondelli2018fundamental} and 
+\emph{approximate message passing}\cite{maillard2020phase}.
+As done in the rest of this work, we will focus on the online stochastic gradient descent;
+it has been done in the past\cite{sarao2020complex,sarao2020optimization},
+but with different prespectives or goals. 
+We focus on the study of timings in the high dimensional limit dynamics,
+using the square loss.
+
+\subsubsection{Differential equations}
+For completeness, we can specialize the Equations~\eqref{eq:quadraticODEs} to the phase retrivial.
+This will be helpfull in further analysises.
+
+Let's start by observing that all \(\Q\), \(\M\) and \(\P\) are \(1\times 1\) matrices,
+so we can substitute them with scalar values
+\[\rho \coloneqq \P, \qquad m{(t)}\coloneqq\M{(t)}\quad\text{and}\quad q{(t)}\coloneqq\Q{(t)}.\]
+We are now ready to substitute this definitions, together with \(p,k = 1\), into the differential
+equations above to get
+\begin{subequations}\label{eq:phase_retrivial}\begin{align}
+  \dod{m{(t)}}{t} &= 6 \gamma m{(t)} \left(\rho-q{(t)}\right), \\
+  \begin{split}
+    \dod{q{(t)}}{t} &= 4 \gamma\left(
+        \rho q{(t)} + 2m^2{(t)} - 3q^2{(t)}
+    \right) +\\
+    &\quad+4 \gamma^2 \left[
+      3\rho^2q{(t)} + 12\rho m^2{(t)} -6\rho q^2{(t)} -24m^2{(t)}q{(t)} + 15q^3{(t)} + \Delta q{(t)}\right].
+  \end{split}
+\end{align}\end{subequations}
+This system of two coupled differential equations fully describe the learning in the case of phase retrivial.
+
+To conclude, here is also the risk expresson for the phase retrivial
+\begin{equation}
+  \risk{(q,m,\rho)} = \frac12\left[3\rho^2-2\rho q - 4m^2 + 3q^2\right].
+\end{equation}
 
 \section{Numerical Experiments setting}
 In this section we describe how we conducted the numerical experiments for verifing 
@@ -178,11 +233,11 @@ so it is much more important to have accurate numerical results with which to ma
 rather than to be consistent with a real situation.
 \begin{figure}
   \centering
-  \begin{subfigure}{0.45\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \includegraphics[width=1.\textwidth]{example-image-duck}
     \caption{samples estimation}
   \end{subfigure}
-  \begin{subfigure}{0.45\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \includegraphics[width=1.\textwidth]{example-image-duck}
     \caption{formula estimation}
   \end{subfigure}
@@ -271,7 +326,8 @@ this should ensure the neglibility condition respect the error of the Theorem.
 % Nella mia testa metto un esperimento numerico a caso, giusto per far vedere come analizzeró
 % i sucessivi esperimenti. Tipo metto il classico digramma del risk, faccio vedere 
 % che piú o meno c'é un matching tra ODE e sim, faccio notare che la scala è logaritmica,
-% ecc...
+% spiegare che spesso dobbiamo mediare per avere qualcosa di sensato.
+% Devo assolutamente dire anche che spesso guardo |m| e non m perché c'é la simmetria.
 
 \section{Initial conditions}
 In this Section we present some condiderations on the initialization of the student
@@ -447,11 +503,11 @@ of how evolution works in this simple situation.
 We finally verified all our result from the study of differential equations with numerical experiments.
 \begin{figure}
   \centering
-  \begin{subfigure}{0.45\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \includegraphics[width=1.\textwidth]{figures/example-eps0.pdf}
     \caption{global picture}
   \end{subfigure}
-  \begin{subfigure}{0.45\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \includegraphics[width=1.\textwidth]{figures/example-eps0-zoomed.pdf}
     \caption{zoom}
   \end{subfigure}
@@ -510,11 +566,11 @@ they still contain a simmetry that is preserved by the ODEs, but broken from the
 stochasticity in the simulation. 
 \begin{figure}
   \centering
-  \begin{subfigure}{0.45\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \includegraphics[width=1.\textwidth]{figures/example-small-eps.pdf}
     \caption{global picture}
   \end{subfigure}
-  \begin{subfigure}{0.45\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \includegraphics[width=1.\textwidth]{figures/example-small-eps-zoomed.pdf}
     \caption{zoom}
   \end{subfigure}
@@ -537,7 +593,7 @@ they are clearly separated: in the first part perfectly replicates what we saw i
 in the second part linear learning occurs, that is, each hidden neuron learns the same thing,
 and the student's committee machine behaves as if \(p=1\).
 This is evident from the fact that \(\M\) is proportional to \(\J\):
-each hidden neuron is a copy of the others, they all learn the same thing.
+each hidden neuron is a copy of the others, they all learn the same weights.
 In Figure~\ref{fig:pictorial-symmetric-learning} we present a schematic view of the different phase of the learning,
 using symmetric initial conditions.
 \begin{figure}
@@ -555,7 +611,210 @@ To be able to see the second plateau even in simulations would require using a m
 but this is not computationally feasible. 
 
 We have empirically observed that in typical situations the various stages of learning are not really distinct and occur simultaneously,
-so we decided to abandon symmetric intial conditions from here on in order to look for others that would suit us better.
+so we decided to abandon symmetric intial conditions from here on,
+in order to look for others that would suit us better.
 
 
 \subsection{Random Initial condition}
+In the last section, we have essentially come to the conclusion that
+choosing initial conditions with some structure is convenient
+because it simplifies the differential equations,
+but it also introduces artificial symmetries that prevent the study of the complete problem.
+We must therefore explore new possibilities to find ways to analyze the process of learning.
+
+We decide to try some random initial conditions, to be sure that no symmetry is still present,
+but at the same time use the high-dimensional limit to have statistically control on the 
+order parameters. Moreover, we focus on the \emph{phase retrivial} case at first, 
+and then generalize once good initial conditions are found.
+Accordingly, we will use the notation and the equations introduced in Section~\ref{subsec:phase_retrivial}.
+
+We start our derivation by choosing both \(\vec{w}\) and \(\vec{w}^*\) to be independent normal
+vectors with unit variance
+\[
+  w_{i}, w^*_{i} \sim \gauss{(0,1)}\quad\text{and all indipendent.}
+\]
+It follows that the order parameters are random variable too, distributed as
+\emph{chi-squared} distribution
+\[
+  q(0),\rho \sim \frac{\chi^2_d}{d}
+\]
+and consequently 
+\[
+  \E\left[q(0)\right] = \E\left[\rho\right] = 1 \quad\text{and}\quad
+  \Var\left[q(0)\right] = \Var\left[\rho\right] = \frac{2}{d}.
+\]
+The distribution of \(m{(0)}\) is not as simple as the previous two, but can be derived exactly.
+In our analysis it's sufficient to have the expected value and the variance, then use the 
+\emph{central limit theorem} since we are interested in the high-dimensional limit.
+Denoting \(X,Y\) two indipendent unitary normal variables, we can compute
+\[\begin{split}
+  \E\left[m{(0)}\right] =& \E\left[\frac{\sum_{i=1}^d w_iw^*_i}{d}\right] = \E\left[XY\right] = 0, \\
+  \Var\left[m{(0)}\right] =& \Var\left[\frac{\sum_{i=1}^d w_iw^*_i}{d}\right]
+    = \frac{1}{d^2}\sum_{i=1}^d \Var\left[XY\right] = \frac{1}{d}.
+\end{split}\]
+What emerges from these initial conditions is that, in the high-dimensional limit,
+\(\vec{w}\) and \(\vec{w}^*\) are approximately two orthogonal vectors on the hemisphere of radius \(\sqrt{d}\).
+
+The natural thing to do now is to replace these combined initial conditions with Equations~\eqref{eq:phase_retrivial},
+with the aim of deriving an approximate dynamics for the first part of learning
+and to derive from it an analytical approximation of the learning time.
+The problem is that is not clear how to do the approximation: an experiment, reported in Figure~\ref{fig:unconstraned-random-example},
+shows that \(q\) is varying considerably even before the learning starts.
+This makes impossible all low order expansions of differential equations and,
+ultimately, an analytical analysis of the phenomenon.
+Nevertheless, in Figure~\ref{fig:unconstraned-random-m-exit-time} we show how an analysis of the simulations seems to suggest
+a logarithmic trend in learning time as size changes. It's is a crude numerical estimation of the behavior of the committee machine,
+but it gives us a first idea of what is going on. To conclude, the behaviour emerged from this analysis
+is in accordance with what we may expect from past literature\cite{arous2021online}.
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/unconstraned-phase-retrivial-risk.pdf}
+    \caption{risk \(\mathcal{R}\)}
+  \end{subfigure}
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/unconstraned-phase-retrivial-qm.pdf}
+    \caption{\(q\) and \(|m|\)}
+  \end{subfigure}
+  % Generated with: random-orthonormal-k=1
+  \caption{
+    example of simulation with random intial condition and \(d=10000\).\\
+    In Figure~(a) we can see many different possible trajectories (red) and their average (blue).
+    In Figure~(b) we plot the average of \(q\) and \(|m|\) over different trajectories.
+    It's clear that the order parameter \(q\) is evolving considerably before the drop from initial
+    plateau, so this initial condition are not suitable for our goal.
+  }
+  \label{fig:unconstraned-random-example}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/unconstraned-phase-retrivial-exittimes.pdf}
+  % Generated with: random-orthonormal-k=1
+  \caption{
+    plot of the \(|m|\) simulated exit time, and the corresponding best fit curves.\\
+    The exit time is estimated by mesuring the time when the function \(m(t)\), averaged over many trajectories,
+    crosses the threshold value \(0.1\).
+    Looking at the figure, it is possible to convince oneself that 
+    the logarithmic best fit better traces the behavior that emerged from the simulations. 
+  }
+  \label{fig:unconstraned-random-m-exit-time} 
+\end{figure}
+\FloatBarrier %todo: vuoi davvero questa barriera?
+
+In order to make the expansion possible, we have to set \(q(0)\) to be close to 0;
+in other words the norm of \(\vec{w}\) should be nearly null.
+Obviously, we can't start exacly with \(\vec{w}=\vec{0}\), beacuse it's a fixed point
+of the differential equations dynamics.
+Our goal can be achivied by intializing the student with \(w_{i}\sim\gauss(0,\sigma^2)\),
+with \(\sigma^2\ll1\).
+Recomputing the expectd value above that are affected by this scaling of \(\vec{w}\), we get 
+\[
+  \E\left[q(0)\right] = \sigma^2\,, \quad
+  \Var\left[q(0)\right] = \frac{2\sigma^2}{d}\quad\text{and}\quad
+  \Var\left[m{(0)}\right] = \frac{\sigma}{d}. 
+\]
+The difference between these intial conditions and the previous one is illustrated in Figure~\ref{fig:pictorial-unconstrainted-phase-retrivial} .
+\begin{figure}
+  \centering
+  \begin{tikzpicture}  
+    \input{figures/pictorial-unconstrained-phase-retrivial.tikz}
+  \end{tikzpicture}
+  \caption{
+    pictorial plot of the phase retrivial weights with these initial conditions.
+    The teacher weight, up to rotation, it's the pole vector in a semisphere 
+    (here represented in 3D, but in the real case is \(d\)-dimensional);
+    we can limit ourselves to analyzing only a hemisphere since the \(\vec{w}\to-\vec{w}\) symmetry applies.\\
+    The two colored vector represent the student initial conditions, approximatly orthogonal to the teacher vector. 
+    The dashed lines are tentatives paths of the student vectors during the learning: starting close to the origin
+    should make the norm grow towards~1, without any non-monotonic behaviour.
+  }
+  \label{fig:pictorial-unconstrainted-phase-retrivial} 
+\end{figure}
+First of all, we observe that the sign of \(m(t)\) is not important for monitoring the learning. Therefore, the quantity
+we are really interested as initial condition is \(|m{(0)}|\). Using the \emph{half-normal distribution} properties\cite{enwiki:halfnormaldistribution},
+we can compute
+\[
+  \E{\left[|m{(0)}|\right]} = \sqrt{\frac{2}{\pi d}}\sigma.
+\]
+We can now proceed to do a linear expansion of Equations~\eqref{eq:phase_retrivial} around the starting point
+\begin{subequations}\begin{align}
+  \dod{|m{(t)}|}{t} &= 6 \gamma |m{(t)}|\\
+  \label{eq:sigma_phase_retrivial_q}
+  \dod{q{(t)}}{t} &= \left(4 \gamma + 12 \gamma^2 + 4\Delta\right) q{(t)}
+\end{align}\end{subequations}
+where we transformed the equation for \(m(t)\) in the one for the modolus,
+and kept only the linear terms of the equations\footnote{
+  The expansion is not rigorous, since \(m(t)\) and \(q(t)\) are ``small'' for different reason.
+  In order to do a proper derivation, we should keep track of different orders in different variables.
+  The purpose of this part is to give an insight into what we will be doing in the next chapters.
+}; we have also set \(\rho=1\), following what computed above.
+Using the expected values computed above as starting values, we get this evolution for the order parameters
+\[
+  |m(t)| = \exp{\left[6\gamma t\right]}\sqrt{\frac{2}{\pi d}}\sigma \quad\text{and}\quad
+  q(t) = \exp{\left[\left(4 \gamma + 12 \gamma^2 + 4\Delta\right)t\right]}\sigma^2.
+\]
+We stress out again that this evolution are approximating the real one only when \(m(t),q(t)\ll1\).
+Despite this, we can still estimate exit times, provided the thresholds used are also small.
+Let \(T\) the value of the threshold, valid both for \(m\) and \(q\), then the exit times are
+\begin{equation}
+  t_\text{ex}^{(m)} = \frac{\log{\left[\frac{T}{\sigma}\sqrt{\frac{\pi d}{2}}\right]}}{6\gamma} \quad\text{and}\quad
+  t_\text{ex}^{(q)} = \frac{\log{\left[\frac{T}{\sigma^2}\right]}}{4 \gamma + 12 \gamma^2 + 4\Delta}.
+\end{equation}
+The thing to note is that \(t_\text{ex}^{(q)}\) does not depend on \(d\).
+To make the result more accurate, we can make a correction to Equation~\eqref{eq:sigma_phase_retrivial_q}
+and obtain a new form for the time evolution of \(q(t)\) that includes also the effect of \(m(t)\)
+\[
+  \dod{q{(t)}}{t} = \left(4 \gamma + 12 \gamma^2 + 4\Delta\right) q{(t)} + \left(8\gamma+48\gamma^2\right)m^2{(t)}.
+\]
+We can plug in the solution we found for \(|m(t)|\) and solve the equation to obtain\footnote{
+  We are assuming that only \(m(t)\) can influence \(q(t)\) and that the reverse does not happen.
+  This is not formally correct, but it is what happens in practice for reasonable choices of initial parameters.
+}
+\[\begin{split}
+  q{(t)} = \frac{1}{8\gamma-12\gamma^2-4\Delta}\Bigg\{&\sigma^2\left[(8\gamma-12\gamma^2-4\Delta)-\left(8\gamma+48\gamma^2\right)\frac{2}{\pi d}\right]\exp\left[\left(4 \gamma + 12 \gamma^2 + 4\Delta\right)t\right]\\
+          &+\left(8\gamma+48\gamma^2\right)\frac{2}{\pi d}\sigma^2 \exp\left[12\gamma t\right]\Bigg\}.
+\end{split}\]
+The evolution of q is contributed by two exponential;
+it is not possible to derive an exact expression of the exit time,
+but we can make the approximation that the two exponentials contribute separately
+and thus take the minimum between the two possible times:
+\[
+  t_\text{ex}^{(q)} = \min\left(\frac{1}{4 \gamma + 12 \gamma^2 + 4\Delta}\log{\left[\frac{T}{\sigma^2}\right]},
+                                \frac{1}{12\gamma}\log{\left[\frac{T}{\sigma^2}\frac{\pi d}{2}\frac{8\gamma-12\gamma^2-4\Delta}{8\gamma+48\gamma^2}\right]}\right),
+\]
+where we also dropped some subleading terms in \(d\).
+
+Figure~\ref{fig:sigma-phase-retrivial-exittimes} shows a comparison between what is predicted by the formulas
+and what is actually measured by doing the numerical experiments.
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/sigma-phase-retrivial-mexit.pdf}
+    \caption{exit time for \(|m|\)}
+  \end{subfigure}
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/sigma-phase-retrivial-qexit.pdf}
+    \caption{exit time for \(q\)}
+  \end{subfigure}
+  % Generated with: random-orthonormal-k=1
+  \caption{
+    comparsion between the exit time obtained from differential equations and the one mesured in simulations. \\
+    In the simulations we used \(\gamma=\num{0.1}, \sigma=\num{0.01}, T=\num{0.02}\).
+  }
+  \label{fig:sigma-phase-retrivial-exittimes}
+\end{figure}
+The predictions for \(t_\text{ex}^{(m)}\) are quite accurate,
+while the ones for \(t_\text{ex}^{(q)}\) are only partially correct.
+We can clearly see that our formula fails to predict the exit time in the transition
+between the two regimes; probably the assumptions that the two exponentials can be treated separtly does not hold.
+For large \(d\) the \(q\)-exit-time does not depend on \(d\) and the theoretical prediction seems correct.
+
+The results obtained in this section, although not exhaustive,
+provide an outline for what we are going to do in the next chapters of this paper.
+The idea of random initial conditions combined with an expansion of differential equations seems promising,
+but it has not yet led to the desired results.
+The introduction of \(\sigma\) indeed made the expansion possible,
+but it did not solve all the problems related to the norm of the \(\vec{w}\) vector;
+it simply shifted the problem. 
+The flat part in \(t_\text{ex}^{(q)}\)'s plot is a manifestation of the fact that the learning (linear or specialization) of the committee machine is still not being analyzed directly.
+To achieve this goal will require a paradigm shift, as we will see in the next chapter.

@@ -1,0 +1,20 @@
+% Credits to Nica 
+
+% Sfera
+\draw[turquoise, thick] (5,0) arc (0:180:5);
+
+\fill[turquoise!33] (5,0) arc (0:180:5);
+
+\draw[turquoise, thick, dashed] (0,0) ellipse (5 and 1.5);
+\fill[turquoise!33] (0,0) ellipse (5 and 1.5);
+
+% Vettori
+\draw[black, ->] (0,0) -- (0,5) node[midway,right] {\(\vec{w}^*\)};
+
+\draw[orange, ->] (0,0) -- (4,0.9) node[midway,above] {\(\vec{w}\)};
+
+\draw[red, ->] (0,0) -- (-.8,0) node[midway,above] {\(\sigma^2\)};
+
+\draw[loosely dashdotted, orange] (0,5) -- (4, 0.9);
+\draw[gray] (0,0) -- (4, -0.9) node[midway,below]{$\sqrt{d}$};
+\draw[loosely dashdotted, red] (0,5) -- (-.8,0);
