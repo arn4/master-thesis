@@ -1,0 +1,100 @@
+\chapter[Derivation of linearized spherical ODE]{Derivation of linearized spherical differential equation}
+\label{app:derivation-spherical-ode}
+
+\section{Generalized Phase Retrivial}
+\begin{equation}
+  \Psi_{jr} = \frac{4 \gamma}{p}
+      \left(m_{jr} - \frac{m_{jr}}{p}\right) 
+      = \frac{4 \gamma}{p} \left(1 - \frac{1}{p}\right) m_{jr},
+\end{equation}
+while for \(\Phi\) we distinguish the cases \(j=l\) or not
+\begin{equation}\begin{split}
+  j \neq l \quad \Phi_{jl} &= \frac{4 \gamma}{p}\left[
+      2\left( - 2\frac{q_{jl}}{p}\right)
+  \right] +\\
+  &\quad+\frac{4 \gamma^2}{p^2} \Biggr\{
+        3 q_{jl} -\frac2{p}\Biggl[p q_{jl} + 4 q_{jl} \Biggl] + 
+        \frac1{p^2}\left[\left(p^2+2p\right)q_{jl} +
+        8p q_{jl} + 24q_{jl} \right] + \Delta q_{jl}\Biggr\} \\ 
+  &= -\frac{16 \gamma}{p^2} q_{jl} 
+    +\frac{4 \gamma^2}{p^2} \left\{
+      3 -2 -\frac{8}{p} +1 +\frac2p +\frac8p + \frac{24}{p^2} + \Delta \right\}q_{jl} \\
+  &= -\frac{16 \gamma}{p^2} q_{jl} 
+  +\frac{4 \gamma^2}{p^2} \left\{2 +\frac{2}{p} + \frac{24}{p^2} + \Delta \right\}q_{jl}
+\end{split}\end{equation}
+\begin{equation}\begin{split}
+  j = l \quad \Phi_{jj} &= \frac{4 \gamma}{p}\left[
+      2\left( -\frac{1}{p}\right)
+  \right] + \frac{4 \gamma^2}{p^2} \Biggr\{
+        3 -\frac2{p}\Biggl[p + 2 \Biggl] + 
+        \frac1{p^2}\left[\left(p^2+2p\right) +
+        4p + 8 \right] + \Delta\Biggr\} \\
+  &= -\frac{8 \gamma}{p^2} + \frac{4 \gamma^2}{p^2} \left\{
+    3 -2 -\frac{4}{p} +1 +\frac2p +\frac4p + \frac{8}{p^2} + \Delta \right\} \\
+  &= -\frac{8 \gamma}{p^2} +\frac{4 \gamma^2}{p^2} \left\{2 +\frac{2}{p} + \frac{8}{p^2} + \Delta \right\}
+\end{split}\end{equation}
+
+Given these linear approximatons, we are ready to write down the equations valid 
+as long as the risk stays in the first plateau
+\begin{equation}\label{eq:Msphericalgenericpk1}\begin{split}
+  \dod{\left[\M{\left(t\right)}\right]_{jr}}{t} &= 
+    \left[
+      \frac{4 \gamma}{p} \left(1 - \frac{1}{p}\right)
+      +\frac{4 \gamma}{p^2}-\frac{2 \gamma^2}{p^2} \left(2 +\frac{2}{p} + \frac{8}{p^2} + \Delta \right)
+    \right] \left[\M{\left(t\right)}\right]_{jr} \\
+    &= \left[
+      \frac{4 \gamma}{p} -\frac{2 \gamma^2}{p^2} \left(2 +\frac{2}{p} + \frac{8}{p^2} + \Delta \right)
+    \right] \left[\M{\left(t\right)}\right]_{jr},
+\end{split}\end{equation}
+\begin{equation}\label{eq:Qsphericalgenericpk1}\begin{split}
+  \dod{\left[\Q{\left(t\right)}\right]_{jl}}{t} &= 
+    \left[
+      -\frac{16 \gamma}{p^2} +\frac{4 \gamma^2}{p^2} \left(2 +\frac{2}{p} + \frac{24}{p^2} + \Delta \right)
+      +\frac{8  \gamma}{p^2} -\frac{4 \gamma^2}{p^2}  \left(2 +\frac{2}{p} + \frac{8}{p^2} + \Delta \right)
+    \right] \left[\Q{\left(t\right)}\right]_{jl} \\
+  &= \left[
+    -\frac{8 \gamma}{p^2} +\frac{4 \gamma^2}{p^2} \left(\frac{16}{p^2}\right)
+  \right] \left[\Q{\left(t\right)}\right]_{jl} \\
+  &= -\frac{8 \gamma}{p^2} \left[1-\frac{8\gamma}{p^2}\right] \left[\Q{\left(t\right)}\right]_{jl}
+\end{split}\end{equation}
+
+\section{General case}
+The linear expansion of \(\vec{\Phi}\) and \(\vec{\Psi}\) it's similar to previous section:
+\[
+  \Psi_{jr} = \frac{4 \gamma}{p} \left(\frac1k - \frac{1}{p}\right) m_{jr},
+\]\[
+  \begin{split}
+    j \neq l \quad \Phi_{jl} &= \frac{4 \gamma}{p}\left[
+        2\left( - 2\frac{q_{jl}}{p}\right)
+    \right] +\\
+    &\quad+\frac{4 \gamma^2}{p^2} \Biggr\{
+          \left(1+\frac2k\right)q_{jl} -\frac2{pk}\Biggl[pk q_{jl} + 4 k q_{jl} \Biggl] + 
+          \frac1{p^2}\left[\left(p^2+2p\right)q_{jl} +
+          8p q_{jl} + 24q_{jl} \right] + \Delta q_{jl}\Biggr\} \\ 
+    &= -\frac{16 \gamma}{p^2} q_{jl} 
+      +\frac{4 \gamma^2}{p^2} \left\{
+        1+\frac2k -2 -\frac{8}{p} +1 +\frac2p +\frac8p + \frac{24}{p^2} + \Delta \right\}q_{jl} \\
+    &= -\frac{16 \gamma}{p^2} q_{jl} 
+    +\frac{4 \gamma^2}{p^2} \left\{\frac2k +\frac{2}{p} + \frac{24}{p^2} + \Delta \right\}q_{jl}
+  \end{split}
+\]\[
+  \begin{split}
+    j = l \quad \Phi_{jj} &= \frac{4 \gamma}{p}\left[
+        2\left( -\frac{1}{p}\right)
+    \right] + \frac{4 \gamma^2}{p^2} \Biggr\{
+          \left(1+\frac2k\right) -\frac2{pk}\Biggl[pk + 2k \Biggl] + 
+          \frac1{p^2}\left[\left(p^2+2p\right) +
+          4p + 8 \right] + \Delta\Biggr\} \\
+    &= -\frac{8 \gamma}{p^2} + \frac{4 \gamma^2}{p^2} \left\{
+      1+\frac2k -2 -\frac{4}{p} +1 +\frac2p +\frac4p + \frac{8}{p^2} + \Delta \right\} \\
+    &= -\frac{8 \gamma}{p^2} +\frac{4 \gamma^2}{p^2} \left\{\frac2k +\frac{2}{p} + \frac{8}{p^2} + \Delta \right\}
+  \end{split}
+\]
+The diferential equations are only a little different
+\begin{equation}\begin{split}
+  \dod{\left[\M{\left(t\right)}\right]_{jr}}{t}
+    &= \left[
+      \frac{4 \gamma}{pk} -\frac{2 \gamma^2}{p^2} \left(\frac2k +\frac{2}{p} + \frac{8}{p^2} + \Delta \right)
+    \right] \left[\M{\left(t\right)}\right]_{jr},\\
+  \dod{\left[\Q{\left(t\right)}\right]_{jl}}{t} &= -\frac{8 \gamma}{p^2} \left[1-\frac{8\gamma}{p^2}\right] \left[\Q{\left(t\right)}\right]_{jl}.
+\end{split}\end{equation}
