@@ -1,0 +1,46 @@
+\chapter[Standard deviation of SDEs]{Standard deviation of stochastic differential equations}
+\label{app:std_sde}
+In this Appendix we write down the full expression of the varinace and covariance of the variable \(\mathcal{M}\)
+and \(\mathcal{Q}\). The goal is to obtain an expression of the matrix \(\vec{\Sigma}\) 
+which can then be used to calculate the standard deviations of stochastic processes.
+
+The calculations are long and complicated, for example, they require computing the twelfth moments of a multivariable normal distribution;
+we used the generating function technique implemented in this Mathematica Notebook.
+%t todo: insert this notebook
+\section{Unconstrainted Phase retrivial}
+The entries of matrix \(\vec{\Sigma}\) are 
+\[\begin{split}
+  \Var{[\mathcal{M}]} =& 8 \gamma ^2 \Delta  m^2+4 \gamma ^2 \Delta  q \rho-192 \gamma ^2 m^4+324 \gamma ^2 q^2 m^2+324 \gamma ^2 \rho^2 m^2 \\
+                       & -504 \gamma ^2 q \rho m^2+60 \gamma ^2 q \rho^3-72 \gamma ^2 q^2 \rho^2+60 \gamma ^2 q^3 \rho 
+\end{split}\]\[\begin{split}
+  \Var{[\mathcal{Q}]} =& 128 \gamma ^4 \Delta ^2 q^2+9600 \gamma ^4 \Delta  q^4-2688 \gamma ^4 \Delta  \rho q^3-16512 \gamma ^4 \Delta  m^2 q^2 \\
+                       &+768 \gamma ^4 \Delta  \rho^2 q^2+6528 \gamma ^4 \Delta  m^2 \rho q+2304 \gamma ^4 \Delta  m^4+162720 \gamma ^4 q^6-57600 \gamma ^4 \rho q^5 \\
+                       &-593280 \gamma ^4 m^2 q^4+28224 \gamma ^4 \rho^2 q^4-13824 \gamma ^4 \rho^3 q^3+473472 \gamma ^4 m^2 \rho q^3+474624 \gamma ^4 m^4 q^2 \\
+                       &+4896 \gamma ^4 \rho^4 q^2-254592 \gamma ^4 m^2 \rho^2 q^2+79488 \gamma ^4 m^2 \rho^3 q-336384 \gamma ^4 m^4 \rho q-46080 \gamma ^4 m^6 \\
+                       &+78336 \gamma ^4 m^4 \rho^2-1344 \gamma ^3 \Delta  q^3+256 \gamma ^3 \Delta  \rho q^2+1088 \gamma ^3 \Delta  m^2 q-28800 \gamma ^3 q^5 \\
+                       &+9024 \gamma ^3 \rho q^4+77376 \gamma ^3 m^2 q^3-3840 \gamma ^3 \rho^2 q^3+1344 \gamma ^3 \rho^3 q^2-49536 \gamma ^3 m^2 \rho q^2 \\
+                       &-33024 \gamma ^3 m^4 q+16704 \gamma ^3 m^2 \rho^2 q+10752 \gamma ^3 m^4 \rho+48 \gamma ^2 \Delta  q^2+1536 \gamma ^2 q^4-384 \gamma ^2 \rho q^3 \\
+                       &-2688 \gamma ^2 m^2 q^2+128 \gamma ^2 \rho^2 q^2+1088 \gamma ^2 m^2 \rho q+320 \gamma ^2 m^4 
+\end{split}\]\[\begin{split}
+  \Cov{[\mathcal{M},\mathcal{Q}]} =& 144 \gamma ^3 \Delta  m^3-336 \gamma ^3 \Delta  q^2 m+192 \gamma ^3 \Delta  q \rho m-2880 \gamma ^3 m^5+14544 \gamma ^3 q^2 m^3  \\
+                                   &+4752 \gamma ^3 \rho^2 m^3-13536 \gamma ^3 q \rho m^3-7200 \gamma ^3 q^4 m+2448 \gamma ^3 q \rho^3 m \\
+                                   &-5184 \gamma ^3 q^2 \rho^2 m+7056 \gamma ^3 q^3 \rho m +24 \gamma ^2 \Delta  q m-912 \gamma ^2 q m^3+432 \gamma ^2 \rho m^3 \\
+                                   &+768 \gamma ^2 q^3 m+336 \gamma ^2 q \rho^2 m-624 \gamma ^2 q^2 \rho m.
+\end{split}\]
+
+We can also specialize their value to the initial conditions we are using.
+In fact, using \(q=1, m=0, \rho=1\) we get
+\[\begin{split}
+  \Var{[\mathcal{M}]} &= 4 \gamma ^2 \Delta +48 \gamma ^2 \\
+  \Var{[\mathcal{Q}]} &= 128 \gamma ^4 \Delta ^2+7680 \gamma ^4 \Delta +124416 \gamma ^4 \\
+                      &-1088 \gamma ^3 \Delta -22272 \gamma ^3+48 \gamma ^2 \Delta +1280 \gamma ^2 \\
+  \Cov{[\mathcal{M},\mathcal{Q}]} &= 0
+\end{split}\]
+
+\section{Spherical Phase retrivial}
+\[\begin{split}
+  \Var{[\mathcal{M}_S]} =& 144 \gamma ^3 \Delta  m^3-336 \gamma ^3 \Delta  q^2 m+192 \gamma ^3 \Delta  q \rho m-2880 \gamma ^3 m^5+14544 \gamma ^3 q^2 m^3 \\
+                         &+4752 \gamma ^3 \rho^2 m^3-13536 \gamma ^3 q \rho m^3-7200 \gamma ^3 q^4 m+2448 \gamma ^3 q \rho^3 m-5184 \gamma ^3 q^2 \rho^2 m \\
+                         &+7056 \gamma ^3 q^3 \rho m+24 \gamma ^2 \Delta  q m-912 \gamma ^2 q m^3+432 \gamma ^2 \rho m^3+768 \gamma ^2 q^3 m \\
+                         &+336 \gamma ^2 q \rho^2 m-624 \gamma ^2 q^2 \rho m
+\end{split}\]

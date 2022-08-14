@@ -183,9 +183,10 @@ It corresponds to the empirically known fact that using too large a learning rat
 Figure~\ref{fig:example-spherical-not-converging} shows an example of dynamics in which the learning rate does not respect the inequality above.
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{example-image-duck}
+  \includegraphics[width=0.6\textwidth]{figures/spherical/not-converging-phase-retrivial.pdf}
   \caption{
-    example of phase retrivial with \(\). %todo: tutto ahahhahah
+    example of phase retrivial with \(\gamma=0.2>\frac16, \Delta=\num{1e-3}\).\\
+    As predicted, the process is not converging to a minimum, rather it stops at the maximum.
   }
   \label{fig:example-spherical-not-converging}
 \end{figure}
@@ -246,7 +247,7 @@ in order to obtain the best final result as quickly as possible, it is necessary
 The result we have obtained here can be used to produce one.
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{example-image-duck}
+  \includegraphics[width=0.55\textwidth]{figures/spherical/gamma_te-factor.pdf}
   \caption{
     plot of the exit time factor that depends on the learning rate.\\
     The optimal value for the learning rate is \(\gamma_\text{opt} = \frac{1}{12+\Delta} \approx \num{0.083}.\)
@@ -258,17 +259,19 @@ To conclude, let us discuss the numerical experiments we performed to verify the
 Figure~\ref{fig:spherical-phase-retrivial-d10000} shows an example of comparsion between our results and actual simulations.
 \begin{figure}
   \centering
-  \begin{subfigure}{0.495\textwidth}
-    \includegraphics[width=1.\textwidth]{example-image-duck}
+  \begin{subfigure}{0.75\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/spherical/spr-example-d10000.pdf}
     \caption{global trend}
   \end{subfigure}
-  \begin{subfigure}{0.495\textwidth}
-    \includegraphics[width=1.\textwidth]{example-image-duck}
+  \begin{subfigure}{0.77\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/spherical/spr-example-d10000-zoom.pdf}
     \caption{zoom}
   \end{subfigure}
 
   \caption{
-    comparison between simulation and theory with \(\).
+    comparison between simulation and theory with \(\gamma=\num{0.1}, \Delta=\num{1e-3}\).\\
+    The shaded red lines represent the different simulated trajectories,
+    while the shaded yellow lines are the respective solutions of the differential equations; 
   }
   \label{fig:spherical-phase-retrivial-d10000}
 \end{figure}
@@ -375,18 +378,20 @@ Figure~\ref{fig:spherical-generalized-phase-retrivial} shows two example of exit
 
 \begin{figure}
   \centering
-  \begin{subfigure}{0.8\textwidth}
+  \begin{subfigure}{0.75\textwidth}
     \includegraphics[width=1.\textwidth]{figures/spherical/gpr-p2.pdf}
     \caption{\(p=2\)}
   \end{subfigure}
-  \begin{subfigure}{0.8\textwidth}
+  \begin{subfigure}{0.75\textwidth}
     \includegraphics[width=1.\textwidth]{figures/spherical/gpr-p50.pdf}
     \caption{\(p=50\)}
   \end{subfigure}
 
   \caption{
-    example of comparison of two exit times in the generalized phase retrivial; parameters \(\Delta=\num{0.001}, \gamma=0.2p\).
-    Both figures are zoomed in on the transition area. It's evident that 
+    example of comparison of two exit times in the generalized phase retrivial; parameters \(\Delta=\num{0.001}, \gamma=0.2p, d=\num{10000}\).
+    Both figures are zoomed in on the transition area.
+    It's evident that the difference between theoretical and numerical solution of the Equation~\eqref{eq:exit_time_equation}
+    is not affetcting the estimation in a significantly.
   }
   \label{fig:spherical-generalized-phase-retrivial}
 \end{figure}

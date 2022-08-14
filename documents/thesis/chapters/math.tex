@@ -26,10 +26,10 @@ The most fundamental process is the so called \emph{Wiener process}, introduced 
 \end{Definition}
 The importance of this process arise from the fact that it can be used for modelling
 most of the stochastich effects that comes from the microscopic action of many agents
-external to the modeled system. The integral\footnote{The definition of the ingral of a stochastich process is given in Section \dots} %TODO: insert section
-of the Wiener process is often refered as \emph{Brownian motion}; moreover, the Wienere process it's used to model
-white noise. Lastly, the Wiener process can be derived as continuous limit of a 
-random walk.
+external to the modeled system.
+In physics context, the Wiener process is often refered as \emph{standard Brownian motion};
+moreover, the Wienere process it's used to model the integral white noise.
+Lastly, the Wiener process can be derived as continuous limit of a random walk.
 
 \subsection{Integral over a Wiener Process}
 Altought a definition of integral for a generic stochastic process is possible,
@@ -54,7 +54,7 @@ For convinince we will use the convention
   interval in the summation. In principle one can think to use different values of \(\lambda\)
   at each different interval, but as it will be clear in a moment, this choice would be
   really impractical and unconvinient.
-}. The definition write as 
+}. The definition writes as 
 \[
   \int_0^T g{(t)}\dif W_t{[\lambda]} \coloneqq \lim_{N\to+\infty} \sum_{k=0}^{N-1}g{(\hat{t}_k^\lambda)}(W_{t_{k+1}}-W_{t_k}).
 \]

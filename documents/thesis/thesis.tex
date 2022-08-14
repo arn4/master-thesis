@@ -1,5 +1,5 @@
-% \documentclass[12pt,a4paper,draft]{book}
-\documentclass[12pt,a4paper]{book}
+\documentclass[12pt,a4paper,draft]{book}
+% \documentclass[12pt,a4paper]{book}
 \usepackage{thesis-style}
 \usepackage{thesis-book}
 
@@ -13,23 +13,24 @@
   % \cleardoublepage
   \tableofcontents
 
-  % \part{Intro}
-  % \chapter{ML \& Physics}
-  % \input{chapters/math}
+  \part{Introduction}
+  \chapter{ML \& Physics}
+  \input{chapters/math}
   \input{chapters/context}
 
-  % \part{Results}
+  \part{Results}
   \input{chapters/squared-activation-initial-conditions}
   \input{chapters/spherical-constraint}
-  % \chapter{Stochasticity of the evolution}
+  \input{chapters/stochasticity.tex}
 
-  % \part{Conclusion}
-  % \chapter{Summary and future developments}
+  \part{Conclusion}
+  \input{chapters/conclusions}
 
 
   \appendix
-  % \input{chapters/derivation-quadratic-ODE}
+  \input{chapters/derivation-quadratic-ODE}
   \input{chapters/derivation-spherical-ode}
+  \input{chapters/brownian_variance}
   
   \cleardoublepage
   \nocite{*}
