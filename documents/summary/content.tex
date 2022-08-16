@@ -1,0 +1,54 @@
+In recent years, neural networks have made possible great progress in several fields of artificial intelligence. 
+The use of these machine learning models has led to a breakthrough in
+image processing, speech recognition and text generation, to name a few examples.
+However, the theoretical understanding of neural networks is still lacking.
+Indeed, several rules of thumb on model calibration have been developed,
+but an overall theory that provides a comprehensive view of how the model works has not yet been proposed.
+Studying the training process of a neural network requires the manipulation of a large number of correlated random variables,
+which is precisely what is done in statistical physics. We can therefore carry some tools
+from this branch of physics to the analytical study of some machine learning models.
+
+In this thesis, we aim to study a special case of a two-layer neural network,
+known in statistical physics literature as the \emph{committee machine},
+using one-pass stochastic gradient descent as an optimization method.
+In particular, we focus on learning times (or exit times), namely
+the number of samples required for learning to begin.
+The theory we will develop will lead us to estimate the gain that is obtained in overparameterizing the neural network.
+This fact, which is already empirically known, will be properly quantified within our framework.
+
+We start the discussion by introducing the model we used, harking back to a well-known model in the literature~\cite{saad1995line}.
+We use the teacher-student setting on a two-layer neural network, using Gaussian samples for training.
+We will introduce microscopic quantities inspired by statistical mechanics,
+which will allow us to arrive at the definition of order parameters.
+The latter are summary statistics that incorporate the information contained in the weights of the neural networks,
+but at the same time do not require a parameter for each input neuron.
+At this point, we take the crucial step in the discussion: the high-dimensional limit.
+This will allow us to approximate the evolution of the \emph{order parameters}, which is a discrete stochastic process, with a system of ordinary differential equations.
+Studying the solutions of these equations allows us to infer analytical information about the learning process,
+including learning times in particular.
+
+In the next chapter, we introduce the first original results of this thesis.
+We chose to work with a quadratic activation function, and thus wrote the differential equations in explicit form.
+We also noted that a special case of our model is known as \emph{phase retrieval};
+we can therefore use known results in the literature on this model as a comparison with those we derive.
+After giving an overview of the numerical simulations of our model,
+we will conclude the chapter by analyzing several possible initial conditions to be used for our model.
+We will observe that the choice can greatly influence the dynamics of training,
+showing or not some different phases of learning.
+
+We continue the presentation by analyzing the case where the neural network weights are constrained on a hypersphere.
+This choice allows us to focus only on the part of the dynamics of learning we are truly interested in.
+Through a statistical study of the initial conditions and an approximation of the differential equations,
+we arrive at an analytical expression for the learning time of the first stage.
+The result we find is in agreement with what was previously known about the phase retrieval~\cite{arous2021online}.
+In particular, we show that the gain descending from overparameterization is finite,
+and we give an estimate of its order of magnitude.
+
+We conclude this paper with a chapter in which we will add a corrective term to the differential equations,
+limited to the phase retrieval case.
+The intent is to incorporate the stochasticity introduced by SGD into the dynamics, by approximating it with Brownian motion.
+Thus, ordinary differential equations become stochastic differential equations,
+from which analytical information can still be derived by applying the appropriate approximations.
+The resulting new dynamic is able to capture some phases of learning that escaped our previous treatment.
+We obtained results for both the unconstrained phase retrieval, in agreement with recent work by Ben Arous et al.~\cite{arous2022high},
+and the constrained dynamics on the sphere, for which we also have an analytical expression of the exit time.

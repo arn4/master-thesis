@@ -78,7 +78,10 @@ Before we go to simulate the stochastic process, we must choose what initial con
 Since our goal is to find a description of the learning process that is able to detect effects that escaped the differential equations,
 we will look at the situation where they strayed furthest from the simulation. 
 We therefore choose to initialize the phase retrivial with the \emph{symmetric intial conditions with \(\varepsilon = 0\)} (see the \ref{subsec:symmetric_init} section).
-In our context we can also assume \(q_0 = 1\): this basically means choosing the vectors \(\w\) and \(\w^*\) as orthogonal.
+In our context we can also assume \(q_0 = 1\): this basically means choosing the vectors \(\w\) and \(\w^*\) as orthogonal
+\[
+  q(0) = 1, \quad m(0) = 0 \quad\text{and}\quad\rho=1.
+\]
 
 As already shown, the description with differential equations is not able to break the initial symmetry and the vectors remain orthogonal throughout the process,
 changing only the norm of \(\w\).
@@ -88,11 +91,48 @@ Finally we choose to study the case with \(\Delta=0\).
 This choice follows from the fact that in the past chapters we have shown that the value of noise only marginally affects the first part of the process,
 i.e., the part we want to study. We therefore choose to exclude it in order to have a less complex,
 but no less descriptive, description of the process.
-\section{Unconstrainted Phase retrivial}
 
+
+\section{Unconstrainted Phase retrivial}
+We can now turn to testing the model we introduced in the previous section.
+The value of \(\Phi\) and \(\Psi\) is known from Equations~\eqref{eq:phase_retrivial},
+while the matrix \(\vec{\Sigma}\) is calculated in Appendix~\ref{app:std_sde}.
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.75\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/sde/unconstrainted-sde-example.pdf}
+    \caption{general trend}
+  \end{subfigure}
+  \begin{subfigure}{0.75\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/sde/unconstrainted-sde-example-zoom.pdf}
+    \caption{zoom on separation zone}
+  \end{subfigure}
+
+  \caption{
+    comparison between simulation and theory with \(\gamma=\num{0.1}, \Delta=0\).\\
+    The shaded red lines represent the different simulated trajectories,
+    while the shaded green lines are different realizations of the solution of the stochastic process.
+  }
+  \label{fig:unconstrainted-sde}
+\end{figure}
+Figure~\ref{fig:unconstrainted-sde} shows the result of a simulation.
+The first thing to observe is that, as we expected, the solution of the differential equations is not able to break symmetry.
+Conversely, the description through the stochastic process is not affected by this problem,
+being able to emulate the results obtained by training the complete network.
+
+In the figure, the individual trajectories used to evaluate both the simulation and the process obtained from the SDEs are also shown:
+we can see how the distributions seem to overlap, a symptom of the fact that the stochastic process has the same distribution as the complete network.
+As evidence for this claim, we calculated two different statistics to compare:
+the average trajectory and the time to exit a threshold.
+Both coincide within the experimental error, which, however, cannot be eliminated having used a finite number of samples (56 for each).
+
+The result is in agreement with what was recently reported in a paper by G. Ben Arous et al.\cite{arous2022high}.
+% todo: spiega il paper di Ben Arous
 
 \section{Spherical Phase retrivial}
-
+\subsection{Naive derivation}
+\subsection{Itô}
 
 
 
