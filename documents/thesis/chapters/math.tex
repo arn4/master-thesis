@@ -1,42 +1,46 @@
 \chapter{Mathematical tools} \label{app:math_tools}
+This appendix gives a small supplement on the mathematical tools needed to understand the Chapter~\ref{chap:stochasticity}.
+
 \section{Stochastic Diffrential Equations}
 The aim of this Section is to give a brief introduction on \emph{Stochastic Differential Equations}.
 The discussion is not intended to be extremely formal from a mathematical point of view,
 but still provide a complete and consistent exposition of the tools used later in the thesis.
 For the readers interested in a formal exposition of the concepts expressed below, please refer to \cite{morters2010brownian}.
 
+This discussion is inspired from \cite{smith2018ito}, article that gives an intuitive description of the differences between different types of stochastic integration,
+and provides some physical interpretations of the different possible solutions to stochastic differential equations.
+
 \subsection{Stochasic Processes}
 \begin{Definition}[Stochasic Processes]
-  A \emph{stochastich process} is \(\{X_t, t\in T\}\) is a collection of random variable living in the same probability space.
-  The set \(T\) is usally considered as the \emph{time domain}, and can be both discrete or continuous.
+  A \emph{stochastic process} is \(\{X_t, t\in T\}\) is a collection of random variables living in the same probability space.
+  The set \(T\) is usually considered as the \emph{time domain} and can be both discrete or continuous.
 \end{Definition}
 
-The most fundamental process is the so called \emph{Wiener process}, introduced hereafter.
+The most fundamental process is the so-called \emph{Wiener process}, introduced hereafter.
 \begin{Definition}[Wiener Process]
-  A continuous stochastich process \(\{W_t\}_{t\ge0}\) is called \emph{Wiener process} if it satisfy these properties:
+  A continuous stochastic process \(\{W_t\}_{t\ge0}\) is called \emph{Wiener process} if it satisfy these properties:
   \begin{itemize}
     \item \(W_0 = 0\);
     \item The increment is indipendent from past values:
           \[\forall u\ge0: \quad W_{t+u} - W_t  \text{ is indipendent from } W_s \quad \forall s\in[0,t];\]
-    \item The increment is distributed as a normal variable with varince equal to time difference:
+    \item The increment is distributed as a normal variable with variance equal to time difference:
           \[W_{t+u}-W_t \sim \gauss{(0,u)};\]
-    \item The process in continuous in the time:
-          \[\] %TODO: find a definition of continuity that suits for us!
+    \item The process is continuous in time.
   \end{itemize}
 \end{Definition}
-The importance of this process arise from the fact that it can be used for modelling
-most of the stochastich effects that comes from the microscopic action of many agents
+The importance of this process arises from the fact that it can be used for modeling
+most of the stochastic effects that come from the microscopic action of many agents
 external to the modeled system.
-In physics context, the Wiener process is often refered as \emph{standard Brownian motion};
-moreover, the Wienere process it's used to model the integral white noise.
-Lastly, the Wiener process can be derived as continuous limit of a random walk.
+In the physics context, the Wiener process is often referred as \emph{standard Brownian motion};
+moreover, the Wiener process it's used to model the integral white noise.
+Lastly, the Wiener process can be derived as the continuous limit of a random walk.
 
 \subsection{Integral over a Wiener Process}
-Altought a definition of integral for a generic stochastic process is possible,
+Although a definition of integral for a generic stochastic process is possible,
 for this work is interesting only in giving a brief overview of the Wiener process,
-because it is the only one needed in the stochasic differential equations of interest.
+because it is the only one needed in the stochastic differential equations of interest.
 
-Let's start from recalling one possible definition of \emph{Riemann Integral} 
+Let's start by recalling one possible definition of \emph{Riemann Integral} 
 of a function \(f\colon[0,T]\to\Real\):
 \[
   \int_0^T f{(t)}\dif t \coloneqq \lim_{N\to+\infty} \sum_{k=0}^{N-1}f{(\hat{t}_k)}(t_{k+1}-t_k)
@@ -48,12 +52,12 @@ to the same value in any case.
 We can now try to extend the Riemann definition to compute the integral of over a Wiener
 process. Let \(g:\coloneqq\Real\to\Real\) the function to be integrated. \(g{(t)}\) is a generic (well behaved in some mathematical sense)
 random variable depending from time; it's possible to have \(g{(t)} = \tilde{g}{(W_t)}\) or even depending from another stochastic process.
-For convinince we will use the convention 
+For convenience we will use the convention 
 \(\hat{t}_k^\lambda \coloneqq \lambda t_k + (1-\lambda) t_{k+1}\) with \(\lambda\in[0,1]\)\footnote{
-  By fixing a value of \(\lambda\) we are essentialy choosing \(\hat{t}_k\) for every 
-  interval in the summation. In principle one can think to use different values of \(\lambda\)
+  By fixing a value of \(\lambda\) we are essentially choosing \(\hat{t}_k\) for every 
+  interval in the summation. In principle, one can think to use different values of \(\lambda\)
   at each different interval, but as it will be clear in a moment, this choice would be
-  really impractical and unconvinient.
+  really impractical and inconvenient.
 }. The definition writes as 
 \[
   \int_0^T g{(t)}\dif W_t{[\lambda]} \coloneqq \lim_{N\to+\infty} \sum_{k=0}^{N-1}g{(\hat{t}_k^\lambda)}(W_{t_{k+1}}-W_{t_k}).
@@ -67,25 +71,25 @@ integrating a function, but instead is a random variable, since is calculated as
   \[\begin{split}
     \E{\left[\int_0^T 2W_t \dif W_t{[\lambda]}\right]}
       &= \E\left[\lim_{N\to+\infty} \sum_{k=0}^{N-1}2W_{\hat{t}_k^\lambda}(W_{t_{k+1}}-W_{t_k})\right] \\
-      &= \E\left[\lim_{N\to+\infty} \sum_{k=0}^{N-1}\left(2W_{\hat{t}_k^\lambda}W_{t_{k+1}}-2W_{\hat{t}_k^\lambda}W_{t_k}
-                +(W^2_{t_{k+1}} - W^2_{t_{k+1}}) + (W^2_{\hat{t}_k^\lambda}-W^2_{\hat{t}_k^\lambda}) + (W^2_{t_k}-W^2_{t_k})\right)\right] \\
+      &= \E\Bigg[\lim_{N\to+\infty} \sum_{k=0}^{N-1}\Big(2W_{\hat{t}_k^\lambda}W_{t_{k+1}}-2W_{\hat{t}_k^\lambda}W_{t_k} \\
+      & \qquad \quad         +(W^2_{t_{k+1}} - W^2_{t_{k+1}}) + (W^2_{\hat{t}_k^\lambda}-W^2_{\hat{t}_k^\lambda}) + (W^2_{t_k}-W^2_{t_k})\Big)\Bigg] \\
       &= \E\left[\lim_{N\to+\infty} \sum_{k=0}^{N-1}\left(-(W_{t_{k+1}}-W_{\hat{t}_k^\lambda})^2 + (W_{\hat{t}_k^\lambda}-W_{t_{k}})^2 + (W^2_{t_{k+1}} - W^2_{t_{k}}) \right)\right]
   \end{split}\]
-  The first two addend in the summation are always negative (positive), thus we can commute
+  The first two addends in the summation are always negative (positive), thus we can commute
   the expected value and the summation; the third term is a telescopic sum
   \[\begin{split}
     \E{\left[\int_0^T 2W_t \dif W_t{[\lambda]}\right]}
       &= \lim_{N\to+\infty} \sum_{k=0}^{N-1}\E\left[-(W_{t_{k+1}}-W_{\hat{t}_k^\lambda})^2 + (W_{\hat{t}_k^\lambda}-W_{t_{k}}\right] + \E\left[W^2_{T}\right] \\
-      &= \lim_{N\to+\infty} \sum_{k=0}^{N-1}\left(-(t_{k+1}-\hat{t}_k^\lambda) + (\hat{t}_k^\lambda-t_{k})^2\right) + T 
-      = T + \lim_{N\to+\infty} \sum_{k=0}^{N-1}\left(-t_{k+1}+2\lambda t_k + 2(1-\lambda)t_{k+1}-t_k\right) \\
+      &= \lim_{N\to+\infty} \sum_{k=0}^{N-1}\left(-(t_{k+1}-\hat{t}_k^\lambda) + (\hat{t}_k^\lambda-t_{k})^2\right) + T \\
+      &= T + \lim_{N\to+\infty} \sum_{k=0}^{N-1}\left(-t_{k+1}+2\lambda t_k + 2(1-\lambda)t_{k+1}-t_k\right) \\
       &= T + \lim_{N\to+\infty} \sum_{k=0}^{N-1}(1-2\lambda)(t_{k+1}-t_k) = 2(1-\lambda)T
   \end{split}\]
 \end{Example}
 It is evident that the choice of \(\lambda\) it's important to define the result.
-One can choose infinitly many different stochastich integrations, but the two most common
-are \emph{Stratonovich Integration} and \emph{Itô Integration}. They lead to different result,
-with different general properties. As presented in the folliwing sections, the choice of a spefic
-definition of integration has to be made base on the properties that the modelization requires.
+One can choose infinitely many different stochastic integrations, but the two most common
+are \emph{Stratonovich Integration} and \emph{Itô Integration}. They lead to a different result,
+with different general properties. As presented in the following sections, the choice of a specific
+definition of integration has to be made based on the properties that the modelization requires.
 
 \subsubsection{Stratonovich Integration}
 The first definition of integration is the one obtained for \(\lambda=\frac12\).
@@ -95,53 +99,56 @@ The first definition of integration is the one obtained for \(\lambda=\frac12\).
 \end{Definition}
 
 \subsubsection{Itô Integration}
-The second deffirent definition of integration is obtained with \(\lambda=1\).
+The second different definition of integration is obtained with \(\lambda=1\).
 \begin{Definition}[Itô Integration]
   The second definition of integration is obtained by choosing \(\lambda=1\).
   The \emph{Itô Integration} of a function \(g{(t)}\) over Wiener process is
   \[\int_0^T g{(t)}\dif W_t \coloneqq \lim_{N\to+\infty} \sum_{k=0}^{N-1}g{(t_k)}(W_{t_{k+1}}-W_{t_k}).\]
 \end{Definition}
 
-\subsection{Stochastich Differential Equations}
-The \emph{stochastic differential equation} arise from the need to describe the
-presence of intrisic noise that effects the evolution. Let \(X\) a quantity whose
-time evolution is regulated by a determistic term \(\mu{(X,t)}\), as well as a noisy
+\subsection{Stochastic Differential Equations}
+The \emph{stochastic differential equation} arises from the need to describe the
+presence of intrinsic noise that affects evolution. Let \(X\) a quantity whose
+time evolution is regulated by a deterministic term \(\mu{(X,t)}\), as well as a noisy
 term \(\xi_t\). We would like to write an equation similar to
 \[\dod{X}{t} = \mu{(X,t)} \textcolor{red}{+ \sigma{(X,t)}\xi_t},\]
-where the noisy term is highlated because we have not a mathematical definition
-of it. Of course \(\xi_t\) must be some sort of stochastic process as defined in 
+where the noisy term is highlighted because we have not a mathematical definition
+of it. Of course, \(\xi_t\) must be some sort of stochastic process as defined in 
 the previous section. This lead to the first important conclusion: the solution of the
 equation will not be a function, but a stochastic process too.
 
-Let try to make the things more formal and give a definition for \(\xi_t\). 
+Let's try to make the difinition more formal and give a definition for \(\xi_t\). 
 We require the following properties to be satisfied:
 \begin{enumerate}
   \item the noise is zero-mean \[\E\left[\xi_t\right] = 0 \quad \forall t;\]
-  \item the noise is completelly uncorrelated  \[\E\left[\xi_t\xi_{t'}\right] = 0 \quad \forall t\neq t';\]
+  \item the noise is completely uncorrelated  \[\E\left[\xi_t\xi_{t'}\right] = 0 \quad \forall t\neq t';\]
   \item the noise is stationary (denoting by \(p\) the probability density function)
         \[p{(\xi_{t_1},\dots,\xi_{t_k})} = p{(\xi_{t_1 + t},\dots,\xi_{t_k + t})} \quad \forall t.\]
 \end{enumerate}
-The generality is not lost with the first property, since the excpected value produces a drift,
-that can be included in the function \(\mu\). Also the third property is not restricting too much 
-the type of noise, since \(\sigma\) can incorporate eventual variation of the variance\footnote{
-  Of course the property 3 is not just asking to have stationary variance, but the stationarity
+The generality is not lost with the first property, since the expected value produces a drift,
+that can be included in the function \(\mu\). Also, the third property is not restricting too much 
+the type of noise, since \(\sigma\) can incorporate an eventual variation of the variance\footnote{
+  Of course, property 3 is not just asking to have stationary variance, but the stationarity
   involves the whole distribution.
 }. The second property is saying that the noise has no memory of what happened in the past;
-the memoryless noise is of course just an approximation of real physics system, but it is still
-good enought to model many systems. Moreover, the noise considered in this work is artificially 
-generated and it fullsills this property, so the general case is not treated here.
+the memoryless noise is of course just an approximation of a real physics system, but it is still
+good enough to model many systems. Moreover, the noise considered in this work is artificially 
+generated and it fulfills this property, so the general case is not treated here.
+
+As we have already mentioned, \(\xi_t\) is not an easy mathematical object to describe, given its non-continuous properties. We, therefore, prefer to analyze its time-integrated version, which we know is a Wiener process.
+The differential equation above can be rewritten in terms of differentials (stochastic and nonstochastic) 
+\[\dif X = \mu{(X,t)}\dif t + \sigma{(X,t)}\dif W_t,\]
+where \(\dif W_t\) it's a Wiener process of duration \(\dif t\).
+This is the standard form of a stochastic differential equation describing a generic Brownian motion. It can be alternately integrated with Itô or Stratonovich, leading to two solutions with different properties.
 
 
-
-
-
-
-
-\subsection{Simulation}
-\texttt{\href{https://en.wikipedia.org/wiki/Euler–Maruyama_method}}
-
-\subsection{References}
-The main source used for the writing of this part are \dots
+\subsection{Numerical integration}
+The Euler method for first-order numerical integration of ordinary differential equations can be extended to include stochastic differentials.
+The core rule doing the substitution
+\[
+  \dif W_t = \xi \sqrt{\dif t} \quad \text{where } \xi \sim \gauss{(0,1)}.
+\]
+For reference, see \cite{wiki2022euler}.
 
 \section{Generalized Hypergeometric functions}
 We include a small appendix where we describe generalized hypergeometric functions.
