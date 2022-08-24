@@ -6,36 +6,39 @@
 
 
 \begin{document}
-  % \input{frontispiece}
-  % \maketitle
+  \input{frontispiece}
+  \maketitle
   
-  % \chapter*{Abstract}
-  % \input{abstract}
-  % \cleardoublepage
+  \chapter*{Abstract}
+  \input{abstract}
+  \cleardoublepage
   \tableofcontents
 
-  % \part{Introduction}
+  \part{Introduction}
   \input{chapters/ml_and_sp}
   \input{chapters/context}
 
-  % \part{Results}
-  % \input{chapters/squared-activation-initial-conditions}
-  % \input{chapters/spherical-constraint}
-  % \input{chapters/stochasticity.tex}
+  \part{Results}
+  \input{chapters/squared-activation-initial-conditions}
+  \input{chapters/spherical-constraint}
+  \input{chapters/stochasticity.tex}
 
-  % \part{Conclusion}
-  % \input{chapters/conclusions}
+  \part{Conclusion}
+  \input{chapters/conclusions}
 
-  % \part{Appendices}
+  \part*{Appendices}\addcontentsline{toc}{part}{Appendices}
   \appendix
-  % \input{chapters/derivation-quadratic-ODE}
-  % \input{chapters/derivation-spherical-ode}
-  % \input{chapters/brownian_variance}
+  \input{chapters/derivation-quadratic-ODE}
+  \input{chapters/derivation-spherical-ode}
+  \input{chapters/brownian_variance}
   \input{chapters/math}
   
   \cleardoublepage
-  % \nocite{*}
-  \printbibliography
+  \nocite{*}
+  \printbibliography[heading=bibintoc]
+
+  % \chapter*{Acknowledgments}
+  % WIP
 
 
 \end{document}

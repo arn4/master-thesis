@@ -143,4 +143,24 @@ generated and it fullsills this property, so the general case is not treated her
 \subsection{References}
 The main source used for the writing of this part are \dots
 
-\section{Generalized Hypergepmetric functions}
+\section{Generalized Hypergeometric functions}
+We include a small appendix where we describe generalized hypergeometric functions.
+These functions are often the result of computing statistics on stochastic processes,
+such as first passage times.
+
+\begin{Definition}[Pochhammer symbol]
+  The Pochhammer symbol of \(a\in\Real\) is defined as 
+  \[
+    (a)_n \coloneqq \frac{\Gamma(a+n)}{\Gamma(a)},
+  \]
+  where \(\Gamma\) is the \emph{gamma function} and \(n\ge0\) is an integer.
+\end{Definition}
+
+\begin{Definition}[Generalized Hypergeometric function]
+  The generalized hypergeometric function \(\prescript{}{p}F_q{\left(a_1,\dots a_p; b_1,\dots,b_q;z\right)}\) is
+  \[
+    \prescript{}{p}F_q{\left(a_1,\dots a_p; b_1,\dots,b_q;z\right)} =
+    \sum_{n=0}^{+\infty} \frac{(a_1)_n\cdots(a_p)_n}{(b_1)_n\cdots(b_q)_n}\frac{z^n}{n!}.
+  \]
+\end{Definition}
+

@@ -1,12 +1,12 @@
 \chapter{Machine Learning and Statistical Physics}
 In this introductory chapter, we give an overview of machine learning and its possible applications.
 Focusing in particular on one of the most successful models, namely deep neural networks,
-we give an example of a problem that can be solved through supervised learning.
+we give an introduction to supervised learning problems.
 
-We then move on to establish what connections machine learning,
-belonging to the field of computer science, has with statistical physics.
-We show the connections there are between these two disciplines
- and give a few examples where the tools of statistical physics can be used to study computer models.
+We then move on to establish what connections machine learning has with statistical physics,
+altought the former belongs to computer science, while the latter belongs to natural science.
+We show the connections between these two disciplines
+and give a few examples where the tools of statistical physics can be used to study computer models.
 
  \section{Machine Learning}
  Machine learning is that branch of artificial intelligence that builds models for machines to learn from data without explicit instructions.
@@ -103,18 +103,22 @@ they are known as \emph{weight} and \emph{bias} respectively.
 Figure~\ref{fig:nn_perceptron} shows a schematic view of a perceptron.
 \begin{figure}
   \centering
-  \begin{subfigure}{0.345\textwidth}
-    \includegraphics[width=1.\textwidth]{example-image-duck}
+  \begin{subfigure}{0.495\textwidth}
+    \begin{tikzpicture}[x=1.5cm, y=1.2cm, >=latex]
+      \input{figures/perceptron.tex}
+    \end{tikzpicture}
     \caption{perceptron}
     \label{fig:nn_perceptron}
   \end{subfigure}
-  \begin{subfigure}{0.645\textwidth}
-    \includegraphics[width=1.\textwidth]{example-image-duck}
+  \begin{subfigure}{0.495\textwidth}
+    \begin{tikzpicture}[x=1.cm, y=1.cm, >=latex]
+      \input{figures/neural-network.tex}
+    \end{tikzpicture}
     \caption{fully connected deep neural network}
     \label{fig:nn_ffnn}
   \end{subfigure}
   \caption{
-    schematic view of neural networks.
+    schematic view of and perceptron neural networks.
   }
   \label{fig:nn}
 \end{figure}
@@ -162,5 +166,43 @@ It is common practice to use architectures with a number of parameters (and thus
 The point of this work is precisely to create a model in which a description of the learning process can be derived analytically, with the ultimate goal of demonstrating that \emph{overparametrization} not only does not cause overfitting, but also produces a speed-up of the process.
 
 Being able to solve these and all the other problems that plague neural networks understanding is a hot topic in machine learning research. Not only would it lead to the advancement of theoretical knowledge, but it would be of vital importance for designing ever more efficient algorithms and reaching even more milestones than we currently have.
+
 \section{Statistical physics of learning}
+Statistical physics offers tools particularly well suited to theoretically address the study of machine learning models.
+As we have seen, in machine learning one must handle probability distributions with very high dimensionality and systems with a considerable number of degrees of freedom,
+which exactly the purpose for which statistical physics was developed.
+
+The link between statistical physics and computer science originated well before the advent of machine learning;
+techniques such as \emph{simulated~annealling}~\cite{kirkpatrick1983optimization},
+have been introduced since the 1970s to solve optimization problems with heuristics inspired by thermodynamics.
+The picture of the cooling of a material can give us an intuition of why deep learning is strictly related to statistical physics.
+The loss that is optimized for training a neural network is highly non-convex, exactly like the hamiltonian of a glassy system.
+When cooling a glass, a different schedule can lead to a very different state of the matter;
+in the same way, the algorithm used to descend the loss can take to different solutions for the deep neural network.
+
+Physicists who have worked on machine learning problems have brought a different perspective to that usually used in computer science;
+in fact, in the latter it is usual to classify the difficulty of a problem by focusing on the \emph{worst case}.
+This viewpoint leads to strong guarantees of success for the model, but at the same time the obtained bounds are very loose and do not reflect what is observed in practical experiments.
+In contrast, the results that follow from statistical physics are on the \emph{average case} since we usually tend to consider the thermodynamic limit,
+which then becomes a high-dimensional limit.
+This description is often closer to experimental observations and that is why it is successful.
+
+Focusing on neural networks, statistical physics has begun work on simplified models of unsupervised learning, and inference more generally, since the 1980s.
+Some pioneering work measured \emph{capacities} and \emph{learning~curves} of some simplified nerworks, such as the Hopfield~model~\cite{hopfield1982neural}.
+Statistical inference is easylly mapped into statistical physics contest by assuing that the inferedd distribution is a Boltzman distribution.
+It can be shown that quantities of interest in the statistical context, such as log-likelihood, represent thermodynamic potentials in the physical context;
+all the tools developed by statistical physics can thus be transferred to the study of models si unsupervised learning.
+The research field is still very active with several fronts open.
+As an example alone, new algorithms for training \emph{restricted boltzmann machines} based on TAP expansion at the second order have recently been introduced,
+which perform better than previously known algorithms~\cite{gabrie18training}.
+
+Some work on supervised learning with deep neural networks has been done as well.
+The classical replica trick analysis has been applied on simple architectures back in the 80s,
+and it is still explored nowdays.
+In the 90s the study of the dynamics of a two-layer neural network was first proposed;
+in recent years this has been taken up and studied by several authors and will also be the starting point of this paper.
+
+A great work summarizing the history of statistical physics of learning and describing the fronts on which it has been working in recent years was done by Gabrié~\cite{gabrie2020mean}.
+We have limited ourselves to a very quick introduction,
+hoping to have given an idea of how this field based on statistical physics is one of the most important for the theoretical study of machine learning.
 

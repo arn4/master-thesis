@@ -1,0 +1,57 @@
+\tikzset{
+  inputnode/.style={
+    rectangle,
+    draw,
+    minimum size=.3cm
+  },
+  every neuron/.style={
+    circle,
+    draw,
+    minimum size=.5cm
+  },
+  neuron missing/.style={
+    draw=none, 
+    fill=none, %<- added
+    scale=2,
+    text height=0.333cm,
+    execute at begin node=\color{black}$\vdots$
+  }
+}
+
+\pgfmathparse{rnd}
+\xdefinecolor{MyColor}{rgb}{\pgfmathresult, 1.0, 1.0}
+
+\foreach \m [count=\y] in {1,2,3,missing,4,5,6} %<- removed "/\l" here 
+  \node [fill=black,inputnode/.try, neuron \m/.try,blue!50] (input-\m) at (0,2.5-\y) {};
+% added "fill=green" in the line above
+
+\foreach \m [count=\y] in {1,2,missing,3,4}
+  \node [every neuron/.try, neuron \m/.try,red!50] (hidden-\m) at (2,1.5-\y) {};
+
+\foreach \m [count=\y] in {1}
+  \node [every neuron/.try, neuron \m/.try,red!50] (output-\m) at (4,-.5-\y) {};
+
+\foreach \l [count=\i] in {1,2,3,4,5,d}
+  \path (input-\i) -- ++(-1,0)
+   node [midway] {$x_\l$};
+
+% \foreach \l [count=\i] in {1,n}
+%   \draw [->] (output-\i) -- ++(1,0)
+%    node [above, midway] {$a_\l$};
+
+\foreach \i in {1,...,6}
+  \foreach \j in {1,...,4} {
+    \edef\R{\pdfuniformdeviate 255}
+    \edef\G{\pdfuniformdeviate 255}
+    \edef\B{\pdfuniformdeviate 255}
+    \xdefinecolor{MyColor}{RGB}{\R,\G,\B}
+    \draw [->,MyColor] (input-\i) -- (hidden-\j);
+  }
+
+
+\foreach \i in {1,...,4}
+  \foreach \j in {1}
+    \draw [->] (hidden-\i) -- (output-\j);
+
+% \foreach \l [count=\x from 0] in {Eingangs-, Ausgangs-}
+%   \node [align=center, above] at (\x*4,2) {\l \\ Neuronen};
