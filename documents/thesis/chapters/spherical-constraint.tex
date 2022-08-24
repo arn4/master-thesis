@@ -1,18 +1,18 @@
 \chapter{Spherical Constraint}
-In this chapter we investigate the problem in a different paradigm than what we did before.
+In this chapter, we investigate the problem in a different paradigm than what we did before.
 With the aim of explicitly discriminating between norm learning and other learning steps,
 we fix the value of the norm of weights at each step of the gradient descent.
 A new dynamic emerges, from which, through the study of the associated differential equations,
 we will derive some interesting properties of the process.
 
-In the first section of the chapter we will give a mathematical defiition of the dynamics we will use and derive the associated differential equations.
-In the next parts we will apply what we found to phase retrivial, and then generalize step by step to the case of a generic committee machine.
+In the first section of the chapter, we will give a mathematical definition of the dynamics we will use and derive the associated differential equations.
+In the next parts we will apply what we found to phase retrieval, and then generalize step by step to the case of a generic committee machine.
 
 
 \section{Constrainted dynamics and differential equations}
-In this section we adapt the dynamics, both for gradient descent and differential equations, to the new spherical constraint.
-The derivation we present it's general and it does not assume anything on the activation function;
-the results we will present will therefore be valid for any choice of activation function.
+In this Section, we adapt the dynamics, both for gradient descent and differential equations, to the new spherical constraint.
+The derivation we present it's general and it does not assume anything about the activation function;
+the results we will present will therefore be valid for any choice of the activation function.
 We will use the notation introduced in Chapter~\ref{chap:context}.
 
 We start by assuming that all the weights we deal with belong to the sphere in \(d\) dimensions of radius \(\sqrt{d}\)
@@ -27,7 +27,7 @@ exactly \(\sqrt{d}\) at every step of the process. We modify the update rule as 
 \[ \w^{\nu+1}_j =\frac{\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}}{\left\|\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}\right\|}\sqrt{d}.\]
 %todo: parla un po' delle varie possibilitá di gradiente e del perché alla fine abbiamo scelto questa.
 We might naively think that it may suffice to take the component of the gradient tangent to the hypersphere,
-and move in that direction using therefore as an update rule
+and move in that direction using therefore an update rule
 \[
   \w^{\nu+1}_j = \w^{\nu}_j - \gamma \left[
     \nabla_{\w_j}{\loss} - \left(\frac{\w^{\nu}_j}{\sqrt{d}}\cdot\nabla_{\w_j}{\loss}\right)\frac{\w^{\nu}_j}{\sqrt{d}}
@@ -35,19 +35,19 @@ and move in that direction using therefore as an update rule
 \]
 Unfortunately, this is not enough to maintain the spherical constraint on the weights.
 The process we are analyzing is discrete, and it is the finite learning rate that causes the weights to lose the required normalization.
-In order to use the gradient tangent to the surface we must take the limit \(\gamma\to0\).
+In order to use the gradient tangent to the surface, we must take the limit \(\gamma\to0\).
 This regime is known as \emph{gradient flow} and has already been used to study two-layers neural networks (in example \cite{chizat2018global}).
 However, it is not what we want to study, so we will continue with the first update rule we proposed.
 
 The update rule can be directly used for simulating the training process of a committee
 machine, but it requires some work before it can be used for deriving some differential equations.
-In particular, we want to find it's expansion for \(d\to+\infty\), keeping only leading orders terms.
-Before proceeding to the expansion, we analize the order of single terms,
-rembering the quantities we are dealing with are random variables.
+In particular, we want to find its expansion for \(d\to+\infty\), keeping only leading orders terms.
+Before proceeding to the expansion, we analyze the order of single terms,
+remembering the quantities we are dealing with are random variables.
 
-We recall that the gradient is vector of random variables because of its dependence on \(\vec{x}^\nu\).
+We recall that the gradient is a vector of random variables because of its dependence on \(\vec{x}^\nu\).
 To be precise, also the displacement \(\dsp\) is a random variable, but the order of its value does not scale with \(d\),
-so for our purpose it does not count. The gradient of the loss is given by
+so for our purpose, it does not count. The gradient of the loss is given by
 \[\nabla_{\w_j}{\loss} = -\frac{1}{p}\dsp^\nu_j \frac{\vec{x}^\nu}{\sqrt{d}}.\]
 We can show that both the norm and the scalar product with a weight vector are order 1
 \[\begin{split}
@@ -61,7 +61,7 @@ We can show that both the norm and the scalar product with a weight vector are o
 \end{split}\]
 
 We are now ready to write the update rule expansion.
- Let's start by computing the the normalization factor
+ Let's start by computing the normalization factor
 \[\begin{split}
   \frac{1}{\left\|\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}\right\|} =&
     \left[\left(\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}\right)\cdot\left(\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}\right)\right]^{-\frac12} \\
@@ -69,7 +69,7 @@ We are now ready to write the update rule expansion.
     =&\frac{1}{\sqrt{d}}\left[1- \frac1d\left(2\gamma\w^{\nu}_j\cdot \nabla_{\w_j}{\loss}-\gamma^2\left\|\nabla_{\w_j}{\loss}\right\|^2\right)\right]^{-\frac12} \\
     =&\frac{1}{\sqrt{d}}\left[1+ \frac{1}{2d}\left(2\gamma\w^{\nu}_j\cdot \nabla_{\w_j}{\loss}-\gamma^2\left\|\nabla_{\w_j}{\loss}\right\|^2\right)+\smallo{d^{-1}}\right]
 \end{split}\]
-We can now plug this expansion back in the original update rule
+We can now plug this expansion back into the original update rule
 \[
   \w^{\nu+1}_j =\left(\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}\right)\left[1+ \frac{1}{2d}\left(2\gamma\w^{\nu}_j\cdot \nabla_{\w_j}{\loss}-\gamma^2\left\|\nabla_{\w_j}{\loss}\right\|^2\right)+\smallo{d^{-1}}\right]\sqrt{d}.
 \]
@@ -90,10 +90,10 @@ the accounts for \(\Q\) are similar, just a bit more tedious.
     \right] + \smallo{d^{-1}}.
 \end{split}\]
 We can now take the limit \(d\to+\infty\), claiming that the Theorem~\ref{thm:process_to_ode_goldt} is still valid.
-It's not hard to belive that it is, since in the right-hand-side we have expression of the same kind
+It's not hard to believe that it is, since on the right-hand side we have expressions of the same kind
 as those in the original version of the theorem; we will make the similarity explicit in a moment.
-Indeed, if the hypothesis are met, than we have the same ``concentarting to mean''behaviour we have already encutered.
-The differential equation that describe the evolution of \(\M\) is
+Indeed, if the hypothesis is met, then we have the same ``concentrating to mean'' behavior we have already encountered.
+The differential equation that describes the evolution of \(\M\) is
 \[
   \dod{\left[\M{\left(t\right)}\right]_{jr}}{t} =\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega}{(t)})}}}{\left[\frac{\gamma}{p} \dsp_j \lf_r^* - \frac{\left[\M{\left(t\right)}\right]_{jr}}{2}\left(2\frac{\gamma}{p}\dsp^\nu_j\lf^\nu_j + \frac{\gamma^2}{p^2} {\dsp^\nu_j}^2\right)\right]};
 \]
@@ -103,7 +103,7 @@ Using the definitions introduced in Equations~\eqref{eq:genericODEforM}~and~\eqr
 \end{equation}
 Essentially, the spherical constraint can be imposed by using a term proportional to the unconstrainted \(\Q\) update.
 
-Without reporting all the calculations, we can write an analougus differential equation for \(\Q\) evolution
+Without reporting all the calculations, we can write an analogous differential equation for \(\Q\) evolution
 \begin{equation} \label{eq:genericsphericalQ}
   \dod{\left[\Q{\left(t\right)}\right]_{jl}}{t} = \Phi_{jl}{(\vec{\Omega})} - \frac{\left[\Q{\left(t\right)}\right]_{jl}}{2}\left(\Phi_{jj}{(\vec{\Omega})}+\Phi_{ll}{(\vec{\Omega})}\right).
 \end{equation}
@@ -113,17 +113,17 @@ as it should be since the norm of spherical vectors must not change.
 The two equations we derived are valid for any activation function; we can find an explicit form for the squared activation using
 the expression of \(\Phi\) and \(\Psi\) we wrote in Equations~\eqref{eq:quadraticODEs}.
 In Figure~\ref{fig:example-spherical} we present an example of the new dynamic
-with a comparsion to the unconstrained one.
+with a comparison to the unconstrained one.
 \begin{figure}
   \centering
   \includegraphics[width=0.7\textwidth]{figures/example-spherical.pdf}
   \caption{
-    comparsion between spherical constrainted and unconstrained dynamics starting from the same intial condition.
+    comparison between spherical constrained and unconstrained dynamics starting from the same initial condition.
     As we might expect in unconstrained dynamics less time is required for learning since
     there are no constraints on the gradient descent path.
     Since the simulation is not an average over several trajectories,
     it is also possible to observe the noise introduced by the stochasticity of the process;
-    the constrained dynamics is less subject to noise and consequently the solution of the differential equations
+    the constrained dynamics are less subject to noise and consequently the solution of the differential equations
     better approximates the single trajectory of the simulation.
   }
   \label{fig:example-spherical}
@@ -131,10 +131,10 @@ with a comparsion to the unconstrained one.
 
 \subsection{Initial conditions} \label{subsec:initial-condition-phaseretrivial}
 We briefly discuss how to choose initial conditions.
-The idea of having each component chosen randomly had removed the symmetries that prevented the differential equations from capturing all phases of the dynamics.
-We would like to do the same thing in this new paradigm, but adding the spherical constraint as well.
+The idea of having each component chosen randomly removed the symmetries and prevented the differential equations from capturing all phases of the dynamics.
+We would like to do the same thing in this new paradigm but add the spherical constraint as well.
 
-In order to have an uniform spherical vector, it's sufficient to normalize a normal i.i.d. vector
+In order to have a uniform spherical vector, it's sufficient to normalize a normal i.i.d. vector
 \[
   \tilde{w}_{ji} \sim \gauss{(0,1)}\qquad\text{from which}\qquad \w_{j} = \sqrt{d}\frac{\tilde{\w}_{j}}{\left\|\tilde{\vec{w}_j}\right\|}.
 \]
@@ -142,17 +142,17 @@ A completely similar initialization can be done for teacher vectors
 \[
   \tilde{w}^*_{ri} \sim \gauss{(0,1)}\qquad\text{from which}\qquad \w^*_{r} = \sqrt{d}\frac{\tilde{\vec{w}}_{r}}{\left\|\tilde{\vec{w}_j}\right\|}.
 \]
-The set including all these vectors (both teacher and student) is nearly orthonormal in high dimension.
-The diagonals of \(\Q\) and \(\P\) are all fixed to be 1. The non-diagonal terms of \(\Q\) and \(\M\) are all identicaly
-distributed but only pairwise indipendent. Their distribution is the same we described for \(m(0)\) in Section~\ref{subsec:random-initial-conditions};
+The set including all these vectors (both teacher and student) is nearly orthonormal in high dimensions.
+The diagonals of \(\Q\) and \(\P\) are all fixed to be 1. The non-diagonal terms of \(\Q\) and \(\M\) are all identically
+distributed but only pairwise independent. Their distribution is the same we described for \(m(0)\) in Section~\ref{subsec:random-initial-conditions};
 what interests us is that in the \(d\to\infty\) limit we can approximate it as a Gaussian with zero mean and variance \(1/d\).
 
 \section{Phase retrivial} \label{sec:spherical_phase_retrivial}
 Now that we have introduced the spherical constraint,
-we can proceed to analyze the dynamics of learning in the simplest case: the phase retrivial.
-We can use the expressions for \(\Phi\) and \(\Psi\) computed in Equations~\eqref{eq:phase_retrivial},
+we can proceed to analyze the dynamics of learning in the simplest case: phase retrieval.
+We can use the expressions for \(\Phi\) and \(\Psi\) computed in Equations~\eqref{eq:phase_retrieval},
 and plug them inside Equations~\eqref{eq:genericsphericalQ}~and~\eqref{eq:genericsphericalM} to get the 
-differential equations for spherical phase retrivial dynamics.
+differential equations for spherical phase retrieval dynamics.
 
 The order parameters are reduced to a single scalar.
 In fact \(\rho=1\) and \(q(t)=1\) since both \(\w\) and \(\w^*\) are constrained on the sphere.
@@ -165,17 +165,17 @@ The differential equation for \(m(t)\) is
 Recalling that \(m\to-m\) symmetry applies,
 we can substitute \(m\) for its absolute value without changing the description of the dynamics.
 
-The theoreical risk is function of the only order parameter \(m\) and takes this form
+The theoretical risk is a function of the only order parameter \(m\) and takes this form
 \[
   \risk{(m)} = 2(1-m^2).
 \]
 
-It is clear that for the learning is all the better the more the value of \(m^2\) is close~to~1.
+It is clear that the learning is all the better the more the value of \(m^2\) is close~to~1.
 Without loss of generality we assume \(m>0\): for the network to learn we must impose that \(\od{m{(t)}}{t}>0\)\footnote{
-  A priori one could imagine asking that the derivative always be negative, so that the value of \(m\) reaches -1.
+  A priori one could imagine asking that the derivative always be negative so that the value of \(m\) reaches -1.
   As we will show later, however, \(m=0\) is a repulsive fixed point of the dynamics, so it cannot be crossed.
 }.
-Negleting the term \(4\gamma^2\Delta\) and imposing the right-hand-side of Equation~\eqref{eq:spherical-phaseretrivial} to be positive,
+Neglecting the term \(4\gamma^2\Delta\) and imposing the right-hand-side of Equation~\eqref{eq:spherical-phaseretrivial} to be positive,
 we get the following condition on the learning rate
 \[\gamma<\frac16 \approx \num{0.167}.\]
 This condition was derived using differential equations, but it is valid as well by simulating gradient descent.
@@ -185,23 +185,23 @@ Figure~\ref{fig:example-spherical-not-converging} shows an example of dynamics i
   \centering
   \includegraphics[width=0.6\textwidth]{figures/spherical/not-converging-phase-retrivial.pdf}
   \caption{
-    example of phase retrivial with \(\gamma=0.2>\frac16, \Delta=\num{1e-3}\).\\
+    example of phase retrieval with \(\gamma=0.2>\frac16, \Delta=\num{1e-3}\).\\
     As predicted, the process is not converging to a minimum, rather it stops at the maximum.
   }
   \label{fig:example-spherical-not-converging}
 \end{figure}
 
-We can now turn to analyzing how good the learning is as a function of the parameters.
+We can now turn to analyze how good the learning is as a function of the parameters.
 Clearly, the final value of \(m{(t)}\) can only be a fixed point in Equation~\eqref{eq:spherical-phaseretrivial}.
 By imposing that the derivative is zero, we find the following stationary points
 \[m_{f,0} = 0 \qquad\text{and}\qquad m_{f,\pm} = \pm\sqrt{1-\frac{\gamma\Delta}{2(1-6\gamma)}}.\]
 \(m_{f,0}\) is repulsive, so essentially we stay there only if we start with \(\w\) and \(\w^*\) perfectly orthogonal.
-\(m_{f,\pm}\) are an attractive points and represent the same vector except for symmetry. The associated final risk is 
+\(m_{f,\pm}\) are attractive points and represent the same vector except for symmetry. The associated final risk is 
 \[
   \lim_{t\to\infty}\risk(t) = \frac{\gamma\Delta}{1-6\gamma}.
 \]
 This result allowed us to formally demonstrate that the error committed on average by the student is proportional to the noise of the samples used for training.
-In addition we find confirmation of another empirically known fact:
+In addition, we find confirmation of another empirically known fact:
 decreasing the learning rate leads to more accurate learning, even if, as we will show in a moment,
 this means slowing down the process.
 
@@ -212,7 +212,7 @@ the same calculation we did in Section~\ref{subsec:random-initial-conditions}
   \E\left[m^2(0)\right] = \frac1d.
 \]
 In the high dimensional limit, the initial value of \(|m|\) is close to 0, so we can expand Equation~\eqref{eq:spherical-phaseretrivial} keeping only linear terms.
-Solving the obtained equation give us an approximate expression for the evolution of \(m(t)\) in the first phase of the learning process.
+Solving the obtained equation gives us an approximate expression for the evolution of \(m(t)\) in the first phase of the learning process.
 \[\begin{split}
   \dod{|m{(t)}|}{t} =& \frac{|m{(t)}|}{2}\left[8\gamma(1-6\gamma)-4\gamma^2\Delta\right], \quad |m{(0)}| = \sqrt{\frac{\pi}{2d}} \\
   |m{(t)}| =& \sqrt{\frac{\pi}{2d}} \exp\left[\left(4\gamma(1-6\gamma)-2\gamma^2\Delta\right)t\right].
@@ -229,12 +229,12 @@ but it may increase the variance of the trajectories thus estimated.
 However, the difference factor is \(\pi/2\), which once inside a logarithm is no longer so relevant;
 we will continue with our choice keeping in mind the small error it may have introduced.
 
-Let \(T\) the relative difference respect to the initial value of the risk where the exit-time is measured.
+Let \(T\) the relative difference respect to the initial value of the risk where the exit time is measured.
 The exit time can be obtained by solving the equation
 \[
   (1-T)\risk_\text{apprx}{(0)} = \risk_\text{apprx}{\left(t^\text{(pr)}_e\right)};
 \]
-the final expression for the exit-time is
+the final expression for the exit time is
 \[
   t^\text{(pr)}_e = \frac{\log\left[1+T(d-1)\right]}{2\left(4\gamma(1-6\gamma)-2\gamma^2\Delta\right)}.
 \]
@@ -256,7 +256,7 @@ The result we have obtained here can be used to produce one.
 \end{figure}
 
 To conclude, let us discuss the numerical experiments we performed to verify the results we have just reported.
-Figure~\ref{fig:spherical-phase-retrivial-d10000} shows an example of comparsion between our results and actual simulations.
+Figure~\ref{fig:spherical-phase-retrivial-d10000} shows an example of a comparison between our results and actual simulations.
 \begin{figure}
   \centering
   \begin{subfigure}{0.75\textwidth}
@@ -275,7 +275,7 @@ Figure~\ref{fig:spherical-phase-retrivial-d10000} shows an example of comparsion
   }
   \label{fig:spherical-phase-retrivial-d10000}
 \end{figure}
-We can also check whether the formula for exit-time that we derived follows the simulated trend.
+We can also check whether the formula for exit time that we derived follows the simulated trend.
 Referring to Figure \ref{fig:spherical-phase-retrivial-with-d}, we see that for relatively small values of d, the formula does not work.
 That is to be expected since the equations we derived hold only in the limit \(d\to\infty\).
 The asymptotic trend, on the other hand, seems to have been captured correctly by the theoretical formula.
@@ -288,12 +288,12 @@ The asymptotic trend, on the other hand, seems to have been captured correctly b
   \label{fig:spherical-phase-retrivial-with-d}
 \end{figure}
 
-\section{Generalized phase retrivial} %\label{sec:first-plateau-on-sphere}
-We have just found a formula for exit time in the particular case of phase retrivial and would like to extend it to a generic committee machine.
+\section{Generalized phase retrivial}
+We have just found a formula for exit time in the particular case of phase retrieval and would like to extend it to a generic committee machine.
 When \(p\neq1\), in addition to the elements of \(\M\), the non-diagonal entries of \(\Q\) are also variable order parameters;
 consequently, the problem becomes more complex to deal with.
-We therefore decided to analyze the case \(k=1,p>1\) before moving on to the general case.
-The purpose of this model is still to solve the phase retrivial,
+We, therefore, decided to analyze the case \(k=1,p>1\) before moving on to the general case.
+The purpose of this model is still to solve the phase retrieval,
 but giving the student the opportunity to be able to mediate between different vectors \(\w_j\).
 
 The previous section guides us in the generic case: since all the initial \(\M_j\) and \(\Q_{jl}\) are close to zero,
@@ -318,7 +318,7 @@ The inequality is found by imposing that \(\M=\vec{0}\) is an unstable equilibri
   \frac{4 \gamma}{p} -\frac{2 \gamma^2}{p^2} \left(2 +\frac{2}{p} + \frac{8}{p^2} + \Delta \right) > 0 \quad \implies\quad
   \gamma < \frac{p}{1 +\frac{1}{p} + \frac{4}{p^2} + \frac\Delta2}.
 \]
-In this case we can get another inequality, by requiring that the non-diagonal \(\Q\) are deacresing in the regime we are analyzing\footnote{
+In this case, we can get another inequality, by requiring that the non-diagonal \(\Q\) are decreasing in the regime we are analyzing\footnote{
   This request is not necessary, but we still ask it so that the approximate expression of theoretical risk depends on only one exponential.
   It is possible to repeat the analysis even with increasing \(q\)s, but it will not be possible to find a closed formula for exit-time.
   In any case, the inequality on \(\M\) implies that on \(\Q\) except when \(p\in[2,6]\) so the assumption is not unreasonable.
@@ -344,7 +344,7 @@ Let's now compute the risk expression in this case. Using Equation~\eqref{eq:ris
 
 As shown in Section~\ref{subsec:initial-condition-phaseretrivial}, all the \(m_j{(0)}\) and the\(q_{jl}{(0)}\) 
 are random variables distributed as \(\gauss{(0,d^{-1/2})}\), in the limit of high dimension;
-we can therefore compute the expecetd value and the variance of the sum of their squares
+we can therefore compute the expected value and the variance of the sum of their squares
 \[\begin{split}
  &\E\left[\sum_{j=1}^p m_j^2{(0)}\right] = \frac{p}{d}, \qquad
   \Var\left[\sum_{j=1}^p m_j^2{(0)}\right] = \frac{2p}{d^2}, \\
@@ -352,7 +352,7 @@ we can therefore compute the expecetd value and the variance of the sum of their
   \Var\left[\sum_{j=1}^p q_{jl}^2{(0)}\right] = \frac{2p(p-1)}{d^2}. \\
 \end{split}\]
 We used the fact that all these variables are pairwise independent.
-The distribution of these summation is becoming sharper and sharper as you go to the limit \(d\to\infty\),
+The distribution of these summations is becoming sharper and sharper as you go to the limit \(d\to\infty\),
 so we can use the expected values for estimating \(\risk(0)\).
 Combing this consideration with the approximated time evolution of the order parameters,
 we can write down an approximated evolution for the risk
@@ -388,10 +388,10 @@ Figure~\ref{fig:spherical-generalized-phase-retrivial} shows two example of exit
   \end{subfigure}
 
   \caption{
-    example of comparison of two exit times in the generalized phase retrivial; parameters \(\Delta=\num{0.001}, \gamma=0.2p, d=\num{10000}\).
+    example of comparison of two exit times in the generalized phase retrieval; parameters \(\Delta=\num{0.001}, \gamma=0.2p, d=\num{10000}\).
     Both figures are zoomed in on the transition area.
-    It's evident that the difference between theoretical and numerical solution of the Equation~\eqref{eq:exit_time_equation}
-    is not affetcting the estimation in a significantly.
+    It's evident that the difference between theoretical and numerical solutions of the Equation~\eqref{eq:exit_time_equation}
+    is not affecting the estimation in significantly.
   }
   \label{fig:spherical-generalized-phase-retrivial}
 \end{figure}
@@ -399,23 +399,24 @@ Figure~\ref{fig:spherical-generalized-phase-retrivial} shows two example of exit
 
 
 \subsection{Different regimes}
-In this section we will try to push our result further, with the aim of deriving results on the overparametrization of neural networks.
+In this section, we will try to push our result further, with the aim of deriving results on the overparametrization of neural networks.
 We are aware that the formulas derived are not exact, but contain several approximations,
 but we still believe they allow us to make estimates about the benefits of taking a very wide network.
 
 The expression we derived for the exit time is valid for any fixed \(\gamma\) and \(p\).
-Our final goal is to dive an empirical prove that there is a gain of performance by overparametrizing the student,
-in other words taking \(p\) large. If we keep \(\gamma\) fixed, and we enlarge \(p\), the leading orderd of the exit time 
-is \(t_e \propto p\). This is due to the fact that if we have \(p\) weights to learn, thre is a factor \(1/p\) in front of the gradient,
+Our final goal is to dive an empirical proof that there is a gain in performance by overparametrizing the student,
+in other words taking \(p\) large. If we keep \(\gamma\) fixed, and we enlarge \(p\), the leading order of the exit time 
+is \(t_e \propto p\). This is due to the fact that if we have \(p\) weights to learn, there is a factor \(1/p\) in front of the gradient,
 and this makes the process slow down. 
 
 \subsubsection{Fixed $\gamma/p$}
-The correct way to compare the learning between student with different \(p\) is to take the learing rate proportional to \(p\)\footnote{
-  It's not a problem to enlarge the learning rate, since the update term is of order \(\frac{\gamma}{p}\BigO{1}\), so we will never have too big updates.
+The correct way to compare the learning between students with different \(p\) is to take the learning rate proportional to \(p\)\footnote{
+  It's not a problem to enlarge the learning rate, since the update term is of order \(\frac{\gamma}{p}\BigO{1}\),
+  so we will never have too big updates.
 }.
 Therefore, we define the quantity \[\alpha \coloneqq \frac{\gamma}{p},\] and we keep it costant we comparing exit times.
 
-First of all we can derive some inequalities on the value of \(\alpha\),
+First of all, we can derive some inequalities on the value of \(\alpha\),
 which come from the inequalities we derived for the learning rate
 \[\begin{split}
   \alpha <& \frac{p}{8} \quad\text{and}\\
@@ -423,7 +424,7 @@ which come from the inequalities we derived for the learning rate
 \end{split}\]
 As rule of dumb, if \(\alpha<\frac16\) then both this two are satisfied for every \(p\in[1,+\infty)\)\footnote{
   We remark that if \(p=1\) then the first of the two inequalities is not there since we fall back in the 
-  phase retrivial case, where there are no non-diagonal \(\Q\).
+  phase retrieval case, where there are no non-diagonal \(\Q\).
 }. 
 
 Getting to the point, the expression of exit time rephrased in term of \(\alpha\) is 
@@ -431,19 +432,18 @@ Getting to the point, the expression of exit time rephrased in term of \(\alpha\
   t^\text{(gpr)}_e = \frac{\log\left[\frac12+\frac{1}{2p}+\frac{T}{2}\left(1+\frac{1}{p}\right)(d-1)\right]}{8\alpha} \frac{1}{1- \alpha\left(1+\frac{1}{p}+\frac{4}{p^2}+\frac{\Delta}{2}\right)}
 \]
 Leaving aside the logarithmic factor, whose dependence on \(p\) is practically irrelevant, 
-it's clear that by incresing \(p\) we get a speedup in learning, although it is limited, and does not go to infinity as \(p\) increases.
-There is a thoretical limit on the lowest time that can be achivied, even in noiseless situation, with \(p\) as large as possible.
+it's clear that by increasing \(p\) we get a speedup in learning, although it is limited, and does not go to infinity as \(p\) increases.
+There is a theoretical limit on the lowest time that can be achieved, even in a noiseless situation, with \(p\) as large as possible.
 %todo: mettici una figura di come cresce
 
 \subsubsection{Optimal $\alpha$ at every $p$}
-We have shown for phase retrivial that there is a theoretical optimal learning rate that makes the exit time minimum.
-It's not hard to belive that a similar behaviour is also present in the case \(p>1\),
+We have shown for phase retrieval that there is a theoretical optimal learning rate that makes the exit time minimum.
+It's not hard to believe that similar behavior is also present in the case \(p>1\),
 with a pattern of the \emph{learnig rate--exit time} curve shaped like the one in Figure~\ref{fig:time_learnignrate_plot}.
 One objection to what we set forth in the previous section might be that the benefit of overparameterization is only because the increase in \(p\) brings the learning rate closer to the optimal value.
-In other words, the decrease in learning time could simply be due to progressively better choice of learning rate as \(p\) changes.
-In orderd to debunk this objection, we should compare the time of exists evaluated at the best possible \(\alpha\) for different \(p\).
-The calculations for this part are done in this Mathematica notebook.
-% todo: metti il link al notebook giusto
+In other words, the decrease in learning time could simply be due to a progressively better choice of learning rate as \(p\) changes.
+In order to debunk this objection, we should compare the exit time evaluated at the best possible \(\alpha\) for different \(p\).
+The calculations for this part are done in this \href{https://github.com/arn4/master-thesis/blob/main/analytical-calculations%20/optimizing-alpha-k%3D1.nb}{Mathematica notebook}.
 
 As we have done before, we can drop the logarithmic factor from time, keeping only this term
 \[
@@ -451,7 +451,7 @@ As we have done before, we can drop the logarithmic factor from time, keeping on
 \]
 We can now introduce \(\alpha_\text{op}(p)\) as the value of \(\alpha\) that minimizes the time \(t{(\alpha,p)}\) at given \(p\). 
 The function \(t{(\alpha,p)}\) is \(\alpha\)-convex in the interval \((0,\alpha_\text{max})\), with \(p\) fixed;
-therefore the minimum coorespond to the stationary point
+therefore the minimum correspond to the stationary point
 \[
   0 = \eval{\dpd{t{(\alpha,p)}}{\alpha}}_{\alpha = \alpha_\text{op}(p)} \quad\text{leads to}\quad 
   \alpha_\text{op}(p) = \frac{p^2}{(2+\Delta)p^2+2 p+8}.
@@ -460,8 +460,8 @@ We can now compute explicitly the best possible learning time at a given \(p\)
 \[
   t_\text{opt}{(p)} \coloneqq t{\left(\alpha_\text{op}(p),p\right)} = \frac{(\Delta +2) p^2+2p+8}{4 p^2}.
 \]
-The most important result is that this is decrasing in \(p\), so the benefits of overparametrization are intact.
-Moreover, we can also quantify the gain of overparametrizing the network as the rateo between the phase retrivial case
+The most important result is that this is decreasing in \(p\), so the benefits of overparametrization are intact.
+Moreover, we can also quantify the gain of overparametrizing the network as the rate between the phase retrieval case
 and the minimum time achievable
 \[
   g{(\Delta)} \coloneqq \frac{t_\text{opt}{(1)}}{\lim_{p\to+\infty}t_\text{opt}{(p)}} = \frac{12+\Delta}{2+\Delta} \approx 6.
@@ -473,10 +473,10 @@ when the network exits the initial regime, our description no longer applies and
 
 
 \section{General Case}
-We can extend our analysis to the most general committee machine, where both \(k\) and \(p\) are aribitrary.
-The derivation does not include any new idea compared to the generlized phase retrivial
+We can extend our analysis to the most general committee machine, where both \(k\) and \(p\) are arbitrary.
+The derivation does not include any new idea compared to the generalized phase retrieval
 
-The diferential equations are slightly modified crespect to the prvious ones;
+The differential equations are slightly modified respect to the previous ones;
 they are derived in Appendix~\ref{app:derivation-spherical-ode} and their final expressions are
 \begin{subequations}\label{eq:cm_linearized_odes}\begin{align}
   \dod{\left[\M{\left(t\right)}\right]_{jr}}{t}
@@ -485,7 +485,7 @@ they are derived in Appendix~\ref{app:derivation-spherical-ode} and their final 
     \right] \left[\M{\left(t\right)}\right]_{jr},\\
   \dod{\left[\Q{\left(t\right)}\right]_{jl}}{t} &= -\frac{8 \gamma}{p^2} \left[1-\frac{8\gamma}{p^2}\right] \left[\Q{\left(t\right)}\right]_{jl}.
 \end{align}\end{subequations}
-One again, the system of equation is fully separated, therefore the only difference between the general case and the previous one is 
+Once again, the system of equations is fully separated, therefore the only difference between the general case and the previous one is 
 the fact that \(\P\) is not a scalar, but a \(k\times k\) matrix instead. The formula for the theoretical risk is
 \[
   \risk{(\Q,\M,\P)} = \frac1k + \frac1p + \frac{1}{p^2}\sum_{j,l=1;j\neq l}^p q^2_{jl} - \frac2p \sum_{j=1}^p m^2_{j} + \frac{1}{k^2}\sum_{r,t=1;r\neq t}^k \rho^2_{rt}
@@ -503,7 +503,7 @@ The approximated risk expression is
 \]
 where \(\omega^{(q)}_{\gamma,p}\) and \(\omega^{(m)}_{\gamma,p,k}\) are properly defined from Equations~\eqref{eq:cm_linearized_odes}.
 
-The exit time can be estimated solving Equation~\eqref{eq:exit_time_equation} with the new approximated risk.
+The exit time can be estimated by solving Equation~\eqref{eq:exit_time_equation} with the new approximated risk.
 If we want an analytical and approximate expression of the solution,
 as before we can neglect the exponential in \(\Q\), yielding
 \[t_e = \frac{\log \left[\frac12 + \frac{1}{2p} - \frac{T}{2k} + \frac{dT}{2k} - \frac{T}{2p} + \frac{dT}{2p} \right]}
@@ -511,10 +511,10 @@ as before we can neglect the exponential in \(\Q\), yielding
 \]
 
 \subsection{Overparameterization gain}
-We repeat here the computation of the gain that can be achivied with overparametrization,
+We repeat here the computation of the gain that can be achieved with overparametrization,
 using the optimal learning rate at every \(p\).
-The full calculations can be found on this Mathematica notebook; 
-the bounds on the learning rate are not reported, but they can be found on the notebbok as well.
+The full calculations can be found in this \href{https://github.com/arn4/master-thesis/blob/main/analytical-calculations%20/optimizing-alpha-k_generic.nb}{Mathematica notebook}; 
+the bounds on the learning rate are not reported, but they can be found in the notebook as well.
 
 The optimal value of \(\alpha\) at a given \(p\) is
 \[
@@ -533,6 +533,6 @@ To conclude, this is the expression for the gain
 where of course we used applied the condition \(p\ge k\).
 If there is no noise, then the gain is always at least 2; 
 if instead the noise it's big then there is no gain at all (even if the learning process would be so slow that the entire training it's useless).
-For the last time we emphasize that these results are to be interpreted as estimates of the order of magnitude of the gain achievable by overparameterization.
+For the last time, we emphasize that these results are to be interpreted as estimates of the order of magnitude of the gain achievable by overparameterization.
 
-In the next chapter we will try to refine our results to obtain more precise learning time estimates, but they will obviously lose analytical handling.
+In the next chapter, we will try to refine our results to obtain more precise learning time estimates, but they will obviously lose analytical handling.

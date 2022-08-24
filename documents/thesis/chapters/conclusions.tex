@@ -39,7 +39,12 @@ This choice would be beneficial since it would also allow us to use more realist
 If the previous goal were to be achieved, one could then consider making the networks deeper and see how the output times relate as a function of the width of the various layers. This is an ambitious task, but a stepwise analysis could lead us to some good results.
 \begin{figure}
   \centering
-  \includegraphics[width=.7\textwidth]{figures/symmetric-ic-expected-plateaus.jpg}
+  \begin{tikzpicture}[
+    x=1.cm,
+    y=1.cm
+  ]
+    \input{figures/final_learning_phases.tex}
+  \end{tikzpicture}
   \caption{
     pictorial representation of the different phases of learning for symmetric initial conditions.
   }

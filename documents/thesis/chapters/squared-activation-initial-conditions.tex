@@ -180,9 +180,9 @@ In this section, we describe how we conducted the numerical experiments to verif
 our results. We discuss some common problems that need to be addressed in every kind of simulation,
 while the issues specific to an individual task will be discussed in the appropriate section.
 
-All the code written for this work is contained in this Python package;
+All the code written for this work is contained in this \href{https://github.com/arn4/master-thesis/tree/main/code/committee_learning_package}{Python package};
 it can be downloaded and the experiments can be reproduced.
-% todo: link al python package.
+
 
 \subsection{Simulation of the training}
 As we already said, the training of a committee machine looked at through the order parameters
@@ -280,7 +280,7 @@ In Figure~\ref{fig:finite_size_example} we present an example of finite size eff
     \includegraphics[width=.7\textwidth]{example-image-duck}
 
     \caption{
-      example of finite size effect. 
+      example of finite size effect. For details on how to interprete thi plot see Subsection~\ref{subsec:simulation_example}.
     }
     \label{fig:finite_size_example}
   \end{center}
@@ -324,15 +324,73 @@ we get that the step size must satisfy
 The usual choice for our numerical experiments is \(\delta t = \frac1d\);
 this should ensure the negligibility condition respect the error of the Theorem.
 
-\subsection{Example of a numerical experiment}
-% todo: fai tutta questa sezione
-% Nella mia testa metto un esperimento numerico a caso, giusto per far vedere come analizzeró
-% i sucessivi esperimenti. Tipo metto il classico digramma del risk, faccio vedere 
-% che piú o meno c'é un matching tra ODE e sim, faccio notare che la scala è logaritmica,
-% spiegare che spesso dobbiamo mediare per avere qualcosa di sensato.
-% Devo assolutamente dire anche che spesso guardo |m| e non m perché c'é la simmetria.
-% Devo dire che gamma é piccolo; a tal proposito compariranno tante disuguaglianze nelle varie ODE
+\subsection{Example of a numerical experiment} \label{subsec:simulation_example}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.6\textwidth]{figures/simulation_examples_trajectory.pdf}
 
+    \caption{
+      the trajectory of both simulation and differential equations solutions in our example.
+    }
+    \label{fig:simulation_example_trajectory}
+  \end{center}
+\end{figure}
+In this Section, we briefly present an experiment where we compare the simulation of committee machine training with the corresponding numerical simulation.
+Although we do not present any results, we will use them to introduce some analysis tools that will be repeated in all future experiments.
+We do not discuss the initial condition in this part since we will spend a lot of time on them in the next parts.
+
+Let's start from the parameters used: \(d=1000, k=5, p=10, \gamma = 1., \Delta = \num{1e-3}, \delta t = \num{1e-3} \).
+The only thing to be commented on here are the values of \(\Delta\) and \(\gamma/p\):
+requiring the convergence of the process implies that they must not be too large;
+we will derive precise inequalities in the sequel that will tell us exactly the maximum values that these two parameters can have.
+For the moment, it is important to remember that they can be considered small enough to allow the second term of the equation for \(\Q\) to be considered at a lower order than the other terms of the ODEs.
+
+Let's look at the plot of the risk through the process, in Figure~\ref{fig:simulation_example_trajectory}.
+We use a logarithmic scale on both axes because we believe that's the best way to visualize what is going on in the process.
+The simulation and solution trajectories of the differential equations match even though \(d\) is not very large;
+this suggests that what has been exhibited so far is working. The simulated trajectory is subject to the noise introduced by the stochasticity of the training process,
+so it will fluctuate around the trajectory defined by the solution of the differential equation. 
+In the next Sections, we will often be interested in the transition between the initial flat phase and the onset of the fall (we call this transition ``drop from plateau'').
+To make precise measurements in this area we will average several simulated trajectories in order to filter out the random part of the process.
+
+To conclude, we present the analysis of the order parameter matrices, in Figure~\ref{fig:simulation_example_macroscopic}.
+One important thing to say is that, given the symmetries, we discussed earlier,
+it is sufficient to analyze the modulus of the matrix \(|\M\). 
+We see from the figure that even starting from a completely uncorrelated state,
+the dynamics found both student-teacher correlations and student-student correlations.
+Truth be told, we will not report this kind of graph for our later experiments mainly for reasons of space.
+Nevertheless, the usage of plots such as these was very helpful in the analysis of the model.
+Although in the future we will only show plots of the kind in Figure~\ref{fig:simulation_example_trajectory},
+it was not the only tool used for analysis.
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/simulation_examples_Q_start.pdf}
+    \caption{\(\Q\) at start}
+  \end{subfigure}
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/simulation_examples_M_start.pdf}
+    \caption{\(|\M|\) at start}
+  \end{subfigure}
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/simulation_examples_Q_end.pdf}
+    \caption{\(\Q\) at end}
+  \end{subfigure}
+  \begin{subfigure}{0.495\textwidth}
+    \includegraphics[width=1.\textwidth]{figures/simulation_examples_M_end.pdf}
+    \caption{\(|\M|\) at end}
+  \end{subfigure}
+
+  \caption{
+    order parameters matrix at the beginning and at the end of learning. 
+  }
+  \label{fig:simulation_example_macroscopic}
+\end{figure}
+
+Now that we know the tools we have available for analyzing an experiment, we can finally proceed with discussions about the content of the model.
+
+
+\FloatBarrier
 \section{Initial conditions}
 In this Section, we present some considerations on the initialization of the student
 and the teacher committee machines. As one may expect, the choice of the starting point 
@@ -600,7 +658,12 @@ In Figure~\ref{fig:pictorial-symmetric-learning} we present a schematic view of 
 using symmetric initial conditions.
 \begin{figure}
   \centering
-  \includegraphics[width=.7\textwidth]{figures/symmetric-ic-expected-plateaus.jpg}
+  \begin{tikzpicture}[
+    x=1.cm,
+    y=1.cm
+  ]
+    \input{figures/pictorial-learningphases.tex}
+  \end{tikzpicture}
   
   \caption{
     pictorial representation of the different phases of learning for symmetric initial conditions.
@@ -701,7 +764,7 @@ is in accordance with what we may expect from past literature\cite{arous2021onli
   }
   \label{fig:unconstraned-random-m-exit-time} 
 \end{figure}
-\FloatBarrier %todo: vuoi davvero questa barriera?
+\FloatBarrier
 
 In order to make the expansion possible, we have to set \(q(0)\) to be close to 0;
 in other words, the norm of \(\vec{w}\) should be nearly null.

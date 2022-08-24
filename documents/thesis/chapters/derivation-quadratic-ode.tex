@@ -1,11 +1,11 @@
 \chapter[Derivation of the quadratic activation ODEs]{Derivation of the quadratic activation differential equations}
 \label{app:derivation-quadratic-ode}
 
-The scope of this section is to explicit compute the expected value of the
+The scope of this Appendix is to report the computation of the expected values of the
 Equations~\eqref{eq:risk_lambda_expval}~and~\eqref{eq:genericODE} when \(\sigma(x) = x^2\).
 
 Due to the linearity of the expected value, we can reduce the expectation on products of \(\dsp\) and \(\lf\).
-Let's start from the population risk. The expected value we need can be expanded to 
+Let's start with the population risk. The expected value we need can be expanded to 
 \[\begin{split}
   \Explfns \left[  \dsp^2  \right]  =&
     \frac{1}{k^2} \sum_{r, s =1}^k \Explf\left[ \act(\lf_{r}^*) \act(\lf_{s}^*)  \right] +
@@ -39,12 +39,12 @@ In addition to the previous terms, in the equation for \(\Q\) we also have to ca
   \act' (\lf_{l})  \right]
 \end{split}\]
 
-These expansion are still valid for any generic activation function.
-Before specializing to \(\act(x)=x^2\), we introduce a shorthand in the notation.
+These expansions are still valid for any generic activation function.
+Before specializing in \(\act(x)=x^2\), we introduce a shorthand in the notation.
 We will use \[\omega_{\alpha\beta} \coloneqq \left[\bm{\Omega}\right]_{\alpha\beta},\]
 where the indices \(\alpha\) and \(\beta\) can discriminate between teacher and student local fields, as well as the numerical index.
 %todo: forse spiega meglio come funzionano alpha e beta.
-With this consideration, there are only 4 types of expected value to be computed.
+With this consideration, there are only 4 types of expected values to be computed.
 Let's write them explicitly, using our activation function
 \[\begin{split}
   \Explf  \left[\act' (\lf^\alpha)  \act' (\lf^\beta)  \right] &= 
@@ -61,9 +61,9 @@ Let's write them explicitly, using our activation function
 \end{split}\]
 We are left with some expected values of polynomials of gaussian variables. 
 Since the local fields all have zero mean, these are nothing but \emph{moments} 
-of a Gaussian distrubution with multiple variables.
+of a Gaussian distribution with multiple variables.
 The standard result used to calculate these is the \emph{Isserlis' Theorem}, or 
-\emph{Wick's probability Theorem} in Physics lieterature.
+\emph{Wick's probability Theorem} in Physics literature.
 \begin{theorem}[Isserlis' Theorem]
   Let \((X_1,\dots,X_n)\) a zero-mean multivariate normal vector,
   then
@@ -74,13 +74,12 @@ The standard result used to calculate these is the \emph{Isserlis' Theorem}, or
   \]
   where the sum is over \(P^2_k\), the set of all possible \emph{pairings} of \([1,k]\).
 \end{theorem}
-This is a little generalization of the orginal Theorem, contributed by Withers\cite{withers1985moments}.
-We used a \texttt{Python} script to compute the the pairings calculations;
-the code can be found here. %todo: link al codice
+This is a little generalization of the original Theorem, contributed by Withers\cite{withers1985moments}.
+We used a \href{https://github.com/arn4/master-thesis/blob/main/analytical-calculations%20/isserlis.py}{Python script} to compute the pairings calculations.
 Alternatively, the account can also be made using the generating function of moments.
-In this \texttt{Mathematica} script we implement this second possibility, 
-although the result is then used for the calculation of Section ??.
-% todo: inserisci i link al documento di mathematica e alla sezione in cui faccio le megavarianze.
+In this \href{https://github.com/arn4/master-thesis/blob/main/analytical-calculations%20/isserlis.nb}{Mathematica script} we implement this second possibility, 
+although the result is then used for the calculation of Appendix~\ref{app:std_sde}.
+
 
 Using the Theorem, we obtain
 \begin{align*}
@@ -99,5 +98,5 @@ Using the Theorem, we obtain
 By retracing all steps backward and making the necessary substitutions,
 we can arrive at an explicit form of the Equations~\eqref{eq:genericODE}. In order
 to obtain a matrix form such as in the Equations~\eqref{eq:quadraticODEs}, 
-we have to write in a closed form all the summations apperead during the derivation
-and use the fact that \(\Q\) and \(\P\) are symmetryc matrices.
+we have to write in a closed form all the summations appeared during the derivation
+and use the fact that \(\Q\) and \(\P\) are symmetric matrices.

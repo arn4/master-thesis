@@ -1,0 +1,40 @@
+\filldraw [fill=Background,draw opacity=0.] (0,0) rectangle (10.,9.);
+\draw[black, ->, thick] (0,0) -- (10,0) node[below] {\(t\)};
+\draw[black, ->, thick] (0,0) -- (0, 9) node[left] {\(\mathcal{R}\)};
+
+\draw[
+  line width=1.5mm,
+  Red,
+  looseness=1.1
+] (0,8) to[out=0, in=180]
+  (1.0,8) to[out=0, in=180]
+  (2., 7) to[out=0, in=180] 
+  (10, 7);
+
+\draw[
+  line width=1.mm,
+  Blue,
+  looseness=1.1
+] (0,8) to[out=0, in=180]
+  (1.0,8) to[out=0, in=180]
+  (2., 7) to[out=0, in=180] 
+  (4., 7) to[out=0, in=180]
+  (5., 5) to[out=0, in=180]
+  (10, 5);
+
+\draw[
+  line width=0.5mm,
+  Green,
+  looseness=1.1
+] (0,8) to[out=0, in=180]
+  (1.0,8) to[out=0, in=180]
+  (2., 7) to[out=0, in=180] 
+  (4., 7) to[out=0, in=180]
+  (5., 5) to[out=0, in=180]
+  (6., 5) to[out=0, in=180]
+  (8., 1.5) to[out=0, in=180]
+  (10., 1.5);
+
+\node[right] at (1.5,7.55) {norm learning};
+\node[left] at (4.5,6.) {linear learning};
+\node[left] at (7.,3.25) {specialization};
