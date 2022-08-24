@@ -1,0 +1,18 @@
+\filldraw [fill=Background,draw opacity=0.] (0,-3) rectangle (10.,5);
+\draw[black, ->, thick] (0,0) -- (10,0) node[below] {\(q\)};
+\draw[black, ->, thick] (0,-3) -- (0, 5) node[left] {\(\dod{q}{t}\)};
+
+\draw (3,-0.15)--(3,0);
+\draw (3.3,-0.15)--(3.3,0);
+\draw (8,-0.15)--(8,0);
+
+\draw[Blue, ultra thick] plot (\x,{0.4*(3-\x)});
+\draw[Green, ultra thick] plot (\x,{0.1*(\x-3.3)*(\x-8)});
+
+\draw[Red, dotted, thick] (3.3,0)--(3.3,1.5);
+\draw[Red, dotted, thick] (3. ,0)--(3. ,1.5);
+\draw[Red, |-|, ultra thick] (3. ,1.5) to node[Red,midway,above] {$\sim\BigO{\gamma}$} (3.3,1.5);
+
+\node[above right] at (3.3,0) {$q_f^1$};
+\node[below] at (3.,0) {$q_{rm}$};
+\node[above] at (8,0) {$q_f^2$};

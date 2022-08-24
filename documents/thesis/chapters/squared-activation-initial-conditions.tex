@@ -273,18 +273,18 @@ it was really affecting our results. Usually, \(d=10000\) was enough for our ana
 in the rest of this paper, we will not discuss this effect again assuming that
 it is not relevant to what we are talking about, except where explicitly written.
 
-In Figure~\ref{fig:finite_size_example} we present an example of finite size effect;
-% todo: breve commento quando effettivamente metterai la figura.
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=.7\textwidth]{example-image-duck}
+% In Figure~\ref{fig:finite_size_example} we present an example of finite size effect;
+% % todo: breve commento quando effettivamente metterai la figura.
+% \begin{figure}
+%   \begin{center}
+%     \includegraphics[width=.7\textwidth]{example-image-duck}
 
-    \caption{
-      example of finite size effect. For details on how to interprete thi plot see Subsection~\ref{subsec:simulation_example}.
-    }
-    \label{fig:finite_size_example}
-  \end{center}
-\end{figure}
+%     \caption{
+%       example of finite size effect. For details on how to interprete thi plot see Subsection~\ref{subsec:simulation_example}.
+%     }
+%     \label{fig:finite_size_example}
+%   \end{center}
+% \end{figure}
 
 \subsection{Numerical solution of the differential equation}
 The second ingredient needed for the numerical experiments of this work is a way to
@@ -527,8 +527,9 @@ of Equation~\eqref{eq:eps0ODEforq} equal to 0\footnote{
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{figures/epsilon0-stable-points.png}
-    % \includegraphics[width=0.8\textwidth]{{example-image-duck}}
+    \begin{tikzpicture}[x=1.cm,y=1.cm,domain=0.:10.,range=-3.:5.]
+      \input{figures/epsilon0_stable_points.tex}
+    \end{tikzpicture}
     \caption{
       the plot of the right-hand-side of Equation~\eqref{eq:eps0ODEforq}.
       The blue line is only the \(L\) contribution, while the green parabola is including also \(N\).
