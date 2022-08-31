@@ -1,7 +1,7 @@
 name: Build LaTeX documents
 on: [push]
 jobs:
-  compile_docs:
+  compile_documents:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
@@ -38,7 +38,7 @@ jobs:
           path: outputs/
 
   send_to_server:
-    needs: build_latex
+    needs: compile_documents
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
