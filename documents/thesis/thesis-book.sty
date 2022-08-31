@@ -15,8 +15,18 @@
    citecolor=green,
    bookmarks]{hyperref}
 
+% Fonts
+\RequirePackage{anyfontsize}
+% \RequirePackage{libertine}
+\RequirePackage[libertine,smallerops]{newtxmath}
+
 \RequirePackage{lipsum}
 \RequirePackage{todonotes}
 
 \theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{Theorem}{Theorem}[chapter]
+\newtheorem{Lemma}{Lemma}[chapter]
+
+\theoremstyle{definition}
+\newtheorem{Definition}{Definition}[chapter]
+\newtheorem{Example}{Example}[chapter]

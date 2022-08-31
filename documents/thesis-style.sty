@@ -1,7 +1,7 @@
 % Generic
 \RequirePackage[english]{babel}
-\RequirePackage{csquotes}
 \RequirePackage[utf8]{inputenc}
+\RequirePackage{csquotes}
 \RequirePackage{graphicx}
 \RequirePackage{xcolor}
 \RequirePackage{caption, subcaption}
@@ -26,6 +26,7 @@
 \RequirePackage{tikz}
 \usetikzlibrary{calc, decorations.markings}
 \usetikzlibrary{positioning}
+\tikzset{every picture/.style={/utils/exec={\sffamily}}}
 
 % Nica's Colors
 \definecolor{turquoise}{RGB}{0, 247, 230}
@@ -36,11 +37,6 @@
 \definecolor{Blue}{RGB}{60, 92, 161}
 \definecolor{Red}{RGB}{181, 56, 65}
 \definecolor{Background}{RGB}{229, 229, 239}
-
-% Fonts
-\RequirePackage{anyfontsize}
-% \RequirePackage{libertine}
-\RequirePackage[libertine,smallerops]{newtxmath}
 
 % Bibliography
 \RequirePackage[backend=bibtex,style=alphabetic]{biblatex}
@@ -54,14 +50,6 @@
 \def\Bruno{Bruno Loureiro}
 
 % Math
-\theoremstyle{plain}
-\newtheorem{Theorem}{Theorem}
-\newtheorem{Lemma}{Lemma}
-
-\theoremstyle{definition}
-\newtheorem{Definition}{Definition}[chapter]
-\newtheorem{Example}{Example}
-
 \renewcommand{\vec}[1]{\bm{#1}}
 
 %% Shortcuts

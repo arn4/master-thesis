@@ -1,0 +1,1 @@
+cat slides.tex | sed -e "s/\documentclass{beamer}/\documentclass[handout]{beamer}/" > slides-handout.tex
