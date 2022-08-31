@@ -64,7 +64,7 @@ Since the local fields all have zero mean, these are nothing but \emph{moments}
 of a Gaussian distribution with multiple variables.
 The standard result used to calculate these is the \emph{Isserlis' Theorem}, or 
 \emph{Wick's probability Theorem} in Physics literature.
-\begin{theorem}[Isserlis' Theorem]
+\begin{Theorem}[Isserlis' Theorem]
   Let \((X_1,\dots,X_n)\) a zero-mean multivariate normal vector,
   then
   \[
@@ -73,7 +73,7 @@ The standard result used to calculate these is the \emph{Isserlis' Theorem}, or
       \sum_{p\in P^2_k}\prod_{\{s,t\}\in p} \Cov\left[X_{i_s},X_{i_t}\right],
   \]
   where the sum is over \(P^2_k\), the set of all possible \emph{pairings} of \([1,k]\).
-\end{theorem}
+\end{Theorem}
 This is a little generalization of the original Theorem, contributed by Withers\cite{withers1985moments}.
 We used a \href{https://github.com/arn4/master-thesis/blob/main/analytical-calculations%20/isserlis.py}{Python script} to compute the pairings calculations.
 Alternatively, the account can also be made using the generating function of moments.
