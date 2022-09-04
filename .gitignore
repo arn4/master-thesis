@@ -529,6 +529,7 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/latex,python,macos,jupyternotebooks,visualstudiocode
 
 # Custom part
+documents/thesis/thesis-printable.tex
 !documents/figures/**/*.pdf
 !documents/figures/**/*.png
 !documents/figures/**/*.jpg
