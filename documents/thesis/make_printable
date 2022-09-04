@@ -1,1 +1,1 @@
-cat thesis.tex | sed -e "s/\setboolean{ForPrinting}{false}/\setboolean{ForPrinting}{true}/" > thesis-printable.tex
+cat thesis.tex | sed -e 's/\\setboolean{ForPrinting}{false}/\\setboolean{ForPrinting}{true}/' > thesis-printable.tex
