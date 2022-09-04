@@ -1,22 +1,28 @@
-% \documentclass[12pt,a4paper,draft]{book}
 \documentclass[12pt,a4paper]{book}
+
+\RequirePackage{ifthen}
+\newboolean{ForPrinting}
+\setboolean{ForPrinting}{false}
+
 \usepackage{thesis-style}
 \usepackage{thesis-book}
 
 
-
 \begin{document}
+  \pagestyle{empty}
   \newgeometry{paper=a4paper,margin=1in}
   \input{frontispiece}
   \maketitle
   \restoregeometry
-  
+  \pagestyle{plain}
+
   \chapter*{Abstract}
   \input{abstract}
   \cleardoublepage
   \tableofcontents
 
   \part{Introduction}
+  \pagestyle{ruled}
   \input{chapters/ml_and_sp}
   \input{chapters/context}
 
@@ -30,6 +36,7 @@
 
   \part*{Appendices}\addcontentsline{toc}{part}{Appendices}
   \appendix
+  \pagestyle{appendix-ruled}
   \input{chapters/derivation-quadratic-ODE}
   \input{chapters/derivation-spherical-ode}
   \input{chapters/brownian_variance}
@@ -37,10 +44,12 @@
   
   \cleardoublepage
   \nocite{*}
+  \pagestyle{acknowledgments}
   \printbibliography[heading=bibintoc]
 
-  % \chapter*{Acknowledgments}
-  % WIP
+  \chapter*{Acknowledgments}
+  \chaptermark{Acknowledgments}
+  \lipsum
 
 
 \end{document}

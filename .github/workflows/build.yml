@@ -7,6 +7,11 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v2
 
+      - name: Generate printable thesis
+        run: |
+          cd documents/thesis
+          ./make_printable
+
       - name: Generate handout for slides
         run: |
           cd documents/slides
@@ -20,6 +25,7 @@ jobs:
             documents/short-abstract/short-abstract.tex
             documents/summary/summary.tex
             documents/thesis/thesis.tex
+            documents/thesis/thesis-printable.tex
             documents/slides/slides.tex
             documents/slides/slides-handout.tex
 

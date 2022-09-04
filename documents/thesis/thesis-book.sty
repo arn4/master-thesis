@@ -1,19 +1,51 @@
-\RequirePackage[
-  paper=a4paper,
-  left=2.5cm,
-  right=3.5cm, 
-  top=3.5cm,
-  bottom=3.5cm,
-  % showframe % testing purpose
+\ifthenelse{\boolean{ForPrinting}}{
+  % Printable version
+  \RequirePackage[
+    paper=a4paper,
+    left=2.5cm,
+    right=3.5cm, 
+    top=3.5cm,
+    bottom=3.5cm,
+    % showframe % testing purpose
   ]{geometry}
+
+  \RequirePackage[
+    colorlinks,
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black,
+    bookmarks
+  ]{hyperref}
+  \newcommand{\Href}[2]{#2\footnote{\url{#1}}}
+
+}{% Digital version
+  \RequirePackage[
+    paper=a4paper,
+    left=2.5cm,
+    right=3.5cm, 
+    top=3.5cm,
+    bottom=3.5cm,
+    % showframe % testing purpose
+  ]{geometry}
+
+  \RequirePackage[
+    colorlinks,
+    linkcolor=blue,
+    urlcolor=magenta,
+    citecolor=green,
+    bookmarks
+  ]{hyperref}
+
+  \newcommand{\Href}[2]{
+    \href{#1}{#2}
+  }
+}
+
 \RequirePackage[section]{placeins}
 \RequirePackage[indent=0cm]{parskip}
-\RequirePackage[
-  colorlinks,
-   linkcolor=blue,
-   urlcolor=magenta,
-   citecolor=green,
-   bookmarks]{hyperref}
+
+
+
 
 % Fonts
 \RequirePackage{anyfontsize}
@@ -23,6 +55,7 @@
 \RequirePackage{lipsum}
 \RequirePackage{todonotes}
 
+% Theorems
 \theoremstyle{plain}
 \newtheorem{Theorem}{Theorem}[chapter]
 \newtheorem{Lemma}{Lemma}[chapter]
@@ -30,3 +63,25 @@
 \theoremstyle{definition}
 \newtheorem{Definition}{Definition}[chapter]
 \newtheorem{Example}{Example}[chapter]
+
+% Header and footer
+\RequirePackage{titlesec}
+\newpagestyle{ruled}[\normalsize]{
+ \sethead[\thepage][][\MakeUppercase{Chapter \thechapter.\space\chaptertitle}]  % even
+   {\MakeUppercase{\thesection.\space\sectiontitle}}{}{\thepage} % odd
+ \headrule
+ \setfoot{}{}{}
+}
+\newpagestyle{appendix-ruled}[\normalsize]{
+ \sethead[\thepage][][\MakeUppercase{Appendix \thechapter.\space\chaptertitle}]  % even
+   {\MakeUppercase{\thesection.\space\sectiontitle}}{}{\thepage} % odd
+ \headrule
+ \setfoot{}{}{}
+}
+
+\newpagestyle{acknowledgments}[\normalsize]{
+ \sethead[\thepage][][\MakeUppercase{\chaptertitle}]  % even
+   {\MakeUppercase{}}{}{\thepage} % odd
+ \headrule
+ \setfoot{}{}{}
+}
