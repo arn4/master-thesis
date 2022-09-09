@@ -1,30 +1,27 @@
+% \newlength{\PaperWidth}{210mm}
+% \newlength{\PaperHeight}{297mm}
+% \newlength{\BindingOffset}{0mm}
+
 \ifthenelse{\boolean{ForPrinting}}{
   % Printable version
   \RequirePackage[
     paper=a4paper,
-    left=2.5cm,
-    right=3.5cm, 
-    top=3.5cm,
-    bottom=3.5cm,
+    textwidth=140mm,
+    textheight=210mm,
+    marginratio={4:6,5:5},
+    bindingoffset=5mm
     % showframe % testing purpose
   ]{geometry}
 
-  \RequirePackage[
-    colorlinks,
-    linkcolor=black,
-    urlcolor=black,
-    citecolor=black,
-    bookmarks
-  ]{hyperref}
+  \RequirePackage[hidelinks]{hyperref}
   \newcommand{\Href}[2]{#2\footnote{\url{#1}}}
 
 }{% Digital version
   \RequirePackage[
     paper=a4paper,
-    left=2.5cm,
-    right=3.5cm, 
-    top=3.5cm,
-    bottom=3.5cm,
+    textwidth=140mm,
+    textheight=210mm,
+    marginratio={4:6,5:5},
     % showframe % testing purpose
   ]{geometry}
 
@@ -45,12 +42,10 @@
 \RequirePackage[indent=0cm]{parskip}
 
 
-
-
 % Fonts
 \RequirePackage{anyfontsize}
 % \RequirePackage{libertine}
-\RequirePackage[libertine,smallerops]{newtxmath}
+
 
 \RequirePackage{lipsum}
 \RequirePackage{todonotes}

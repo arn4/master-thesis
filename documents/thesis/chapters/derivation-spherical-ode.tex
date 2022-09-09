@@ -1,7 +1,10 @@
 \chapter[Derivation of linearized spherical ODE]{Derivation of linearized spherical differential equation}
 \label{app:derivation-spherical-ode}
-
+In this Appendix, we report the full calculations for deriving the differential equations
+for the macroscopic variable in the spherical constrained case.
+There is no new concept to comment on; it is merely an unfolding of the computations described in Chapter~\ref{chap:spherical}.
 \section{Generalized Phase Retrivial}
+The linear approximation of \(\Psi\) is given by
 \begin{equation}
   \Psi_{jr} = \frac{4 \gamma}{p}
       \left(m_{jr} - \frac{m_{jr}}{p}\right) 
@@ -59,38 +62,38 @@ as long as the risk stays in the first plateau
 \end{split}\end{equation}
 
 \section{General case}
-The linear expansion of \(\vec{\Phi}\) and \(\vec{\Psi}\) it's similar to previous section:
+The linear expansion of \(\vec{\Phi}\) and \(\vec{\Psi}\) is similar to previous section:
 \[
   \Psi_{jr} = \frac{4 \gamma}{p} \left(\frac1k - \frac{1}{p}\right) m_{jr},
 \]\[
   \begin{split}
     j \neq l \quad \Phi_{jl} &= \frac{4 \gamma}{p}\left[
         2\left( - 2\frac{q_{jl}}{p}\right)
-    \right] +\\
-    &\quad+\frac{4 \gamma^2}{p^2} \Biggr\{
-          \left(1+\frac2k\right)q_{jl} -\frac2{pk}\Biggl[pk q_{jl} + 4 k q_{jl} \Biggl] + 
-          \frac1{p^2}\left[\left(p^2+2p\right)q_{jl} +
+    \right] + \frac{4 \gamma^2}{p^2} \Biggr\{
+          \left(1+\frac2k\right)q_{jl} -\frac2{pk}\Biggl[pk q_{jl} + 4 k q_{jl} \Biggl] + \\
+          &\qquad\qquad\qquad\qquad\qquad\qquad+\frac1{p^2}\left[\left(p^2+2p\right)q_{jl} +
           8p q_{jl} + 24q_{jl} \right] + \Delta q_{jl}\Biggr\} \\ 
     &= -\frac{16 \gamma}{p^2} q_{jl} 
       +\frac{4 \gamma^2}{p^2} \left\{
         1+\frac2k -2 -\frac{8}{p} +1 +\frac2p +\frac8p + \frac{24}{p^2} + \Delta \right\}q_{jl} \\
     &= -\frac{16 \gamma}{p^2} q_{jl} 
     +\frac{4 \gamma^2}{p^2} \left\{\frac2k +\frac{2}{p} + \frac{24}{p^2} + \Delta \right\}q_{jl}
-  \end{split}
-\]\[
-  \begin{split}
+\\
+%   \end{split}
+% \]\[
+%   \begin{split}
     j = l \quad \Phi_{jj} &= \frac{4 \gamma}{p}\left[
         2\left( -\frac{1}{p}\right)
     \right] + \frac{4 \gamma^2}{p^2} \Biggr\{
-          \left(1+\frac2k\right) -\frac2{pk}\Biggl[pk + 2k \Biggl] + 
-          \frac1{p^2}\left[\left(p^2+2p\right) +
+          \left(1+\frac2k\right) -\frac2{pk}\Biggl[pk + 2k \Biggl] + \\
+          &\qquad\qquad\qquad\qquad\qquad+\frac1{p^2}\left[\left(p^2+2p\right) +
           4p + 8 \right] + \Delta\Biggr\} \\
     &= -\frac{8 \gamma}{p^2} + \frac{4 \gamma^2}{p^2} \left\{
       1+\frac2k -2 -\frac{4}{p} +1 +\frac2p +\frac4p + \frac{8}{p^2} + \Delta \right\} \\
     &= -\frac{8 \gamma}{p^2} +\frac{4 \gamma^2}{p^2} \left\{\frac2k +\frac{2}{p} + \frac{8}{p^2} + \Delta \right\}
   \end{split}
 \]
-The diferential equations are only a little different
+The differential equations are only a little different
 \begin{equation}\begin{split}
   \dod{\left[\M{\left(t\right)}\right]_{jr}}{t}
     &= \left[

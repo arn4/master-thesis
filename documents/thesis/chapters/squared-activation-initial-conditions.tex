@@ -102,14 +102,14 @@ The expressions are just long, but not complicated to handle and to be analyzed.
 To conclude our specialization in quadratic activation, also the value of population risk can be expressed
 as function of the values of \(\Q, \M \text{ and } \P\). Computing the expected value in Equation~\eqref{eq:risk_lambda_expval},
 we get
-\begin{equation} \label{eq:risk_quadratic}
+\begin{equation} \label{eq:risk_quadratic}\begin{split}
   \risk%{(\Q,\M,\P)}
-      = \frac12\left[
+      = \frac12\Bigg[&
           \frac{\Tr{\P}^2+2\Tr{\P^2}}{k^2}
-          -2\frac{\Tr{\P}\Tr{\Q}+2\Tr{\M\M^\top}}{pk}
-          +\frac{\Tr{\Q}^2+2\Tr{\Q^2}}{p^2}
-      \right]
-\end{equation}
+          -2\frac{\Tr{\P}\Tr{\Q}+2\Tr{\M\M^\top}}{pk} \\
+          &+\frac{\Tr{\Q}^2+2\Tr{\Q^2}}{p^2}
+      \Bigg]
+\end{split}\end{equation}
 
 The equation derived will be the starting point for all further analysis.
 We are using an unusual choice of activation function, but, as presented later,
@@ -140,9 +140,9 @@ a single vector \(\vec{w}\). Similar to before, the student function
 corresponds to the fixing \(p=1\) in our setting. 
 
 Many different algorithms can be used to solve this task, such as 
-\emph{full-batch SGD}\cite{mignacco2021stochasticity},
-\emph{spectral methods}\cite{mondelli2018fundamental} and 
-\emph{approximate message passing}\cite{maillard2020phase}.
+\emph{full-batch SGD} \cite{mignacco2021stochasticity},
+\emph{spectral methods} \cite{mondelli2018fundamental} and 
+\emph{approximate message passing} \cite{maillard2020phase}.
 As done in the rest of this work, we will focus on the online stochastic gradient descent;
 it has been done in the past using both full-batch gradient descent \cite{sarao2020complex,sarao2020optimization},
 or online gradient descent~\cite{tan2019online}, but we explore different regimes.
@@ -180,14 +180,14 @@ In this section, we describe how we conducted the numerical experiments to verif
 our results. We discuss some common problems that need to be addressed in every kind of simulation,
 while the issues specific to an individual task will be discussed in the appropriate section.
 
-All the code written for this work is contained in this \Href{https://github.com/arn4/master-thesis/tree/main/code/committee_learning_package}{Python package};
-it can be downloaded and the experiments can be reproduced.
+All the code written for this work is contained in this \Href{https://github.com/arn4/master-thesis/tree/main/code/committee_learning_package}{Python package}.
+It can be downloaded and the experiments can be reproduced.
 
 
 \subsection{Simulation of the training}
 As we already said, the training of a committee machine looked at through the order parameters
 reduces to a discrete stochastic process of the matrix \(\vec{\Omega}\). Thus, one possibility
-to simulate the online learning is using Equations~\eqref{eq:update_rule_M}~and~\eqref{eq:update_rule_Q}:
+to simulate the online learning is using Equations~\eqref{eq:update_rule_M} and \eqref{eq:update_rule_Q}:
 at each step, the local fields can be sampled using the previous overlapping matrix, then
 used to compute the update step. Although this is perfectly allowed, we preferred
 to simulate the process directly on the weights, using Equation~\eqref{eq:update_rule_weights}
@@ -355,7 +355,7 @@ To make precise measurements in this area we will average several simulated traj
 
 To conclude, we present the analysis of the order parameter matrices, in Figure~\ref{fig:simulation_example_macroscopic}.
 One important thing to say is that, given the symmetries, we discussed earlier,
-it is sufficient to analyze the modulus of the matrix \(|\M\). 
+it is sufficient to analyze the modulus of the matrix \(\M\). 
 We see from the figure that even starting from a completely uncorrelated state,
 the dynamics found both student-teacher correlations and student-student correlations.
 Truth be told, we will not report this kind of graph for our later experiments mainly for reasons of space.
@@ -463,9 +463,9 @@ The important conclusion is that \(q(t)\) is the only variable that fully descri
 The equation Equation~\eqref{eq:quadraticODE_Q} becomes an explicit equation for \(q{(t)}\):
 % ho rimosso tutti gli step perché non servono a niente. se proprio mettili in appendice
 \begin{equation}\label{eq:eps0ODEforq}\begin{split}
-    \dod{q{(t)}}{t} = \frac{4\gamma}{p}q{(t)}\Biggr\{\underbrace{
-        1 - \left(1+\frac2p\right) q{(t)}}_{\eqqcolon L{(q{(t)};p)}}
-    +\frac{\gamma}{p} \Biggr[\underbrace{
+    \dod{q{(t)}}{t} = \frac{4\gamma}{p}q{(t)}\Biggr\{&\underbrace{
+        1 - \left(1+\frac2p\right) q{(t)}}_{\eqqcolon L{(q{(t)};p)}} \\
+    &+\frac{\gamma}{p} \Biggr[\underbrace{
         \left(1+\frac2k+\Delta\right) - \Biggl(2 + \frac4p \Biggl)q{(t)} +
         \left(1+\frac6p+\frac{8}{p^2}\right)q^2{(t)}}_{\eqqcolon N{(q{(t)};p,k,\Delta)}}
     \Biggr]\Biggr\}.
@@ -837,10 +837,11 @@ We can plug in the solution we found for \(|m(t)|\) and solve the equation to ob
   This is not formally correct, but it is what happens in practice for reasonable choices of initial parameters.
 }
 \[\begin{split}
-  q{(t)} = \frac{1}{8\gamma-12\gamma^2-4\Delta}\Bigg\{&\sigma^2\left[(8\gamma-12\gamma^2-4\Delta)-\left(8\gamma+48\gamma^2\right)\frac{2}{\pi d}\right]\exp\left[\left(4 \gamma + 12 \gamma^2 + 4\Delta\right)t\right]\\
-          &+\left(8\gamma+48\gamma^2\right)\frac{2}{\pi d}\sigma^2 \exp\left[12\gamma t\right]\Bigg\}.
+  q{(t)} = \frac{1}{f_{\gamma,\Delta}}\Bigg\{&\sigma^2\left[(8\gamma-12\gamma^2-4\Delta)-\left(8\gamma+48\gamma^2\right)\frac{2}{\pi d}\right]\exp\left[\left(4 \gamma + 12 \gamma^2 + 4\Delta\right)t\right]\\
+          &+\left(8\gamma+48\gamma^2\right)\frac{2}{\pi d}\sigma^2 \exp\left[12\gamma t\right]\Bigg\},
 \end{split}\]
-The evolution of q is contributed by two exponential;
+where \(f_{\gamma,\Delta} \coloneqq 8\gamma-12\gamma^2-4\Delta\).
+The evolution of \(q\) is contributed by two exponential;
 it is not possible to derive an exact expression of the exit time,
 but we can make the approximation that the two exponentials contribute separately
 and thus take the minimum between the two possible times:
@@ -851,7 +852,7 @@ and thus take the minimum between the two possible times:
 where we also dropped some subleading terms in \(d\).
 
 Figure~\ref{fig:sigma-phase-retrieval-exittimes} shows a comparison between what is predicted by the formulas
-and what is actually measured by doing the numerical experiments.
+and what is actually measured by doing numerical experiments.
 \begin{figure}
   \centering
   \begin{subfigure}{0.495\textwidth}
