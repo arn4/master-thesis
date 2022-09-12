@@ -35,7 +35,6 @@ jobs:
           mv documents/short-abstract/*.pdf outputs/
           mv documents/summary/*.pdf outputs/
           mv documents/thesis/*.pdf outputs/
-          mv documents/thesis/thesis-printable.tex outputs/
           mv documents/slides/*.pdf outputs/
 
       - name: Save artifacts
