@@ -64,4 +64,3 @@ jobs:
           SSHPASS: ${{ secrets.SSHPASS }}
         run: |
           sshpass -e scp -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no *.pdf $SSHUSER@$SSHSERVER:$SSHPATH
-          sshpass -e scp -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no *.tex $SSHUSER@$SSHSERVER:$SSHPATH
