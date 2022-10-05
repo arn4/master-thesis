@@ -1,8 +1,8 @@
-\documentclass[handout]{beamer}
+\documentclass{beamer}
 \usefonttheme{professionalfonts}
 \RequirePackage{thesis-slides}
 
-\setbeameroption{show notes on second screen=bottom}
+
 
 \begin{document}
 \hspace*{-1.2cm}
@@ -10,15 +10,180 @@
 \titlepage % Print the title page as the first slide
 \end{frame}
 
-\begin{frame}
-  \frametitle{Supervised Learning}
-  Our idea is to build a theoretical setting that incorporates all the features real model,
-  but at the same time, it's modelized enough to be studied theoretically.
+\section{Introduction}
+\begin{frame}{Why do we study Machine Learning theoretically?}
+  \structure{Machine learning} builds a model for machines to learn from data without explicit instruction.
+  \pause
+  \vfill
+
+  \begin{columns}
+    \column{0.4\textwidth}
+      \texttt{DALL$\cdot$E 2}~{\cite{ramesh2022hierarchical}} \\
+      ``\emph{Two  Formula 1 cars  racing under the Pisa tower, digital art}''
+    \column{0.6\textwidth}
+      \includegraphics[width=0.8\textwidth]{figures/dalle.png}
+  \end{columns}
+  \pause
+  \vfill
+
+  \begin{alertblock}{Theory lacks!}
+    Many practical ``recipes'' but far from full comprehension.
+  \end{alertblock}
+
+  \note[item]{
+    The Digital era has given us a tremendous amount of data, much more of what we humans can process.
+  }
+  \note[item]{
+    DALLE is an example of a generative model for images. An example of the application of ML with success!
+  }
+
+  \note[item]{
+    We need comprehension to not waste resources, design better models and algorithms, and have a description of what del model is doing (sensitive data).
+  }
 \end{frame}
 
-\section{The model}
+\begin{frame}[fragile]
+  \vspace{-5pt}
+  \frametitle{Supervised Learning}
+  \begin{block}{What is it?}
+    Learn how to accomplish a task, given some solved samples.
+  \end{block}
+  \vspace{-25pt}
+  \pause
+  \begin{columns}[t]
+    \column{0.33\textwidth}
+      \begin{center}
+        \structure{Data samples} \\
+        \begin{columns}
+          \column{0.5\textwidth}
+            \hfill
+            \visible<2->{\includegraphics[width=0.8\textwidth]{figures/animales/cat1.jpg}}
+          \column{0.5\textwidth}
+            Cat
+        \end{columns}
+        \begin{columns}
+          \column{0.5\textwidth}
+            \hfill
+            \visible<2->{\includegraphics[width=0.8\textwidth]{figures/animales/dog1.jpg}}
+          \column{0.5\textwidth}
+            Dog
+        \end{columns}
+        $\vdots$\\
+        \begin{columns}
+          \column{0.5\textwidth}
+            \hfill
+            \visible<2->{\includegraphics[width=0.8\textwidth]{figures/animales/cat3.jpg}}
+          \column{0.5\textwidth}
+            Cat
+        \end{columns}
+      \end{center}
+    \pause
+
+    \column{0.33\textwidth}
+      \begin{center}
+        \structure{Model Architecture} \\
+        \vspace{3pt}
+        \visible<3->{
+        \begin{tikzpicture}
+          % \filldraw[blue, thick, fill=blue!50] (-1,1.75) -- (-0.5,1.25) -- (-0.5,0.75) -- (-1,0.25) -- cycle;
+          % \draw[dotted] (-1,1.75) -- (0,1.35);
+          % \draw[dotted] (-0.5,1.25) -- (0,1.15);
+          % \draw[dotted] (-0.5,0.75) -- (0,0.85);
+          % \draw[dotted] (-1,0.25) -- (0,0.65);
+          % \draw[draw=black, thick, rounded corners] (0,0) rectangle ++ (1,2);
+          % \node[label={[rotate=-90]:parameters}] at (0.45,0.9) {};
+          % \draw[->] (1,1) -- (1.5, 1) node[right] {Answer};
+          \node[inner sep=0pt] at (0,1.8) {\includegraphics[width=.5\textwidth]{figures/animales/dog2.jpg}};
+          \draw[->, thick] (0,1)--(0,.5);
+          \filldraw[draw=black, fill=black!10,thick, rounded corners] (-1.2,0.5) rectangle ++ (2.2,-1.5);
+          \draw[->, thick] (0,-1.)--(0,-1.5);
+          \node[inner sep=0pt] at (0,-1.8) {Dog!};
+          % \node[inner sep=0pt] at (0,-0.25) {Parametrized Model};
+          \node[label={[align=center]Parametrized\\Model}] at (-0.1,-1.) {};
+        \end{tikzpicture}
+        }
+      \end{center}
+    \pause
+    \column{0.33\textwidth}
+      \begin{center}
+        \structure{Algorithm} \\
+        \vspace{10pt}
+        \visible<4->{\includegraphics[width=0.6\textwidth]{figures/algorithm-icon.png}}
+        Optimize parameters\\
+        based on samples.
+      \end{center}
+  \end{columns}
+  \pause
+  \vfill
+
+  \begin{alertblock}{Learning \(\neq\) Memorization}
+    The model should be able to generalize
+  \end{alertblock}
+\end{frame}
+
 \begin{frame}
-\frametitle{The model: architecture}
+  \frametitle{Neural Networks}
+  \begin{columns}
+    \column{0.2\textwidth}
+      \hspace{-15pt}
+      \includegraphics[width=1.5\textwidth]{figures/animales/cat2.jpg}
+      
+    \column{0.65\textwidth}
+      \hfill
+      \begin{tikzpicture}[x=.87cm, y=1.cm, >=latex]
+        \input{figures/neural-network-slides.tex}
+      \end{tikzpicture}
+    \column{0.15\textwidth}
+      $\longrightarrow$ Cat!
+  \end{columns}
+  \begin{columns}
+  \column{0.5\textwidth}
+    \vspace{-30pt}
+
+    \begin{center}
+      \begin{tikzpicture}[x=1.3cm, y=.78cm, >=latex]
+      \input{figures/perceptron-slides.tex}
+      \end{tikzpicture}
+    \end{center}
+  \column{0.5\textwidth}
+
+  \pause
+  \begin{exampleblock}{Why are they popular?}
+    % \begin{columns}
+    %   \column{0.5\textwidth}
+          \begin{itemize}
+            \item Universal approximator
+            \item Good at generalizing
+        %   \end{itemize}
+        % \column{0.5\textwidth}
+        %   \begin{itemize}
+            \item Efficient algorithms
+            % \item Highly versatile
+          \end{itemize}
+    % \end{columns}
+  \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Outline}
+  \begin{exampleblock}{Why are we studying machine learning as physicist?}
+    High dimensional system are in the realm of statistical physics!
+  \end{exampleblock}
+  \vfill
+  \pause
+
+  \structure{What are we going to present?}
+  \begin{itemize}
+    \item The particular setting of our study;
+    \item Derive the equations for the dynamic;
+    \item Study the overparametrization through learning times;
+    \item Stochastic corrections to the equations.
+  \end{itemize}
+\end{frame}
+
+\section{The setting}
+\begin{frame}
+\frametitle{The model architecture}
 Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\Real^{d+1}\).
 \vfill
 \begin{columns}
@@ -43,17 +208,20 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
 \note[item]{Just one real output, but it's not a problem.}
 \note[item]{Fixed weights in the second layer, can be done with more but it's just complicated.
             More parameters, no gain.}
+\note[item]{
+  Stress out that here we are doing regression and not classification. The output is continuous!
+}
 \end{frame}
 
 \begin{frame}
-  \frametitle{The model: data samples}
-  \(\vec{x}\) samples are \emph{indipendent normal distributions}
+  \frametitle{Data samples}
+  The input samples are \emph{indipendent normal distributed}
   \[
     \vec{x} \sim \gauss{(0,\I_d)}.
   \]
   \pause
 
-  The \(y\) is generated by a \emph{teacher} model with the same architecture
+  The output \(y\) is generated by a \emph{teacher} model with the same architecture
   \[
     f{(\vec{x})} = \frac{1}{k}\sum_{r=1}^{k} \act{\left(\frac{\vec{w}^*_r \cdot \vec{x}}{\sqrt{d}}\right)}
     \quad\text{where}\quad \vec{w}^*_r \coloneqq [\W^*]_r \in \Real^d. 
@@ -83,7 +251,7 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
 \end{frame}
 
 \begin{frame}
-  \frametitle{The model: measuring the goodness}
+  \frametitle{Measuring the goodness}
   The \emph{loss function} measures distance in output spaces
   \[
     \only<1>{\loss\colon \Real\times\Real\to\Real^+}
@@ -118,7 +286,7 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
 \end{frame}
 
 \begin{frame}
-  \frametitle{The model: the algorithm}
+  \frametitle{The algorithm}
   \begin{block}{Optimization}
     The best possible predictor has parameters
     \[
@@ -147,7 +315,7 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
     \(\nu\) is the index that indicates the number of samples used.
   }
   \note[item]{
-    The formula is the update rule of the weights.
+    The formula is the updated rule of the weights.
   }
   \note[item]{
     \(\gamma\) is the \emph{learning rate}. It's an \textbf{hyper}parameter, a property only of the algorithm. 
@@ -162,7 +330,7 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
   }
 \end{frame}
 
-\section{High dimensional limit}
+\section{Sufficient dynamic}
 \begin{frame}
   \frametitle{Local fields}
   \begin{block}{Goal}
@@ -171,11 +339,11 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
   \pause
   \vfill
 
-  \begin{columns}
-    \column{0.5\textwidth}
-      \structure{Change of variables}
-      \includegraphics[width=\textwidth]{example-image-duck}
-    \column{0.5\textwidth}
+  % \begin{columns}
+  %   \column{0.5\textwidth}
+  %     \structure{Change of variables}
+  %     \includegraphics[width=\textwidth]{example-image-duck}
+  %   \column{0.5\textwidth}
     \[
       \vec{\lf} = \frac{\W\vec{x}}{\sqrt{{d}}}\quad
       \vec{\lf}^{*} = \frac{\W^{*}\vec{x}}{\sqrt{{d}}}
@@ -185,7 +353,7 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
         f{(\vec{x})} \rightarrow& f{(\vec{\lf}^*)} = \frac{1}{k}\sum_{r=1}^{k} \act{\left(\lf^*_k\right)}
     \end{split}\]
 
-  \end{columns}
+  % \end{columns}
   \note[item]{
     I want to do all the steps of this derivation (no calculations) to emphatize how this is 
   }
@@ -209,16 +377,23 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
 
   \vfill
   \(\vec{\Omega}\) is the sufficient statistic we use for describing the process
-  \[
-    \risk_\text{theo}= \frac12\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega})}}}
+  \[\begin{split}
+    \risk_\text{theo} &= \frac{1}{2}\E_{\vec{x}\sim\gauss{(0,\I_d)}}{\left[\left(f{\left(\vec{x}\right)}-\hat{f}{\left(\vec{x}\right)}\right)^2\right]} \\
+                      &= \frac12\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega})}}}
                               {\left[\left(f{(\vec{\lf}^*)} - f{(\vec{\lf})}\right)^2\right]} = \risk{(\vec{\Omega})}
-  \]
+  \end{split}\]
   \note[item]{
     The variance allows us to define the \emph{order parameters}. These are the \emph{macroscopic variable} of the system
     because they are not dependent on \(d\) order of magnitude.
   }
   \note[item]{
     They are sufficient statics because \(\Omega\) is enough for defining the distribution of the local fields.
+  }
+  \note[item]{
+    Key fact: The expected value is now low dimensional! This is exaclty what we wanted!
+  }
+  \note[item]{
+    \textbf{Ising analogy}: order parameters are \emph{magnetization}, risk is the \emph{hamiltonian}.
   }
 \end{frame}
 
@@ -267,6 +442,7 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
   \pause
 
   \begin{exampleblock}{Differential Equations of the process}
+    \emph{Saad\&Solla equations} \cite{saad1995line}
     \begin{align*}
       \dod{\M{\left(t\right)}}{t} &=\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega}{(t)})}}}{\left[\psi{(\vec{\lf}^\nu,\vec{\lf}^{*\nu})}\right]} \eqqcolon \Psi{\left(\vec{\Omega}\right)}\\
       \dod{\Q{\left(t\right)}}{t} &=\E_{\vec{\lf},\vec{\lf^* \sim \gauss{(0,\vec{\Omega}{(t)})}}}{\left[\phi{(\vec{\lf}^\nu,\vec{\lf}^{*\nu})}\right]} \eqqcolon \Phi{\left(\vec{\Omega}\right)},
@@ -296,6 +472,156 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
   }
 \end{frame}
 
+\section{Results}
+\begin{frame}
+  \frametitle{Specilazing to activation function}
+  Special choice of activation function
+  \[
+    \act{(x)} = x^2
+  \]
+  We used \emph{Isserlis' Theorem} for computing the expected values
+  \pause
+  \vfill
+  Example of an equation:
+  \[
+    \dod{\M}{t} = \frac{2 \gamma}{p}\left[
+        \left(\frac{\Tr{\P}}k - \frac{\Tr{\Q}}p\right)\M +
+        2\left(\frac{\M\P}{k} - \frac{\Q\M}{p}\right)
+    \right]
+  \]
+  \pause
+  \vfill
+  \begin{block}{Special case: \textbf{\emph{phase retrivial}}}
+    \(k=p=1 \implies\)Many result in literature \\
+    \(\M, \Q\) and \(\P\) are scalars.
+
+  \end{block}
+
+  \note[item] {
+    We choose this instead of \(\erf\) because gives us simpler equations.
+  }
+\end{frame}
+
+\begin{frame}{Expected dynamics of the risk}
+  \begin{center}
+    \begin{tikzpicture}[
+      x=.7cm,
+      y=.7cm
+    ]
+      \input{figures/final_learning_phases.tex}
+    \end{tikzpicture}
+  \end{center}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comparsion simulation vs ODEs }
+  % \begin{columns}
+  %   \column{0.75\textwidth}
+    \begin{center}
+      \includegraphics[width=0.8\textwidth]{figures/simulation_examples_trajectory.pdf}
+    \end{center}
+  %   \column{0.4\textwidth}
+  %     {}
+  % \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spherical Constraint}
+  Force the weights on the sphere to exclude norm learning
+  \[
+    \vec{w}^\nu_j, \vec{w}^*_r \in S^{d-1}{\left(\sqrt{d}\right)}\qquad
+    \w^{\nu+1}_j =\frac{\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}}{\left\|\w^{\nu}_j - \gamma \nabla_{\w_j}{\loss}\right\|}\sqrt{d}
+  \]
+  \pause
+  \vfill
+
+  \begin{exampleblock}{New dynamic}
+    \emph{Saad\&Solla Equations} for spehrical dynamics
+    \[\begin{split}
+      \dod{\left[\M{\left(t\right)}\right]_{jr}}{t} &= \Psi_{jr}{(\vec{\Omega})} - \frac{\left[\M{\left(t\right)}\right]_{jr}}{2}\Phi_{jj}{(\vec{\Omega})} \\
+      \dod{\left[\Q{\left(t\right)}\right]_{jl}}{t} &= \Phi_{jl}{(\vec{\Omega})} - \frac{\left[\Q{\left(t\right)}\right]_{jl}}{2}\left(\Phi_{jj}{(\vec{\Omega})}+\Phi_{ll}{(\vec{\Omega})}\right)
+    \end{split}\]
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Spherical Phase retrieval}
+  \vspace{-10pt}
+  \begin{center}
+    \includegraphics[width=.74\textwidth]{figures/spherical/spr-example-d10000-zoom.pdf}
+  \end{center}
+    \vspace{-8pt}
+    \[
+      t^\text{(pr)}_e = \frac{\log\left[1+T(d-1)\right]}{2\left(4\gamma(1-6\gamma)-2\gamma^2\Delta\right)}
+      \qquad
+      \lim_{t\to\infty}\risk(t) = \frac{\gamma\Delta}{1-6\gamma}
+    \]
+\end{frame}
+
+\begin{frame}
+  \frametitle{Overparametrization gain}
+  \begin{columns}
+    \column{0.55\textwidth}
+      \hspace{-7pt}
+      \includegraphics[width=1.\textwidth]{figures/spherical/gamma_te-factor.pdf}
+    \column{0.5\textwidth}
+      \hfill It exists an optimal \(\gamma\) given \(p\)!\\
+      \vspace{5pt}
+      \hfill \(t_\text{opt} \coloneqq\) best exit time achievable
+  \end{columns}
+  \begin{columns}
+    \column{0.55\textwidth}
+      \[
+        \frac{t_\text{opt}{(k)}}{\lim_{p\to+\infty}t_\text{opt}{(p)}} =
+        \frac{\Delta k^2 + 4k + 8}{\Delta k^2 + 2k}
+      \]
+    \column{0.45\textwidth}
+      \(\approx 6\) for gen. phase retrieval\\
+      \(\approx 2\) for large \(k\)
+  \end{columns}
+\end{frame}
+
+\section{Stochastich corrections}
+\begin{frame}
+  \frametitle{Stochastich corrections}
+  Stick with phase retrieval.
+  \begin{exampleblock}{Correction terms to \emph{Saad\&Solla Equations}}
+    We introduce Brownian motion
+    \[\begin{split}
+      \dif m =& \Psi{(m,q)}\dif t + \frac{\vec{\sigma}_m{(m,q)}\cdot\dif \vec{W}}{d} \\
+      \dif q =& \Phi{(m,q)}\dif t + \frac{\vec{\sigma}_q{(m,q)}\cdot\dif \vec{W}}{d} 
+    \end{split}\]
+  \end{exampleblock}
+  \pause 
+
+  \begin{itemize}
+    \item Unconstrainted in accordance with \cite{arous2022high};
+    \item Itô Calculus to force spherical dynamic.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Stochastich correctionts to spherical phase retrieval}
+  \begin{center}
+    \includegraphics[width=.85\textwidth]{figures/sde/spr_final_zoom.pdf}
+  \end{center}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}
+  \frametitle{Further Developments}
+  \begin{itemize}
+    \item Extend stochastic corrections to generic committee machine;
+    \item Repeat the analysis for the specialization phase;
+    \item Try to make the network deeper.
+  \end{itemize}
+  \vfill
+
+  \begin{center}
+    \visible<2->{\structure{\Huge Thank you for the attention!}}
+  \end{center}
+\end{frame}
 
 \setbeamertemplate{page number in head/foot}{\phantom{0/0}}
 \begin{frame}[noframenumbering, allowframebreaks]
@@ -305,8 +631,12 @@ Goal: learn a \emph{predictor} \(\hat{f}\) given some samples \((\vec{x},y)\in\R
   \vspace{3cm}
 \end{frame}
 
-\begin{frame}{}
-  \frametitle{}
+\begin{frame}
+  \frametitle{Logarithm vs Polynomial}
+  Fit for the unconstrained phase retrivial
+  \begin{center}
+    \includegraphics[width=1.05\textwidth]{figures/log_fit.pdf}
+  \end{center}
 \end{frame}
 
 \end{document}
